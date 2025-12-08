@@ -22,7 +22,9 @@ class GetProductsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => 'string|nullable'
+            'search' => 'string|nullable',
+            'published' => 'bool|nullable',
+            'sale' => 'bool|nullable'
         ];
     }
 }

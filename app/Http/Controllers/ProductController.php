@@ -6,6 +6,7 @@ use App\Http\Requests\product\CreateProductRequest;
 use App\Http\Requests\product\GetProductsRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Services\ProductService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -22,7 +23,8 @@ class ProductController extends Controller
      */
     public function index(GetProductsRequest $request)
     {
-        $products = $this->productService->getProducts($request->query('search'));
+        $filters = $request->only(['published', 'sale']);
+        $products = $this->productService->getProducts($request->query('search'), $filters);
 
         return ProductResource::collection($products);
     }
@@ -31,11 +33,11 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
         $product = $this->productService->createProduct($request->only(['name', 'description', 'price']));
 
-        return response()->json($product);
+        return response()->json($product)->setStatusCode(201);
     }
 
     /**
@@ -43,7 +45,11 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = $this->productService->getProductById($id);
+        try {
+            $product = $this->productService->getProductById($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
 
         return response()->json($product);
     }
@@ -53,10 +59,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = $this->productService->updateProduct(
-            $id, 
-            $request->only(['name', 'description', 'price'])
-        );
+        try {
+            $product = $this->productService->updateProduct(
+                $id, 
+                $request->only(['name', 'description', 'price'])
+            );
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
 
         return response()->json($product);
     }
@@ -65,8 +75,12 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        $this->productService->deleteProduct($id);
+    {   
+        try {
+            $this->productService->deleteProduct($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
 
         return response()->json(null, 204);
     }

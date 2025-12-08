@@ -3,15 +3,17 @@
 namespace App\Http\Services;
 
 use App\Models\Product;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class ProductService {
     /**
      * Get products for the given user with optional filters.
      *
      * @param string|null $search Optional search term to filter by name or description
+     * @param array|null $filters Optional filters to apply to the query
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product>
      */
-    public function getProducts(?string $search = null) {
+    public function getProducts(?string $search = null, $filters = null) {
         $query = Product::query();
 
         if ($search) {
@@ -19,6 +21,14 @@ class ProductService {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('description', 'like', "%{$search}%");
             });
+        }
+
+        if ($filters['published'] ?? false) {
+            $query->where('published', $filters['published']);
+        }
+
+        if ($filters['sale'] ?? false) {
+            $query->where('sale', $filters['sale']);
         }
 
         return $query->get();
