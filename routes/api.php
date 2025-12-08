@@ -14,8 +14,8 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
-Route::get('/product-image', [ProductImageController::class, 'index']);
-Route::get('/product-image/{id}', [ProductImageController::class, 'show']);
+Route::get('/product-images', [ProductImageController::class, 'index']);
+Route::get('/product-images/{id}', [ProductImageController::class, 'show']);
 
 // Protected routes - authentication required
 Route::middleware('auth:sanctum')->group(function () {
@@ -31,6 +31,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 });
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/product-image', [ProductImageController::class, 'store']);
-    Route::delete('/product-image/{id}', [ProductImageController::class, 'destroy']);
+    Route::post('/product-images', [ProductImageController::class, 'store']);
+    Route::delete('/product-images/{id}', [ProductImageController::class, 'destroy']);
 });

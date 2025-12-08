@@ -14,10 +14,14 @@ class ProductImageService {
      * } $filters
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProductImage>
      */
-    public function getImages($product_id, $filters = null) {
-        $query = ProductImage::where('product_id', $product_id);
+    public function getImages($product_id = null, $filters = null) {
+        $query = ProductImage::query();
 
-        if ($filters['cover'] ?? false) {
+        if ($product_id) {
+            $query->where('product_id', $product_id);
+        }
+
+        if (array_key_exists('cover', $filters ?? [])) {
             $query->where('cover', $filters['cover']);
         }
 
