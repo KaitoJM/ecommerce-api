@@ -14,7 +14,7 @@ class ProductService {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product>
      */
     public function getProducts(?string $search = null, $filters = null) {
-        $query = Product::with('categories');
+        $query = Product::with(['categories', 'images']);
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -60,7 +60,7 @@ class ProductService {
      * @return \App\Models\Product
      */
     public function getProductById(int $id) {
-        return Product::with('categories')->findOrFail($id);
+        return Product::with(['categories', 'images'])->findOrFail($id);
     }
     
     /**
