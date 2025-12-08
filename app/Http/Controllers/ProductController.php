@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\product\CreateProductRequest;
 use App\Http\Requests\product\GetProductsRequest;
+use App\Http\Requests\product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Services\ProductService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -57,12 +58,12 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateProductRequest $request, string $id)
     {
         try {
             $product = $this->productService->updateProduct(
                 $id, 
-                $request->only(['name', 'description', 'price'])
+                $request->validated()
             );
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product not found'], 404);
