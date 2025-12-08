@@ -46,7 +46,7 @@ describe('Get Product Images', function() {
 
 describe("Create Product Image", function() {
     it ("uploads product image if user is authenticated", function() {
-        Storage::fake('local');
+        Storage::fake('public');
 
         $user = User::factory()->create();
         $product = Product::factory()->create();
@@ -62,7 +62,7 @@ describe("Create Product Image", function() {
 
         $response->assertStatus(201);
 
-        Storage::disk('local')->assertExists(
+        Storage::disk('public')->assertExists(
             'product-images/' . $file->hashName()
         );
 
