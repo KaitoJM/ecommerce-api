@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 
@@ -99,6 +102,30 @@ describe('Create Product', function() {
         ]);
     });
 
+    it('syncs categories when provided', function() {
+        Category::create(['id' => 1, 'name' => 'Category 1']);
+        Category::create(['id' => 2, 'name' => 'Category 2']);
+        Category::create(['id' => 3, 'name' => 'Category 3']);
+
+        $user = User::factory()->create();
+
+        $response = actingAs($user)->postJson('/api/products', [
+            'name' => 'Test Product',
+            'description' => 'Test Description',
+            'price' => 100,
+            'categories' => [1,2,3]
+        ]);
+
+        $productId = $response->json('id');
+
+        $response->assertStatus(201);
+
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 1]);
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 2]);
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 3]);
+
+    });
+
     it ('returns a 422 error if the request has no name', function() {
         $user = User::factory()->create();
         $response = actingAs($user)->postJson('/api/products', []);
@@ -187,6 +214,38 @@ describe('Update Product', function() {
             'description' => 'Updated Description',
             'price' => 200,
         ]);
+    });
+
+    it('syncs categories when provided', function() {
+        Category::create(['id' => 1, 'name' => 'Category 1']);
+        Category::create(['id' => 2, 'name' => 'Category 2']);
+        Category::create(['id' => 3, 'name' => 'Category 3']);
+
+        $product = Product::create([
+            'name' => 'Test Product',
+            'description' => 'Test Description',
+            'price' => 100,
+        ]);
+
+        $product->categories()->attach([1,2]);
+
+        $user = User::factory()->create();
+
+        $response = actingAs($user)->putJson('/api/products/' . $product->id, [
+            'name' => 'Updated Product',
+            'description' => 'Updated Description',
+            'price' => 200,
+            'categories' => [1,3]
+        ]);
+
+        $productId = $product->id;
+
+        $response->assertStatus(200);
+
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 1]);
+        assertDatabaseMissing('product_categories', ['product_id' => $productId, 'category_id' => 2]);
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 3]);
+
     });
 
     it ('returns a 404 error if the product is not found', function() {

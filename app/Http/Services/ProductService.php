@@ -14,7 +14,7 @@ class ProductService {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product>
      */
     public function getProducts(?string $search = null, $filters = null) {
-        $query = Product::query();
+        $query = Product::with('categories');
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -60,7 +60,7 @@ class ProductService {
      * @return \App\Models\Product
      */
     public function getProductById(int $id) {
-        return Product::findOrFail($id);
+        return Product::with('categories')->findOrFail($id);
     }
     
     /**
@@ -90,5 +90,9 @@ class ProductService {
         $product->delete();
 
         return $product;
+    }
+
+    public function attachCategories(Product $product, $category_ids = []) {
+        $product->categories()->sync($category_ids);
     }
 }

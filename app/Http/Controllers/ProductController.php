@@ -38,6 +38,12 @@ class ProductController extends Controller
     {
         $product = $this->productService->createProduct($request->only(['name', 'description', 'price']));
 
+        // attach categories when provided
+        $categories = $request->input('categories', []);
+        if (!empty($categories)) {
+            $this->productService->attachCategories($product, $categories);
+        }
+        
         return response()->json($product)->setStatusCode(201);
     }
 
@@ -65,6 +71,12 @@ class ProductController extends Controller
                 $id, 
                 $request->validated()
             );
+
+            // attach categories when provided
+            $categories = $request->input('categories', []);
+            if (!empty($categories)) {
+                $this->productService->attachCategories($product, $categories);
+            }
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product not found'], 404);
         }
