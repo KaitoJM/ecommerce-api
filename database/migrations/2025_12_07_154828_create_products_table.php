@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('published')->default(false);
             $table->boolean('sale')->default(false);
             $table->double('sale_price', 10, 2)->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

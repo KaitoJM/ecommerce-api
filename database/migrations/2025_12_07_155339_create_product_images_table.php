@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->text('source');
             $table->boolean('cover')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
