@@ -35,7 +35,7 @@ class ProductImageController extends Controller
     public function store(CreateProductImageRequest $request)
     {
         // process upload file
-        $source = '';
+        $source = $request->file('image')->store('product-images');
 
         // save file information
         $image = $this->imageService->createProductImage($source, $request->product_id, $request->cover);

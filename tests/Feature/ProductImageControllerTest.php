@@ -3,8 +3,11 @@
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\getJson;
 
 describe('Get Product Images', function() {
@@ -38,6 +41,35 @@ describe('Get Product Images', function() {
 
         $response->assertStatus(200);
         $response->assertJsonCount(5, 'data');
+    });
+});
+
+describe("Create Product Image", function() {
+    it ("uploads product image if user is authenticated", function() {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+
+        // Fake image
+        $file = UploadedFile::fake()->image('sample.jpg');
+
+        $response = actingAs($user)->postJson('/api/product-images', [
+            'product_id' => $product->id,
+            'image' => $file,
+            'cover' => 1,
+        ]);
+
+        $response->assertStatus(201);
+
+        Storage::disk('local')->assertExists(
+            'product-images/' . $file->hashName()
+        );
+
+        assertDatabaseHas('product_images', [
+            'product_id' => $product->id, 
+            'cover' => 1
+        ]);
     });
 });
 
