@@ -25,10 +25,7 @@ class UpdateProductRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'summary' => 'sometimes|string|max:255',
             'description' => 'sometimes|string',
-            'price' => 'sometimes|numeric|min:0',
             'published' => 'sometimes|boolean',
-            'sale' => 'sometimes|boolean',
-            'sale_price' => 'sometimes|numeric|min:0',
             'categories' => 'sometimes|array',
             'categories.*' => 'sometimes|integer|exists:categories,id',
         ];

@@ -48,31 +48,27 @@ describe('Get Products', function() {
         Product::create([
             'name' => 'Sample Product 1',
             'published' => true,
-            'sale' => false,
         ]);
 
         Product::create([
             'name' => 'Sample Product 2',
             'published' => false,
-            'sale' => true,
         ]);
 
         Product::create([
             'name' => 'Sample Product 3',
             'published' => true,
-            'sale' => true,
         ]);
 
         Product::create([
             'name' => 'Sample Product 4',
             'published' => false,
-            'sale' => false,
         ]);
 
-        $response = getJson('/api/products?published=1&sale=1');
+        $response = getJson('/api/products?published=1');
 
         $response->assertStatus(200);
-        $response->assertJsonCount(1, 'data');
+        $response->assertJsonCount(2, 'data');
         $response->assertJsonFragment([
             'name' => 'Sample Product 3',
         ]);
@@ -91,14 +87,12 @@ describe('Create Product', function() {
         $response = actingAs($user)->postJson('/api/products', [
             'name' => 'Test Product',
             'description' => 'Test Description',
-            'price' => 100,
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonFragment([
             'name' => 'Test Product',
             'description' => 'Test Description',
-            'price' => 100,
         ]);
     });
 
@@ -112,7 +106,6 @@ describe('Create Product', function() {
         $response = actingAs($user)->postJson('/api/products', [
             'name' => 'Test Product',
             'description' => 'Test Description',
-            'price' => 100,
             'categories' => [1,2,3]
         ]);
 
@@ -135,33 +128,6 @@ describe('Create Product', function() {
             'name' => ['The name field is required.'],
         ]);
     });
-
-    it ('returns a 422 error if the request has no price', function() {
-        $user = User::factory()->create();
-        $response = actingAs($user)->postJson('/api/products', [
-            'name' => 'Test Product',
-            'description' => 'Test Description',
-        ]);
-
-        $response->assertStatus(422);
-        $response->assertJsonFragment([
-            'price' => ['The price field is required.'],
-        ]);
-    });
-
-    it ('returns a 422 error if the request has a non-numeric price', function() {
-        $user = User::factory()->create();
-        $response = actingAs($user)->postJson('/api/products', [
-            'name' => 'Test Product',
-            'description' => 'Test Description',
-            'price' => 'non-numeric',
-        ]);
-
-        $response->assertStatus(422);
-        $response->assertJsonFragment([
-            'price' => ['The price field must be a number.'],
-        ]);
-    });
 });
 
 describe('Get Product', function() {
@@ -169,7 +135,6 @@ describe('Get Product', function() {
         $product = Product::create([
             'name' => 'Test Product',
             'description' => 'Test Description',
-            'price' => 100,
         ]);
 
         $response = getJson('/api/products/' . $product->id);
@@ -178,7 +143,6 @@ describe('Get Product', function() {
         $response->assertJsonFragment([
             'name' => 'Test Product',
             'description' => 'Test Description',
-            'price' => 100,
         ]);
     });
 
@@ -199,20 +163,17 @@ describe('Update Product', function() {
         $product = Product::create([
             'name' => 'Test Product',
             'description' => 'Test Description',
-            'price' => 100,
         ]);
 
         $response = actingAs($user)->putJson('/api/products/' . $product->id, [
             'name' => 'Updated Product',
             'description' => 'Updated Description',
-            'price' => 200,
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'name' => 'Updated Product',
             'description' => 'Updated Description',
-            'price' => 200,
         ]);
     });
 
@@ -224,7 +185,6 @@ describe('Update Product', function() {
         $product = Product::create([
             'name' => 'Test Product',
             'description' => 'Test Description',
-            'price' => 100,
         ]);
 
         $product->categories()->attach([1,2]);
@@ -234,7 +194,6 @@ describe('Update Product', function() {
         $response = actingAs($user)->putJson('/api/products/' . $product->id, [
             'name' => 'Updated Product',
             'description' => 'Updated Description',
-            'price' => 200,
             'categories' => [1,3]
         ]);
 
@@ -253,7 +212,6 @@ describe('Update Product', function() {
         $response = actingAs($user)->putJson('/api/products/999999', [
             'name' => 'Updated Product',
             'description' => 'Updated Description',
-            'price' => 200,
         ]);
 
         $response->assertStatus(404);
@@ -269,7 +227,6 @@ describe('Delete Product', function() {
         $product = Product::create([
             'name' => 'Test Product',
             'description' => 'Test Description',
-            'price' => 100,
         ]);
         $response = actingAs($user)->deleteJson('/api/products/' . $product->id);
 

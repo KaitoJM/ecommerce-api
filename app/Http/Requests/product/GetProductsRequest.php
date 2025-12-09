@@ -24,7 +24,6 @@ class GetProductsRequest extends FormRequest
         return [
             'search' => 'string|nullable',
             'published' => 'bool|nullable',
-            'sale' => 'bool|nullable'
         ];
     }
 }

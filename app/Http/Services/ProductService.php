@@ -27,10 +27,6 @@ class ProductService {
             $query->where('published', $filters['published']);
         }
 
-        if ($filters['sale'] ?? false) {
-            $query->where('sale', $filters['sale']);
-        }
-
         return $query->get();
     }
 
@@ -39,7 +35,6 @@ class ProductService {
      * @param  array{
      *     name: string
      *     description?: string|null
-     *     price: double
      * }  $params
      * @return \App\Models\Product
      */
@@ -47,7 +42,6 @@ class ProductService {
         $createdProduct = Product::create([
             'name' => $params['name'],
             'description' => $params['description'] ?? '',
-            'price' => $params['price']
         ]);
 
         return $createdProduct;

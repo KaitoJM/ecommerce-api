@@ -13,10 +13,7 @@ class Product extends Model
         'name',
         'summary',
         'description',
-        'price',
         'published',
-        'sale',
-        'sale_price',
     ];
 
     public function categories()
@@ -26,5 +23,10 @@ class Product extends Model
 
     public function images() {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function attributes()
+    {
+        return $this->belongsToMany(Category::class, 'product_attributes');
     }
 }
