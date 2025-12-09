@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\ProductSpecificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -39,3 +40,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::apiResource('/attributes', AttributeController::class)->middleware('auth:sanctum');
 Route::apiResource('/product-attributes', ProductAttributeController::class)->middleware('auth:sanctum');
+Route::apiResource('/product-specifications', ProductSpecificationController::class)->middleware('auth:sanctum');
