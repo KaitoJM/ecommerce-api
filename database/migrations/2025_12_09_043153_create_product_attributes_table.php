@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_attributes', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('attribute_id')->constrained()->cascadeOnDelete();
+            $table->string('value');
+            $table->string('color_value')->nullable(); // if attribute selection type is color.
+            $table->softDeletes();
+            $table->timestamps();
 
             // Prevent duplicate entries
             $table->unique(['product_id', 'attribute_id']);

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->string('attribute');
+            $table->enum('selection_type', ['radio', 'dropdown', 'color'])->default('dropdown');
             $table->softDeletes();
             $table->timestamps();
         });

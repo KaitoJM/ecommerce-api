@@ -27,6 +27,6 @@ class Product extends Model
 
     public function attributes()
     {
-        return $this->belongsToMany(Category::class, 'product_attributes');
+        return $this->belongsToMany(Attribute::class, 'product_attributes');
     }
 }
