@@ -127,3 +127,43 @@ describe('Delete Product Image', function() {
         ]);
     });
 });
+
+describe('Set Product Image Cover', function() {
+    it('updates the cover image of the product and set the rest of product image to non cover', function() {
+        $product = Product::factory()->create();
+        $user = User::factory()->create();
+
+        $oldCoverImage = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => true]);
+        $nonCoverImage1 = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => false]);
+        $nonCoverImage2 = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => false]);
+        $nonCoverImage3 = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => false]);
+        $newCoverImage = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => false]);
+
+        $response = actingAs($user)->patchJson('/api/product-images-cover', [
+            'id' => $newCoverImage->id,
+            'product_id' => $product->id
+        ]);
+
+        $response->assertStatus(200);
+        assertDatabaseHas('product_images', ['id' => $oldCoverImage->id, 'product_id' => $product->id, 'cover' => false]);
+        assertDatabaseHas('product_images', ['id' => $nonCoverImage1->id, 'product_id' => $product->id, 'cover' => false]);
+        assertDatabaseHas('product_images', ['id' => $nonCoverImage2->id, 'product_id' => $product->id, 'cover' => false]);
+        assertDatabaseHas('product_images', ['id' => $nonCoverImage3->id, 'product_id' => $product->id, 'cover' => false]);
+        assertDatabaseHas('product_images', ['id' => $newCoverImage->id, 'product_id' => $product->id, 'cover' => true]);
+    });
+
+    it ('returns a 404 error if the product image is not found', function() {
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+        
+        $response = actingAs($user)->patchJson('/api/product-images-cover', [
+            'id' => '999999999',
+            'product_id' => $product->id
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJsonFragment([
+            'error' => 'Image not found',
+        ]);
+    });
+});

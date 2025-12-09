@@ -75,15 +75,15 @@ class ProductImageService {
      * @return \App\Models\ProductImage
      */ 
     public function setCoverImage(int $id, int $product_id) {
+        $image = $this->getImageById($id);
+        
         // set all image of the product cover to false
         ProductImage::where('product_id', $product_id)
-            ->update([
-                'cover'=>false
-            ]);
+        ->update([
+            'cover'=>false
+        ]);
         
         // set the selected image cover to true
-        $image = $this->getImageById($id);
-
         $image->update(['cover' => true]);
 
         return $image;

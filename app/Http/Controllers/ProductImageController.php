@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\productImage\CreateProductImageRequest;
 use App\Http\Requests\productImage\GetProductImageRequest;
+use App\Http\Requests\productImage\UpdateProductImageCoverRequest;
 use App\Http\Resources\ProductImageResource;
 use App\Http\Services\ProductImageService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -70,5 +71,16 @@ class ProductImageController extends Controller
         }
 
         return response()->json(null, 204);
+    }
+
+
+    public function updateCoverImage(UpdateProductImageCoverRequest $request) {
+        try {
+            $this->imageService->setCoverImage($request->id, $request->product_id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Image not found'], 404);
+        }
+
+        return response()->json(null, 200);
     }
 }
