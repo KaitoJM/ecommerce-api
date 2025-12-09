@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use Illuminate\Support\Facades\Route;
@@ -37,3 +38,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/product-images-cover', [ProductImageController::class, 'updateCoverImage']);
 });
 Route::apiResource('/attributes', AttributeController::class)->middleware('auth:sanctum');
+Route::apiResource('/product-attributes', ProductAttributeController::class)->middleware('auth:sanctum');

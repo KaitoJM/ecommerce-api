@@ -19,9 +19,6 @@ return new class extends Migration
             $table->string('color_value')->nullable(); // if attribute selection type is color.
             $table->softDeletes();
             $table->timestamps();
-
-            // Prevent duplicate entries
-            $table->unique(['product_id', 'attribute_id']);
         });
     }
 
