@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Attribute;
 use App\Models\Product;
+use App\Models\ProductAttribute;
 use App\Models\ProductSpecification;
 use App\Models\User;
 
@@ -68,13 +70,24 @@ describe('Create Product Specification', function() {
         $response->assertStatus(401);
     });
 
-    it('createa a product specification data with valid inputs', function() {
+    it('creates a product specification data with valid inputs', function() {
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
+        $attr1 = Attribute::factory()->create();
+        $attr2 = Attribute::factory()->create();
+
+        $prodAttr1 = ProductAttribute::factory()->create(
+            ['product_id' => $product->id, 'attribute_id' => $attr1->id]
+        );
+
+        $prodAttr2 = ProductAttribute::factory()->create(
+            ['product_id' => $product->id, 'attribute_id' => $attr2->id]
+        );
+
         $response = actingAs($user)->postJson('/api/product-specifications', [
             'product_id' => $product->id,
-            'combination' => '1,2,3',
+            'combination' => implode(',', [$prodAttr1->id, $prodAttr2->id]),
             'price' => 1000,
             'stock' => 10,
             'default' => true
@@ -83,10 +96,40 @@ describe('Create Product Specification', function() {
         $response->assertStatus(201);
         $response->assertJsonFragment([
             'product_id' => $product->id,
-            'combination' => '1,2,3',
+            'combination' => implode(',', [$prodAttr1->id, $prodAttr2->id]),
             'price' => 1000,
             'stock' => 10,
             'default' => true
+        ]);
+    });
+
+    it('returns error 422 if some ids in combination does not belong to product ID reference', function() {
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+        $product2 = Product::factory()->create();
+
+        $attr1 = Attribute::factory()->create();
+        $attr2 = Attribute::factory()->create();
+
+        $prodAttr1 = ProductAttribute::factory()->create(
+            ['product_id' => $product->id, 'attribute_id' => $attr1->id]
+        );
+
+        $prodAttr3 = ProductAttribute::factory()->create(
+            ['product_id' => $product2->id, 'attribute_id' => $attr2->id]
+        );
+
+        $response = actingAs($user)->postJson('/api/product-specifications', [
+            'product_id' => $product->id,
+            'combination' => implode(',', [$prodAttr1->id, $prodAttr3->id]),
+            'price' => 1000,
+            'stock' => 10,
+            'default' => true
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'combination' => ['Invalid attribute IDs in combination: ' . implode(',', [$prodAttr3->id])],
         ]);
     });
 
@@ -154,6 +197,18 @@ describe('Update Product Specification', function() {
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
+        $attr1 = Attribute::factory()->create();
+        $attr2 = Attribute::factory()->create();
+
+        $prodAttr1 = ProductAttribute::factory()->create(
+            ['product_id' => $product->id, 'attribute_id' => $attr1->id]
+        );
+
+        $prodAttr2 = ProductAttribute::factory()->create(
+            ['product_id' => $product->id, 'attribute_id' => $attr2->id]
+        );
+
+
         $specification = ProductSpecification::create([
             'product_id' => $product->id,
             'combination' => '1,2,3',
@@ -163,6 +218,8 @@ describe('Update Product Specification', function() {
         ]);
 
         $response = actingAs($user)->patchJson('/api/product-specifications/' . $specification->id, [
+            'product_id' => $product->id,
+            'combination' => implode(',', [$prodAttr1->id, $prodAttr2->id]),
             'price' => 2000,
             'stock' => 8,
             'default' => false
@@ -171,17 +228,68 @@ describe('Update Product Specification', function() {
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'product_id' => $product->id,
-            'combination' => '1,2,3',
+            'combination' => implode(',', [$prodAttr1->id, $prodAttr2->id]),
             'price' => 2000,
             'stock' => 8,
             'default' => false
         ]);
     });
 
-    it ('returns a 404 error if the product specification is not found', function() {
+    it('returns a 422 error if product id is missing', function() {
         $user = User::factory()->create();
         $response = actingAs($user)->putJson('/api/product-specifications/999999', [
             'combination' => '1,2,3',
+            'price' => 2000,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'product_id' => ['The product id field is required.'],
+        ]);
+    });
+
+    it('returns error 422 if some ids in combination does not belong to product ID reference', function() {
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+        $product2 = Product::factory()->create();
+
+        $attr1 = Attribute::factory()->create();
+        $attr2 = Attribute::factory()->create();
+
+        $prodAttr1 = ProductAttribute::factory()->create(
+            ['product_id' => $product->id, 'attribute_id' => $attr1->id]
+        );
+
+        $prodAttr3 = ProductAttribute::factory()->create(
+            ['product_id' => $product2->id, 'attribute_id' => $attr2->id]
+        );
+
+        $specification = ProductSpecification::create([
+            'product_id' => $product->id,
+            'combination' => '1,2,3',
+            'price' => 1000,
+            'stock' => 10,
+            'default' => true
+        ]);
+
+        $response = actingAs($user)->patchJson('/api/product-specifications/' . $specification->id, [
+            'product_id' => $product->id,
+            'combination' => implode(',', [$prodAttr1->id, $prodAttr3->id]),
+            'price' => 1000,
+            'stock' => 10,
+            'default' => true
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'combination' => ['Invalid attribute IDs in combination: ' . implode(',', [$prodAttr3->id])],
+        ]);
+    });
+
+    it ('returns a 404 error if the product specification is not found', function() {
+        $user = User::factory()->create();
+        $response = actingAs($user)->putJson('/api/product-specifications/999999', [
+            'product_id' => '1',
             'price' => 2000,
         ]);
 

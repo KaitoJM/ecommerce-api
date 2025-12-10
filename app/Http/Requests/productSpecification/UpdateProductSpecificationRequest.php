@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\productSpecification;
 
+use App\Rules\ValidCombination;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProductSpecificationRequest extends FormRequest
@@ -22,8 +23,12 @@ class UpdateProductSpecificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'nullable',
-            'combination' => 'nullable|string',
+            'product_id' => 'required',
+            'combination'  => [
+                'nullable',
+                'string',
+                new ValidCombination($this->product_id),
+            ],
             'price' => 'nullable',
             'stock' => 'numeric|nullable',
             'default' => 'boolean|nullable',

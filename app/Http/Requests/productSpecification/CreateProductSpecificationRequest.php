@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\productSpecification;
 
+use App\Rules\ValidCombination;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateProductSpecificationRequest extends FormRequest
@@ -23,7 +24,11 @@ class CreateProductSpecificationRequest extends FormRequest
     {
         return [
             'product_id' => 'required',
-            'combination' => 'required|string',
+            'combination'  => [
+                'required',
+                'string',
+                new ValidCombination($this->product_id),
+            ],
             'price' => 'required',
             'stock' => 'numeric',
             'default' => 'boolean|nullable',
