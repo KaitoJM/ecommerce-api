@@ -6,6 +6,7 @@ use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductAttribute;
+use App\Models\ProductImage;
 use App\Models\ProductSpecification;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,123 +19,317 @@ class CatalogSeeder extends Seeder
     public function run(): void
     {   
         // categories
-        [$laptop, $mobilePhones, $tablets] = $this->seedCategories();
+        [$laptop, $mobilePhones, $electronics, $audio, $computer] = $this->seedCategories();
 
         // attributes
         [$ram, $storage, $color] = $this->seedAttributes();
+
+        $products = [
+            [
+                'name' => 'Iphone 16 128GB',
+                'summary' => "The latest iPhone with advanced features.",
+                'image' => 'https://d1rlzxa98cyc61.cloudfront.net/catalog/product/cache/1801c418208f9607a371e61f8d9184d9/1/7/177270_2020.jpg',
+                'price' => 49990.00,
+                'published' => true,
+                'stock' => 50,
+                'categories' => [$mobilePhones->id, $electronics->id],
+                'attributes' => [
+                    [  
+                        'attribute_id' => $storage->id,
+                        'values' => ['128GB', '256GB']
+                    ],
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Ultramarine', 'Teal', 'Pink', 'White', 'Black']
+                    ]
+                ]
+            ],
+            [
+                'name' => 'MacBook Pro 14-inch 512GB SSD',
+                'summary' => "Powerful performance in a compact design.",
+                'image' => 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp14-spacegray-select-202110?wid=904&hei=840&fmt=jpeg&qlt=80&.v=1632799176000',
+                'price' => 99990.00,
+                'published' => true,
+                'stock' => 25,
+                'categories' => [$laptop->id, $electronics->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $ram->id,
+                        'values' => ['16GB Unified Memory', '24GB Unified Memory']
+                    ],
+                    [
+                        'attribute_id' => $storage->id,
+                        'values' => ['512GB SSD Storage', '1TB SSD Storage']
+                    ],
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Space Black', 'Silver']
+                    ] 
+                ]
+            ],
+            [
+                'name' => 'Samsung Galaxy S21',
+                'summary' => "High-end Android smartphone with great performance.",
+                'image' => 'https://d1rlzxa98cyc61.cloudfront.net/catalog/product/cache/1801c418208f9607a371e61f8d9184d9/1/7/174359_2020_5.jpg',
+                'price'=> 39990.00,
+                'published' => true,
+                'stock' => 40,
+                'categories' => [$mobilePhones->id, $electronics->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $storage->id,
+                        'values' => ['128GB', '256GB']
+                    ],
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Phantom Gray', 'Phantom White', 'Phantom Violet']
+                    ]
+                ]
+            ],
+            [
+                'name' => 'Sony WH-1000XM4',
+                'summary' => "Industry-leading noise canceling headphones.",
+                'image' => 'https://m.media-amazon.com/images/I/71o8Q5XJS5L._AC_SL1500_.jpg',
+                'price' => 19990.00,
+                'published' => true,
+                'stock' => 75,
+                'categories' => [$audio->id, $electronics->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Black', 'Silver']
+                    ]
+                ]
+            ],
+            [
+                'name' => 'Dell XPS 13',
+                'summary' => "Compact and powerful laptop for professionals.",
+                'image' => 'https://m.media-amazon.com/images/I/710EGJBdIML._AC_SL1500_.jpg',
+                'price' => 89990.00,
+                'published' => true,
+                'stock' => 30,
+                'categories' => [$laptop->id, $computer->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $ram->id,
+                        'values' => ['8GB', '16GB']
+                    ],
+                    [
+                        'attribute_id' => $storage->id,
+                        'values' => ['256GB SSD', '512GB SSD']
+                    ],
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Silver', 'White']
+                    ]
+                ]
+            ],
+            [
+                'name' => 'Apple AirPods Pro',
+                'summary' => "Wireless earbuds with active noise cancellation.",
+                'image' => 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MWP22?wid=2000&hei=2000&fmt=jpeg&qlt=80&.v=1591634795000',
+                'price' => 12990.00,
+                'published' => true,
+                'stock' => 100,
+                'categories' => [$audio->id, $electronics->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['White']
+                    ]
+                ]
+            ],
+            [
+                'name' => 'HP Spectre x360',
+                'summary' => "Versatile 2-in-1 laptop with sleek design.",
+                'image' => 'https://www.hp.com/content/dam/sites/worldwide/personal-computers/consumer/laptops-and-2-n-1s/spectre/version-2023/HP%20Spectre%20x360%2014__Mobile@2x.png',
+                'price' => 109990.00,
+                'published' => true,
+                'stock' => 20,
+                'categories' => [$laptop->id, $computer->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $ram->id,
+                        'values' => ['16GB', '32GB']
+                    ],
+                    [
+                        'attribute_id' => $storage->id,
+                        'values' => ['512GB SSD', '1TB SSD']
+                    ],
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Nightfall Black', 'Poseidon Blue']
+                    ]
+                ]
+            ],
+            [
+                'name' => 'Google Pixel 6',
+                'summary' => "Google's flagship smartphone with excellent camera.",
+                'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBLJwRZpjEu6iae1VsI82j_UM7UMAV36hZ6w&s',
+                'price' => 34990.00,
+                'published' => true,
+                'stock' => 60,
+                'categories' => [$mobilePhones->id, $electronics->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $storage->id,
+                        'values' => ['128GB', '256GB']
+                    ],
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Stormy Black', 'Kinda Coral', 'Sorta Seafoam']
+                    ]
+                ]
+            ],
+            [
+                'name' => 'Bose QuietComfort 35 II',
+                'summary' => "Comfortable headphones with world-class noise cancellation.",
+                'image' => 'https://assets.bose.com/content/dam/Bose_DAM/Web/consumer_electronics/global/products/headphones/qc35_ii/product_silo_images/qc35_ii_black_EC_hero.psd/_jcr_content/renditions/cq5dam.web.320.320.png',
+                'price' => 17990.00,
+                'published' => true,
+                'stock' => 80,
+                'categories' => [$audio->id, $electronics->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Black', 'Silver']
+                    ]
+                ]
+            ],
+            [
+                'name' => 'Lenovo ThinkPad X1 Carbon',
+                'summary' => "Durable and lightweight laptop for business users.",
+                'image' => 'https://p3-ofp.static.pub//fes/cms/2024/07/05/05dhzg0lrtq4i0d3wxqyjjakwmbmzr331426.png',
+                'price' => 119990.00,
+                'published' => true,
+                'stock' => 15,
+                'categories' => [$laptop->id, $computer->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $ram->id,
+                        'values' => ['16GB', '32GB']
+                    ],
+                    [
+                        'attribute_id' => $storage->id,
+                        'values' => ['512GB SSD', '1TB SSD']
+                    ],
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Black']
+                    ]
+                ]
+            ],
+            [
+                'name' => 'JBL Charge 4',
+                'summary' => "Portable Bluetooth speaker with powerful sound.",
+                'image' => 'https://www.jbl.com.ph/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw8d795c7a/JBL_Charge4_Front_Midnight_Black_1605x1605px.png',
+                'price' => 8990.00,
+                'published' => true,
+                'stock' => 120,
+                'categories' => [$audio->id, $electronics->id],
+                'attributes' => [
+                    [
+                        'attribute_id' => $color->id,
+                        'values' => ['Black', 'Blue', 'Red']
+                    ]
+                ]
+            ]
+        ];
         
         // products
-        [$iphone, $macbook] = $this->seedProducts();
+        $this->seedProducts($products);
 
-        // prroduct categories
-        $iphone->categories()->sync([$mobilePhones->id]);
-        $macbook->categories()->sync([$laptop->id]);
 
-        // prroduct attributes
-        $pams1 = $this->seedProductAttributes($iphone->id, $storage->id, '128GB');
-        $pams2 = $this->seedProductAttributes($iphone->id, $storage->id, '256GB');
-        $pamc1 = $this->seedProductAttributes($iphone->id, $color->id, 'Ultramarine', '#0437F2');
-        $pamc2 = $this->seedProductAttributes($iphone->id, $color->id, 'Teal', '#008080');
-        $pamc3 = $this->seedProductAttributes($iphone->id, $color->id, 'Pink', '#FFC0CB');
-        $pamc4 = $this->seedProductAttributes($iphone->id, $color->id, 'White', '#FFFFFF');
-        $pamc5 = $this->seedProductAttributes($iphone->id, $color->id, 'Black', '#000000');
-        $palr1 = $this->seedProductAttributes($macbook->id, $ram->id, '16GB Unified Memory');
-        $palr2 = $this->seedProductAttributes($macbook->id, $ram->id, '24GB Unified Memory');
-        $pals1 = $this->seedProductAttributes($macbook->id, $storage->id, '512GB SSD Storage');
-        $pals2 = $this->seedProductAttributes($macbook->id, $storage->id, '1TB SSD Storage');
-        $palc1 = $this->seedProductAttributes($macbook->id, $color->id, 'Space Black', '#121212');
-        $palc2 = $this->seedProductAttributes($macbook->id, $color->id, 'Silver', '#C0C0C0');
-
-        $iphoneCombinations = [
-            [
-                'price' => 49990.00,
-                'product_id' => $iphone->id,
-                'combinations' => [
-                    [$pams1->id, $pamc1->id], //128GB Storage, Ultramarine
-                    [$pams1->id, $pamc2->id], //128GB Storage, Teal
-                    [$pams1->id, $pamc3->id], //128GB Storage, Pink
-                    [$pams1->id, $pamc4->id], //128GB Storage, White
-                    [$pams1->id, $pamc5->id], //128GB Storage, Black
-                ],
-            ],
-            [
-                'price' => 57990.00,
-                'product_id' => $iphone->id,
-                'combinations' => [
-                    [$pams2->id, $pamc1->id], //256GB Storage, Ultramarine
-                    [$pams2->id, $pamc2->id], //256GB Storage, Teal
-                    [$pams2->id, $pamc3->id], //256GB Storage, Pink
-                    [$pams2->id, $pamc4->id], //256GB Storage, White
-                    [$pams2->id, $pamc5->id], //256GB Storage, Black
-                ],
-            ]
+        // $iphoneCombinations = [
+        //     [
+        //         'price' => 49990.00,
+        //         'product_id' => $iphone->id,
+        //         'combinations' => [
+        //             [$pams1->id, $pamc1->id], //128GB Storage, Ultramarine
+        //             [$pams1->id, $pamc2->id], //128GB Storage, Teal
+        //             [$pams1->id, $pamc3->id], //128GB Storage, Pink
+        //             [$pams1->id, $pamc4->id], //128GB Storage, White
+        //             [$pams1->id, $pamc5->id], //128GB Storage, Black
+        //         ],
+        //     ],
+        //     [
+        //         'price' => 57990.00,
+        //         'product_id' => $iphone->id,
+        //         'combinations' => [
+        //             [$pams2->id, $pamc1->id], //256GB Storage, Ultramarine
+        //             [$pams2->id, $pamc2->id], //256GB Storage, Teal
+        //             [$pams2->id, $pamc3->id], //256GB Storage, Pink
+        //             [$pams2->id, $pamc4->id], //256GB Storage, White
+        //             [$pams2->id, $pamc5->id], //256GB Storage, Black
+        //         ],
+        //     ]
             
-        ];
+        // ];
 
-        $macbookCombinations = [
-            [
-                'price' => 99990.00,
-                'product_id' => $macbook->id,
-                'combinations' => [
-                    [$palr1->id, $pals1->id, $palc1->id], //16GB Unified Memory, 512GB SSD Storage, Space Black
-                    [$palr1->id, $pals1->id, $palc2->id], //16GB Unified Memory, 512GB SSD Storage, Silver
-                ],
-            ],
-            [
-                'price' => 112990.00,
-                'product_id' => $macbook->id,
-                'combinations' => [
-                    [$palr1->id, $pals2->id, $palc1->id], //16GB Unified Memory, 1TB SSD Storage, Space Black
-                    [$palr1->id, $pals2->id, $palc2->id], //16GB Unified Memory, 1TB SSD Storage, Silver
-                ],
-            ],
-            // This combination do not exist
-            // [
-            //     'price' => 112990.00,
-            //      'product_id' => $macbook->id,
-            //     'combinations' => [
-            //         [$palr2->id, $pals1->id, $palc1->id], //24GB Unified Memory, 512GB SSD Storage, Space Black
-            //         [$palr2->id, $pals1->id, $palc2->id], //24GB Unified Memory, 512GB SSD Storage, Silver
-            //     ],
-            // ],
-            [
-                'price' => 125990.00,
-                'product_id' => $macbook->id,
-                'combinations' => [
-                    [$palr2->id, $pals2->id, $palc1->id], //24GB Unified Memory, 1TB SSD Storage, Space Black
-                    [$palr2->id, $pals2->id, $palc2->id], //24GB Unified Memory, 1TB SSD Storage, Silver
-                ],
-            ],
-        ];
+        // $macbookCombinations = [
+        //     [
+        //         'price' => 99990.00,
+        //         'product_id' => $macbook->id,
+        //         'combinations' => [
+        //             [$palr1->id, $pals1->id, $palc1->id], //16GB Unified Memory, 512GB SSD Storage, Space Black
+        //             [$palr1->id, $pals1->id, $palc2->id], //16GB Unified Memory, 512GB SSD Storage, Silver
+        //         ],
+        //     ],
+        //     [
+        //         'price' => 112990.00,
+        //         'product_id' => $macbook->id,
+        //         'combinations' => [
+        //             [$palr1->id, $pals2->id, $palc1->id], //16GB Unified Memory, 1TB SSD Storage, Space Black
+        //             [$palr1->id, $pals2->id, $palc2->id], //16GB Unified Memory, 1TB SSD Storage, Silver
+        //         ],
+        //     ],
+        //     // This combination do not exist
+        //     // [
+        //     //     'price' => 112990.00,
+        //     //      'product_id' => $macbook->id,
+        //     //     'combinations' => [
+        //     //         [$palr2->id, $pals1->id, $palc1->id], //24GB Unified Memory, 512GB SSD Storage, Space Black
+        //     //         [$palr2->id, $pals1->id, $palc2->id], //24GB Unified Memory, 512GB SSD Storage, Silver
+        //     //     ],
+        //     // ],
+        //     [
+        //         'price' => 125990.00,
+        //         'product_id' => $macbook->id,
+        //         'combinations' => [
+        //             [$palr2->id, $pals2->id, $palc1->id], //24GB Unified Memory, 1TB SSD Storage, Space Black
+        //             [$palr2->id, $pals2->id, $palc2->id], //24GB Unified Memory, 1TB SSD Storage, Silver
+        //         ],
+        //     ],
+        // ];
 
         // seed product specification
-        foreach ($iphoneCombinations as $mk => $mv) {
-            $price = $mv['price'];
-            $product_id = $mv['product_id'];
+        // foreach ($iphoneCombinations as $mk => $mv) {
+        //     $price = $mv['price'];
+        //     $product_id = $mv['product_id'];
 
-            foreach ($mv['combinations'] as $mck => $mcv) {
-                $default = false;
-                if ($mk == 0 && $mck == 0) {
-                    $default = true;
-                }
+        //     foreach ($mv['combinations'] as $mck => $mcv) {
+        //         $default = false;
+        //         if ($mk == 0 && $mck == 0) {
+        //             $default = true;
+        //         }
 
-                $this->seedProductSpecification($product_id, implode(',', $mcv), $price, 100, $default);
-            }
-        }
+        //         $this->seedProductSpecification($product_id, implode(',', $mcv), $price, 100, $default);
+        //     }
+        // }
 
-        foreach ($macbookCombinations as $lk => $lv) {
-            $price = $lv['price'];
-            $product_id = $lv['product_id'];
+        // foreach ($macbookCombinations as $lk => $lv) {
+        //     $price = $lv['price'];
+        //     $product_id = $lv['product_id'];
 
-            foreach ($lv['combinations'] as $lck => $lcv) {
+        //     foreach ($lv['combinations'] as $lck => $lcv) {
 
-                $default = false;
-                if ($lk == 0 && $lck == 0) {
-                    $default = true;
-                }
-                $this->seedProductSpecification($product_id, implode(',', $lcv), $price, 100, $default);
-            }
-        }
+        //         $default = false;
+        //         if ($lk == 0 && $lck == 0) {
+        //             $default = true;
+        //         }
+        //         $this->seedProductSpecification($product_id, implode(',', $lcv), $price, 100, $default);
+        //     }
+        // }
 
     }
 
@@ -147,11 +342,19 @@ class CatalogSeeder extends Seeder
             'name' => 'Mobile Phones',
         ]);
 
-        $tablets = Category::create([
-            'name' => 'Tablets',
+        $electronics = Category::create([
+            'name' => 'Electronics',
         ]);
 
-        return [$laptop, $mobilePhones, $tablets];
+        $audio = Category::create([
+            'name' => 'Audio',
+        ]);
+
+        $computer = Category::create([
+            'name' => 'Computers',
+        ]);
+
+        return [$laptop, $mobilePhones, $electronics, $audio, $computer];
     }
 
     private function seedAttributes() {
@@ -170,18 +373,64 @@ class CatalogSeeder extends Seeder
         return [$ram, $storage, $color];
     }
 
-    private function seedProducts() {
-        $iphone = Product::factory()->create([
-            'name' => 'Iphone 16 128GB',
-            'published' => true
-        ]);
+    private function seedProducts($products) {
+        foreach ($products as $productData) {
+            $product = Product::factory()->create([
+                'name' => $productData['name'],
+                'summary' => $productData['summary'],
+                'published' => $productData['published'],
+            ]);
 
-        $macbook = Product::factory()->create([
-            'name' => 'MacBook Pro 14-inch 512GB SSD',
-            'published' => true
-        ]);
+            // Seed product image
+            if (isset($productData['image'])) {
+                $this->seedProductImages($product->id, $productData['image']);
+            }
 
-        return [$iphone, $macbook];
+            // Attach categories
+            if (isset($productData['categories'])) {
+                $product->categories()->sync($productData['categories']);
+            }
+
+            // Attach attributes
+            if (isset($productData['attributes'])) {
+                foreach ($productData['attributes'] as $attr) {
+                    $attribute_id = $attr['attribute_id'];
+                    foreach ($attr['values'] as $value) {
+                        $this->seedProductAttributes($product->id, $attribute_id, $value);
+                    }
+                }
+            }
+
+            $possibleCombinations = [[]];
+            foreach ($productData['attributes'] as $attr) {
+                $attribute_id = $attr['attribute_id'];
+                $newCombinations = [];
+                foreach ($attr['values'] as $value) {
+                    foreach ($possibleCombinations as $combination) {
+                        $newCombinations[] = array_merge($combination, [$attribute_id => $value]);
+                    }
+                }
+                $possibleCombinations = $newCombinations;
+            }
+
+            // Seed product specifications
+            foreach ($possibleCombinations as $index => $combination) {
+                $combinationString = [];
+                foreach ($combination as $attr_id => $value) {
+                    $combinationString[] = "{$attr_id}:{$value}";   
+                }
+                $isDefault = ($index === 0);
+                $this->seedProductSpecification($product->id, implode(',', $combinationString), $productData['price'], $productData['stock'], $isDefault);
+            }
+        }
+    }
+
+    private function seedProductImages($product_id, $imageUrl) {
+        ProductImage::create([
+            'product_id' => $product_id,
+            'source' => $imageUrl,
+            'cover' => true,
+        ]);
     }
 
     private function seedProductAttributes($product_id, $attribute_id, $value, $colorValue = null) {
