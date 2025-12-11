@@ -18,6 +18,7 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->sentence(5),
+            'summary' => fake()->sentence(6),
             'description' => fake()->sentence(8),
         ];
     }

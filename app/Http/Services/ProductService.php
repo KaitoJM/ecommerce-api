@@ -16,6 +16,10 @@ class ProductService {
     public function getProducts(?string $search = null, $filters = null) {
         $query = Product::with(['categories', 'images']);
 
+        $query->with('specifications', function ($q) {
+            $q->where('default', true);
+        });
+
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")

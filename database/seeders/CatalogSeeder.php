@@ -113,7 +113,12 @@ class CatalogSeeder extends Seeder
             $product_id = $mv['product_id'];
 
             foreach ($mv['combinations'] as $mck => $mcv) {
-                $this->seedProductSpecification($product_id, implode(',', $mcv), $price, 100);
+                $default = false;
+                if ($mk == 0 && $mck == 0) {
+                    $default = true;
+                }
+
+                $this->seedProductSpecification($product_id, implode(',', $mcv), $price, 100, $default);
             }
         }
 
@@ -122,7 +127,12 @@ class CatalogSeeder extends Seeder
             $product_id = $lv['product_id'];
 
             foreach ($lv['combinations'] as $lck => $lcv) {
-                $this->seedProductSpecification($product_id, implode(',', $lcv), $price, 100);
+
+                $default = false;
+                if ($lk == 0 && $lck == 0) {
+                    $default = true;
+                }
+                $this->seedProductSpecification($product_id, implode(',', $lcv), $price, 100, $default);
             }
         }
 
@@ -161,12 +171,12 @@ class CatalogSeeder extends Seeder
     }
 
     private function seedProducts() {
-        $iphone = Product::create([
+        $iphone = Product::factory()->create([
             'name' => 'Iphone 16 128GB',
             'published' => true
         ]);
 
-        $macbook = Product::create([
+        $macbook = Product::factory()->create([
             'name' => 'MacBook Pro 14-inch 512GB SSD',
             'published' => true
         ]);
@@ -185,12 +195,13 @@ class CatalogSeeder extends Seeder
         return $productAttribute;
     }
 
-    private function seedProductSpecification($product_id, $combination, $price, $stock) {
+    private function seedProductSpecification($product_id, $combination, $price, $stock, $default = false) {
         ProductSpecification::create([
             'product_id' => $product_id,
             'combination' => $combination,
             'price' => $price,
-            'stock' => $stock
+            'stock' => $stock,
+            'default' => $default,
         ]);
     }
 }

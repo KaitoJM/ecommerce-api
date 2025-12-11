@@ -18,9 +18,11 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'summary' => $this->summary,
             'description' => $this->description,
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
-            'publish' => $this->publish,
+            'specification' => $this->whenLoaded('specifications')[0] ?? null,
+            'published' => $this->published,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
