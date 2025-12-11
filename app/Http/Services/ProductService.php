@@ -13,7 +13,7 @@ class ProductService {
      * @param array|null $filters Optional filters to apply to the query
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product>
      */
-    public function getProducts(?string $search = null, $filters = null) {
+    public function getProducts(?string $search = null, $filters = null, $pagination = null) {
         $query = Product::with(['categories', 'images']);
 
         $query->with('specifications', function ($q) {
@@ -31,7 +31,7 @@ class ProductService {
             $query->where('published', $filters['published']);
         }
 
-        return $query->get();
+        return $query->paginate($pagination['per_page'] ?? 10);
     }
 
     /**

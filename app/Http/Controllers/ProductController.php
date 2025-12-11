@@ -25,7 +25,9 @@ class ProductController extends Controller
     public function index(GetProductsRequest $request)
     {
         $filters = $request->only(['published']);
-        $products = $this->productService->getProducts($request->query('search'), $filters);
+        $pagination = $request->only(['page', 'per_page']);
+
+        $products = $this->productService->getProducts($request->query('search'), $filters, $pagination);
 
         return ProductResource::collection($products);
     }
