@@ -23,6 +23,8 @@ class GetCategoryRequest extends FormRequest
     {
         return [
             'search' => 'string|nullable',
+            'page' => 'integer|nullable',
+            'per_page' => 'integer|nullable',
         ];
     }
 }
