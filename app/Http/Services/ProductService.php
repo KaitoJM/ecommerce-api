@@ -58,7 +58,10 @@ class ProductService {
      * @return \App\Models\Product
      */
     public function getProductById(int $id) {
-        return Product::with(['categories', 'images'])->findOrFail($id);
+        return Product::with(['categories', 'images'])
+        ->with('specifications', function ($q) {
+            $q->where('default', true);
+        })->findOrFail($id);
     }
     
     /**
