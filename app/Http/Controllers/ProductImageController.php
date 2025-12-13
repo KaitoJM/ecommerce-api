@@ -74,9 +74,9 @@ class ProductImageController extends Controller
     }
 
 
-    public function updateCoverImage(UpdateProductImageCoverRequest $request) {
+    public function updateCoverImage(string $id) {
         try {
-            $this->imageService->setCoverImage($request->id, $request->product_id);
+            $this->imageService->setCoverImage($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Image not found'], 404);
         }

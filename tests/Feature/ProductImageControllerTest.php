@@ -139,10 +139,7 @@ describe('Set Product Image Cover', function() {
         $nonCoverImage3 = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => false]);
         $newCoverImage = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => false]);
 
-        $response = actingAs($user)->patchJson('/api/product-images-cover', [
-            'id' => $newCoverImage->id,
-            'product_id' => $product->id
-        ]);
+        $response = actingAs($user)->patchJson('/api/product-images-cover/' . $newCoverImage->id);
 
         $response->assertStatus(200);
         assertDatabaseHas('product_images', ['id' => $oldCoverImage->id, 'product_id' => $product->id, 'cover' => false]);
@@ -156,10 +153,7 @@ describe('Set Product Image Cover', function() {
         $user = User::factory()->create();
         $product = Product::factory()->create();
         
-        $response = actingAs($user)->patchJson('/api/product-images-cover', [
-            'id' => '999999999',
-            'product_id' => $product->id
-        ]);
+        $response = actingAs($user)->patchJson('/api/product-images-cover/9999');
 
         $response->assertStatus(404);
         $response->assertJsonFragment([

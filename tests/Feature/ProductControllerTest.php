@@ -162,18 +162,18 @@ describe('Update Product', function() {
         $user = User::factory()->create();
         $product = Product::create([
             'name' => 'Test Product',
-            'description' => 'Test Description',
+            'summary' => 'Test Description',
         ]);
 
         $response = actingAs($user)->putJson('/api/products/' . $product->id, [
             'name' => 'Updated Product',
-            'description' => 'Updated Description',
+            'summary' => 'Updated Description',
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'name' => 'Updated Product',
-            'description' => 'Updated Description',
+            'summary' => 'Updated Description',
         ]);
     });
 
@@ -184,7 +184,7 @@ describe('Update Product', function() {
 
         $product = Product::create([
             'name' => 'Test Product',
-            'description' => 'Test Description',
+            'summary' => 'Test Description',
         ]);
 
         $product->categories()->attach([1,2]);
@@ -193,7 +193,7 @@ describe('Update Product', function() {
 
         $response = actingAs($user)->putJson('/api/products/' . $product->id, [
             'name' => 'Updated Product',
-            'description' => 'Updated Description',
+            'summary' => 'Updated Description',
             'categories' => [1,3]
         ]);
 
@@ -211,7 +211,7 @@ describe('Update Product', function() {
         $user = User::factory()->create();
         $response = actingAs($user)->putJson('/api/products/999999', [
             'name' => 'Updated Product',
-            'description' => 'Updated Description',
+            'summary' => 'Updated Description',
         ]);
 
         $response->assertStatus(404);

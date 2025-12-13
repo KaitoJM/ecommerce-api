@@ -95,12 +95,12 @@ class ProductController extends Controller
 
             // update default specification
             $defaultSpecification = $this->productSpecificationService->getProductDefaultSpecification($id);
-            if ($defaultSpecification) {
+            if ($defaultSpecification && ($request->has('price') || $request->has('stock'))) {
                 $this->productSpecificationService->updateProductSpecification(
                     $defaultSpecification->id,
                     [
-                        'price' => $request->price,
-                        'stock' => $request->stock,
+                        'price' => $request->price ?? 0,
+                        'stock' => $request->stock ?? 0,
                     ]
                 );
             }

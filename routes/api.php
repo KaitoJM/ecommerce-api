@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/product-images', [ProductImageController::class, 'store']);
     Route::delete('/product-images/{id}', [ProductImageController::class, 'destroy']);
-    Route::patch('/product-images-cover', [ProductImageController::class, 'updateCoverImage']);
+    Route::patch('/product-images-cover/{id}', [ProductImageController::class, 'updateCoverImage']);
 });
 Route::apiResource('/attributes', AttributeController::class)->middleware('auth:sanctum');
 Route::apiResource('/product-attributes', ProductAttributeController::class)->middleware('auth:sanctum');
