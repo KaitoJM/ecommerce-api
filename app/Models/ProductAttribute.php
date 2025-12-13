@@ -15,4 +15,9 @@ class ProductAttribute extends Model
         'value',
         'color_value'
     ];
+
+    public function attribute()
+    {
+        return $this->belongsTo(Attribute::class);
+    }
 }

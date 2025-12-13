@@ -12,7 +12,7 @@ class ProductAttributeService {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProductAttribute>
      */
     public function getProductAttributes($product_id = null) {
-        $query = ProductAttribute::query();
+        $query = ProductAttribute::query()->with('attribute');
 
         if ($product_id) {
             $query->where('product_id', $product_id);

@@ -17,6 +17,7 @@ class ProductAttributeResource extends JsonResource
         return [
             'product_id' => $this->product_id,
             'attribute_id' => $this->attribute_id,
+            'attribute' => $this->whenLoaded('attribute'),
             'value' => $this->value,
             'color_value' => $this->color_value,
             'created_at' => $this->created_at,
