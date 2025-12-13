@@ -86,13 +86,13 @@ describe('Create Product', function() {
         $user = User::factory()->create();
         $response = actingAs($user)->postJson('/api/products', [
             'name' => 'Test Product',
-            'description' => 'Test Description',
+            'summary' => 'Test Description',
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonFragment([
             'name' => 'Test Product',
-            'description' => 'Test Description',
+            'summary' => 'Test Description',
         ]);
     });
 
@@ -105,7 +105,7 @@ describe('Create Product', function() {
 
         $response = actingAs($user)->postJson('/api/products', [
             'name' => 'Test Product',
-            'description' => 'Test Description',
+            'summary' => 'Test Description',
             'categories' => [1,2,3]
         ]);
 

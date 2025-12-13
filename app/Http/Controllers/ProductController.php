@@ -96,7 +96,7 @@ class ProductController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
 
-        return response()->json($product);
+        return response()->json(['data' => $product]);
     }
 
     /**
