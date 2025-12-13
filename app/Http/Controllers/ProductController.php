@@ -7,16 +7,20 @@ use App\Http\Requests\product\GetProductsRequest;
 use App\Http\Requests\product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Services\ProductService;
+use App\Http\Services\ProductSpecificationService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     protected ProductService $productService;
+    protected ProductSpecificationService $productSpecificationService;
 
-    public function __construct(ProductService $productService)
+    public function __construct(ProductService $productService, 
+    ProductSpecificationService $productSpecificationService)
     {
         $this->productService = $productService;
+        $this->productSpecificationService = $productSpecificationService;
     }
 
     /**
@@ -38,7 +42,16 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-        $product = $this->productService->createProduct($request->only(['name', 'description', 'price']));
+        $product = $this->productService->createProduct($request->only(['name', 'summary']));
+
+        // attach default specification.
+        $this->productSpecificationService->createProductSpecification(
+            $product->id, 
+            '', 
+            $request->price ?? 0, 
+            $request->stock ?? 0, 
+            true
+        );
 
         // attach categories when provided
         $categories = $request->input('categories', []);

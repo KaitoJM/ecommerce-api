@@ -45,7 +45,7 @@ class ProductService {
     public function createProduct($params) {
         $createdProduct = Product::create([
             'name' => $params['name'],
-            'description' => $params['description'] ?? '',
+            'summary' => $params['summary'] ?? '',
         ]);
 
         return $createdProduct;
