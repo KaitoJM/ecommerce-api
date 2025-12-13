@@ -18,7 +18,7 @@ class AttributeService {
             $query->where('attribute', 'like', "%{$search}%");
         }
 
-        return $query->get();
+        return $query->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
