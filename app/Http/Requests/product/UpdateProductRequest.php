@@ -23,8 +23,8 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|max:255',
-            'summary' => 'sometimes|string|max:255',
-            'description' => 'sometimes|string',
+            'summary' => 'sometimes',
+            'description' => 'sometimes',
             'published' => 'sometimes|boolean',
             'categories' => 'sometimes|array',
             'categories.*' => 'sometimes|integer|exists:categories,id',

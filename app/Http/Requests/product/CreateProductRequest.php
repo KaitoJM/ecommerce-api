@@ -23,8 +23,8 @@ class CreateProductRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'summary' => 'string',
-            'description' => 'string',
+            'summary' => 'nullable',
+            'description' => 'nullable',
             'categories' => 'array',
             'categories.*' => 'integer|exists:categories,id',
         ];
