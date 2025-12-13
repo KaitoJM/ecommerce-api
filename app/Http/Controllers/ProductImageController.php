@@ -9,6 +9,7 @@ use App\Http\Resources\ProductImageResource;
 use App\Http\Services\ProductImageService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductImageController extends Controller
 {
@@ -65,7 +66,22 @@ class ProductImageController extends Controller
     public function destroy(string $id)
     {
         try {
+            $image = $this->imageService->getImageById($id);
+            $imageSource = $image->source;
+
             $this->imageService->deleteImage($id);
+
+            // Remove base URL and /storage/
+            $path = str_replace(
+                url('/') . '/storage/',
+                '',
+                $imageSource
+            );
+
+            // Delete file from storage/app/public
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Image not found'], 404);
         }

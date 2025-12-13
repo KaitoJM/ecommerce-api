@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\getJson;
 
 describe('Get Product Images', function() {
@@ -106,15 +107,30 @@ describe('Delete Product Image', function() {
     it ('deletes a product image if user is authenticated', function() {
         $user = User::factory()->create();
         $product = Product::factory()->create();
+
+        // Fake stored image
+        $path = 'products/test-image.jpg';
+        Storage::disk('public')->put($path, 'fake-content');
+
         $image = ProductImage::create([
-            'source' => 'test-source',
+            'source' => $path,
             'product_id' => $product->id,
             'cover' => true,
         ]);
 
+        // Assert file exists
+        Storage::disk('public')->assertExists($path);
+
         $response = actingAs($user)->deleteJson('/api/product-images/' . $image->id);
 
         $response->assertStatus(204);
+        // Assert DB deletion
+        assertDatabaseMissing('product_images', [
+            'id' => $image->id,
+        ]);
+
+        // Assert file deletion
+        Storage::disk('public')->assertMissing($path);
     });
 
     it ('returns a 404 error if the product image is not found', function() {
