@@ -23,7 +23,6 @@ class ProductResource extends JsonResource
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'specification' => $this->whenLoaded('specifications')[0] ?? null,
             'thumbnail' => $this->images->first()?->source ?? null,
-            'images' => ProductImageResource::collection($this->whenLoaded('images')),
             'published' => $this->published,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
