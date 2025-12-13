@@ -14,7 +14,11 @@ class ProductService {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product>
      */
     public function getProducts(?string $search = null, $filters = null, $pagination = null) {
-        $query = Product::with(['categories', 'images']);
+        $query = Product::with(['categories']);
+
+        $query->with('images', function ($q) {
+            $q->where('cover', true);
+        });
 
         $query->with('specifications', function ($q) {
             $q->where('default', true);
