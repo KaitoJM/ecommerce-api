@@ -99,4 +99,17 @@ class ProductSpecificationService {
 
         return $productAttribute;
     }
+
+    public function getProductDefaultSpecification(int $product_id) {
+        $default = ProductSpecification::where('product_id', $product_id)
+            ->where('default', true)
+            ->first();
+
+        if (!$default) {
+            $default = $this->createProductSpecification($product_id, '', 0, 0, true);
+        }
+
+        return $default;
+
+    }
 }

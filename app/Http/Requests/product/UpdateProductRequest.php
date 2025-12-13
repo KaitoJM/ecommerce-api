@@ -28,6 +28,8 @@ class UpdateProductRequest extends FormRequest
             'published' => 'sometimes|boolean',
             'categories' => 'sometimes|array',
             'categories.*' => 'sometimes|integer|exists:categories,id',
+            'price' => 'sometimes|numeric',
+            'stock' => 'sometimes|numeric',
         ];
     }
 }

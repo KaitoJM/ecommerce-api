@@ -92,6 +92,19 @@ class ProductController extends Controller
             if (!empty($categories)) {
                 $this->productService->attachCategories($product, $categories);
             }
+
+            // update default specification
+            $defaultSpecification = $this->productSpecificationService->getProductDefaultSpecification($id);
+            if ($defaultSpecification) {
+                $this->productSpecificationService->updateProductSpecification(
+                    $defaultSpecification->id,
+                    [
+                        'price' => $request->price,
+                        'stock' => $request->stock,
+                    ]
+                );
+            }
+            
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product not found'], 404);
         }
