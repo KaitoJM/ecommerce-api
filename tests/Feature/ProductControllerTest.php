@@ -109,7 +109,7 @@ describe('Create Product', function() {
             'categories' => [1,2,3]
         ]);
 
-        $productId = $response->json('id');
+        $productId = $response->json('data.id');
 
         $response->assertStatus(201);
 

@@ -46,7 +46,7 @@ class ProductController extends Controller
             $this->productService->attachCategories($product, $categories);
         }
         
-        return response()->json($product)->setStatusCode(201);
+        return response()->json(['data' => $product])->setStatusCode(201);
     }
 
     /**
