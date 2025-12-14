@@ -42,7 +42,7 @@ class ProductAttributeController extends Controller
             $request->color_value ?? null
         );
 
-        return response()->json($productAttribute)->setStatusCode(201);
+        return response()->json(['data' => $productAttribute])->setStatusCode(201);
     }
 
     /**
