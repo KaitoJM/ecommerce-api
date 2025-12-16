@@ -47,7 +47,7 @@ describe('Get Product Images', function() {
 
 describe("Create Product Image", function() {
     it ("uploads product image if user is authenticated", function() {
-        Storage::fake('public');
+        Storage::fake('s3');
 
         $user = User::factory()->create();
         $product = Product::factory()->create();
@@ -63,7 +63,7 @@ describe("Create Product Image", function() {
 
         $response->assertStatus(201);
 
-        Storage::disk('public')->assertExists(
+        Storage::disk('s3')->assertExists(
             'product-images/' . $file->hashName()
         );
 
@@ -105,12 +105,13 @@ describe('Get Product Image', function() {
 
 describe('Delete Product Image', function() {
     it ('deletes a product image if user is authenticated', function() {
+        Storage::fake('s3'); // Fake the S3 disk
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
         // Fake stored image
         $path = 'products/test-image.jpg';
-        Storage::disk('public')->put($path, 'fake-content');
+        Storage::disk('s3')->put($path, 'fake-content');
 
         $image = ProductImage::create([
             'source' => $path,
@@ -119,7 +120,7 @@ describe('Delete Product Image', function() {
         ]);
 
         // Assert file exists
-        Storage::disk('public')->assertExists($path);
+        Storage::disk('s3')->assertExists($path);
 
         $response = actingAs($user)->deleteJson('/api/product-images/' . $image->id);
 
@@ -130,7 +131,7 @@ describe('Delete Product Image', function() {
         ]);
 
         // Assert file deletion
-        Storage::disk('public')->assertMissing($path);
+        Storage::disk('s3')->assertMissing($path);
     });
 
     it ('returns a 404 error if the product image is not found', function() {
