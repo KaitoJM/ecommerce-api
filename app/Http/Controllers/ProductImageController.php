@@ -37,8 +37,9 @@ class ProductImageController extends Controller
     public function store(CreateProductImageRequest $request)
     {
         // process upload file
-        $path = $request->file('image')->store('product-images', 'public');
-        $source = url('/') . '/storage/' . $path;
+        $path = $request->file('image')->store('product-images', 's3');
+        // $source = url('/') . '/storage/' . $path;
+        $source = Storage::disk('s3')->url($path);
 
         // save file information
         $image = $this->imageService->createProductImage($source, $request->product_id, $request->cover);
@@ -71,16 +72,28 @@ class ProductImageController extends Controller
 
             $this->imageService->deleteImage($id);
 
-            // Remove base URL and /storage/
-            $path = str_replace(
-                url('/') . '/storage/',
-                '',
-                $imageSource
-            );
+            // This is for local
+            // // Remove base URL and /storage/
+            // $path = str_replace(
+            //     url('/') . '/storage/',
+            //     '',
+            //     $imageSource
+            // );
 
-            // Delete file from storage/app/public
-            if (Storage::disk('public')->exists($path)) {
-                Storage::disk('public')->delete($path);
+            // // Delete file from storage/app/public
+            // if (Storage::disk('public')->exists($path)) {
+            //     Storage::disk('public')->delete($path);
+            // }
+
+            // This is for s3
+            // Extract path relative to S3 bucket
+            $path = parse_url($imageSource, PHP_URL_PATH);
+            // Remove leading slash
+            $path = ltrim($path, '/');
+
+            // Delete file from S3
+            if (Storage::disk('s3')->exists($path)) {
+                Storage::disk('s3')->delete($path);
             }
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Image not found'], 404);
