@@ -110,6 +110,9 @@ class ProductSpecificationService {
         }
 
         return $default;
+    }
 
+    public function deleteProductSpecifications(int $product_id) {
+        ProductSpecification::where('product_id', $product_id)->delete();
     }
 }

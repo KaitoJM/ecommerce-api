@@ -94,18 +94,10 @@ class ProductSpecificationController extends Controller
         return response()->json(null, 204);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroyAllSpecificationByProductId(string $product_id)
     {
         try {
-            $specifications = $this->specificationService->getProductSpecifications(['product_id', $product_id]);
-            if (count($specifications)) {
-                foreach ($specifications as $key => $specification) {
-                    $this->specificationService->deleteProductSpecification($specification->id);
-                }
-            }
+            $this->specificationService->deleteProductSpecifications( $product_id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Error while deleting product specifications'], 500);
         }
