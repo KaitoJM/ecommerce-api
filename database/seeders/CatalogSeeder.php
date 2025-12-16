@@ -238,99 +238,6 @@ class CatalogSeeder extends Seeder
         
         // products
         $this->seedProducts($products);
-
-
-        // $iphoneCombinations = [
-        //     [
-        //         'price' => 49990.00,
-        //         'product_id' => $iphone->id,
-        //         'combinations' => [
-        //             [$pams1->id, $pamc1->id], //128GB Storage, Ultramarine
-        //             [$pams1->id, $pamc2->id], //128GB Storage, Teal
-        //             [$pams1->id, $pamc3->id], //128GB Storage, Pink
-        //             [$pams1->id, $pamc4->id], //128GB Storage, White
-        //             [$pams1->id, $pamc5->id], //128GB Storage, Black
-        //         ],
-        //     ],
-        //     [
-        //         'price' => 57990.00,
-        //         'product_id' => $iphone->id,
-        //         'combinations' => [
-        //             [$pams2->id, $pamc1->id], //256GB Storage, Ultramarine
-        //             [$pams2->id, $pamc2->id], //256GB Storage, Teal
-        //             [$pams2->id, $pamc3->id], //256GB Storage, Pink
-        //             [$pams2->id, $pamc4->id], //256GB Storage, White
-        //             [$pams2->id, $pamc5->id], //256GB Storage, Black
-        //         ],
-        //     ]
-            
-        // ];
-
-        // $macbookCombinations = [
-        //     [
-        //         'price' => 99990.00,
-        //         'product_id' => $macbook->id,
-        //         'combinations' => [
-        //             [$palr1->id, $pals1->id, $palc1->id], //16GB Unified Memory, 512GB SSD Storage, Space Black
-        //             [$palr1->id, $pals1->id, $palc2->id], //16GB Unified Memory, 512GB SSD Storage, Silver
-        //         ],
-        //     ],
-        //     [
-        //         'price' => 112990.00,
-        //         'product_id' => $macbook->id,
-        //         'combinations' => [
-        //             [$palr1->id, $pals2->id, $palc1->id], //16GB Unified Memory, 1TB SSD Storage, Space Black
-        //             [$palr1->id, $pals2->id, $palc2->id], //16GB Unified Memory, 1TB SSD Storage, Silver
-        //         ],
-        //     ],
-        //     // This combination do not exist
-        //     // [
-        //     //     'price' => 112990.00,
-        //     //      'product_id' => $macbook->id,
-        //     //     'combinations' => [
-        //     //         [$palr2->id, $pals1->id, $palc1->id], //24GB Unified Memory, 512GB SSD Storage, Space Black
-        //     //         [$palr2->id, $pals1->id, $palc2->id], //24GB Unified Memory, 512GB SSD Storage, Silver
-        //     //     ],
-        //     // ],
-        //     [
-        //         'price' => 125990.00,
-        //         'product_id' => $macbook->id,
-        //         'combinations' => [
-        //             [$palr2->id, $pals2->id, $palc1->id], //24GB Unified Memory, 1TB SSD Storage, Space Black
-        //             [$palr2->id, $pals2->id, $palc2->id], //24GB Unified Memory, 1TB SSD Storage, Silver
-        //         ],
-        //     ],
-        // ];
-
-        // seed product specification
-        // foreach ($iphoneCombinations as $mk => $mv) {
-        //     $price = $mv['price'];
-        //     $product_id = $mv['product_id'];
-
-        //     foreach ($mv['combinations'] as $mck => $mcv) {
-        //         $default = false;
-        //         if ($mk == 0 && $mck == 0) {
-        //             $default = true;
-        //         }
-
-        //         $this->seedProductSpecification($product_id, implode(',', $mcv), $price, 100, $default);
-        //     }
-        // }
-
-        // foreach ($macbookCombinations as $lk => $lv) {
-        //     $price = $lv['price'];
-        //     $product_id = $lv['product_id'];
-
-        //     foreach ($lv['combinations'] as $lck => $lcv) {
-
-        //         $default = false;
-        //         if ($lk == 0 && $lck == 0) {
-        //             $default = true;
-        //         }
-        //         $this->seedProductSpecification($product_id, implode(',', $lcv), $price, 100, $default);
-        //     }
-        // }
-
     }
 
     private function seedCategories() {
@@ -415,12 +322,17 @@ class CatalogSeeder extends Seeder
 
             // Seed product specifications
             foreach ($possibleCombinations as $index => $combination) {
-                $combinationString = [];
+                $combinationArr = [];
                 foreach ($combination as $attr_id => $value) {
-                    $combinationString[] = "{$attr_id}:{$value}";   
+                    $combinationArr[] = [
+                        'attribute_id' => $attr_id,
+                        'value' => $value,
+                    ];
                 }
                 $isDefault = ($index === 0);
-                $this->seedProductSpecification($product->id, implode(',', $combinationString), $productData['price'], $productData['stock'], $isDefault);
+
+
+                $this->seedProductSpecification($product->id, json_encode($combinationArr), $productData['price'], $productData['stock'], $isDefault);
             }
         }
     }
