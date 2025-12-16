@@ -177,3 +177,20 @@ describe('Set Product Image Cover', function() {
         ]);
     });
 });
+
+describe("Update Product Image Cover", function() {
+    it ("Sets the cover to true to the product image base on the product ID and set the rest to false", function() {
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+        $image1 = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => true]);
+        $image2 = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => false]);
+        $image3 = ProductImage::factory()->create(['product_id' => $product->id, 'cover' => false]);
+
+        $response = actingAs($user)->patchJson('/api/product-images-cover/' . $image2->id);
+
+        $response->assertStatus(200);
+        expect(ProductImage::find($image1->id)->cover)->toBe(0);
+        expect(ProductImage::find($image2->id)->cover)->toBe(1);
+        expect(ProductImage::find($image3->id)->cover)->toBe(0);
+    });
+});
