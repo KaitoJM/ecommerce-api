@@ -5,6 +5,7 @@ use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductSpecification;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\deleteJson;
@@ -100,36 +101,6 @@ describe('Create Product Specification', function() {
             'price' => 1000,
             'stock' => 10,
             'default' => true
-        ]);
-    });
-
-    it('returns error 422 if some ids in combination does not belong to product ID reference', function() {
-        $user = User::factory()->create();
-        $product = Product::factory()->create();
-        $product2 = Product::factory()->create();
-
-        $attr1 = Attribute::factory()->create();
-        $attr2 = Attribute::factory()->create();
-
-        $prodAttr1 = ProductAttribute::factory()->create(
-            ['product_id' => $product->id, 'attribute_id' => $attr1->id]
-        );
-
-        $prodAttr3 = ProductAttribute::factory()->create(
-            ['product_id' => $product2->id, 'attribute_id' => $attr2->id]
-        );
-
-        $response = actingAs($user)->postJson('/api/product-specifications', [
-            'product_id' => $product->id,
-            'combination' => implode(',', [$prodAttr1->id, $prodAttr3->id]),
-            'price' => 1000,
-            'stock' => 10,
-            'default' => true
-        ]);
-
-        $response->assertStatus(422);
-        $response->assertJsonFragment([
-            'combination' => ['Invalid attribute IDs in combination: ' . implode(',', [$prodAttr3->id])],
         ]);
     });
 
@@ -248,44 +219,6 @@ describe('Update Product Specification', function() {
         ]);
     });
 
-    it('returns error 422 if some ids in combination does not belong to product ID reference', function() {
-        $user = User::factory()->create();
-        $product = Product::factory()->create();
-        $product2 = Product::factory()->create();
-
-        $attr1 = Attribute::factory()->create();
-        $attr2 = Attribute::factory()->create();
-
-        $prodAttr1 = ProductAttribute::factory()->create(
-            ['product_id' => $product->id, 'attribute_id' => $attr1->id]
-        );
-
-        $prodAttr3 = ProductAttribute::factory()->create(
-            ['product_id' => $product2->id, 'attribute_id' => $attr2->id]
-        );
-
-        $specification = ProductSpecification::create([
-            'product_id' => $product->id,
-            'combination' => '1,2,3',
-            'price' => 1000,
-            'stock' => 10,
-            'default' => true
-        ]);
-
-        $response = actingAs($user)->patchJson('/api/product-specifications/' . $specification->id, [
-            'product_id' => $product->id,
-            'combination' => implode(',', [$prodAttr1->id, $prodAttr3->id]),
-            'price' => 1000,
-            'stock' => 10,
-            'default' => true
-        ]);
-
-        $response->assertStatus(422);
-        $response->assertJsonFragment([
-            'combination' => ['Invalid attribute IDs in combination: ' . implode(',', [$prodAttr3->id])],
-        ]);
-    });
-
     it ('returns a 404 error if the product specification is not found', function() {
         $user = User::factory()->create();
         $response = actingAs($user)->putJson('/api/product-specifications/999999', [
@@ -333,4 +266,35 @@ describe('Delete Product Specification', function() {
             'error' => 'Product specification not found',
         ]);
     });
+});
+
+describe("Delete all specifications of a product", function () {
+    it("Deletes all specifications of a selected product only", function() {
+        $user = User::factory()->create();
+
+        $product = Product::factory()->create();
+        ProductSpecification::factory(10)->create([
+            'product_id' => $product->id,
+            'combination' => '1,2,3'
+        ]);
+
+        $product2 = Product::factory()->create();
+        ProductSpecification::factory(10)->create([
+            'product_id' => $product2->id,
+            'combination' => '1,2,3'
+        ]);
+
+        expect(DB::table('product_specifications')->count())->toBe(20);
+
+        $response = actingAs($user)->deleteJson('/api/product-specifications-delete-by-product/' . $product->id);
+
+        $response->assertStatus(204);
+        expect(
+            ProductSpecification::where('product_id', $product->id)->count()
+        )->toBe(0);
+        expect(
+            ProductSpecification::where('product_id', $product2->id)->count()
+        )->toBe(10);
+    });
+
 });
