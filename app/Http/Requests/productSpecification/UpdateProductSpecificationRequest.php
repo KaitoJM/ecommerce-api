@@ -24,11 +24,7 @@ class UpdateProductSpecificationRequest extends FormRequest
     {
         return [
             'product_id' => 'required',
-            'combination'  => [
-                'nullable',
-                'string',
-                new ValidCombination($this->product_id),
-            ],
+            'combination'  => 'sometimes | string',
             'price' => 'nullable',
             'stock' => 'numeric|nullable',
             'default' => 'boolean|nullable',

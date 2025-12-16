@@ -41,3 +41,4 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('/attributes', AttributeController::class)->middleware('auth:sanctum');
 Route::apiResource('/product-attributes', ProductAttributeController::class)->middleware('auth:sanctum');
 Route::apiResource('/product-specifications', ProductSpecificationController::class)->middleware('auth:sanctum');
+Route::delete('/product-specifications-delete-by-product/{id}', [ProductSpecificationController::class, 'destroyAllSpecificationByProductId'])->middleware('auth:sanctum');

@@ -24,11 +24,7 @@ class CreateProductSpecificationRequest extends FormRequest
     {
         return [
             'product_id' => 'required',
-            'combination'  => [
-                'required',
-                'string',
-                new ValidCombination($this->product_id),
-            ],
+            'combination'  => 'required | string',
             'price' => 'required',
             'stock' => 'numeric',
             'default' => 'boolean|nullable',
