@@ -36,7 +36,7 @@ class AttributeController extends Controller
     {
         $attribute = $this->attributeService->createAttribute($request->only(['attribute', 'selection_type']));
 
-        return response()->json($attribute)->setStatusCode(201);
+        return response()->json(['data' => $attribute])->setStatusCode(201);
     }
 
     /**
@@ -60,7 +60,7 @@ class AttributeController extends Controller
     {
         try {
             $attribute = $this->attributeService->updateAttribute(
-                $id, 
+                $id,
                 $request->validated()
             );
         } catch (ModelNotFoundException $e) {

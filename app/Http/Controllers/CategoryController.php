@@ -36,7 +36,7 @@ class CategoryController extends Controller
     {
         $category = $this->categoryService->createCategory($request->only(['name']));
 
-        return response()->json($category)->setStatusCode(201);
+        return response()->json(['data' => $category])->setStatusCode(201);
     }
 
     /**
@@ -60,7 +60,7 @@ class CategoryController extends Controller
     {
         try {
             $category = $this->categoryService->updateCategory(
-                $id, 
+                $id,
                 $request->validated()
             );
         } catch (ModelNotFoundException $e) {
