@@ -14,7 +14,7 @@ class ProductService {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product>
      */
     public function getProducts(?string $search = null, $filters = null, $pagination = null) {
-        $query = Product::with(['categories']);
+        $query = Product::with(['categories', 'brand']);
 
         $query->with('images', function ($q) {
             $q->where('cover', true);
@@ -62,7 +62,7 @@ class ProductService {
      * @return \App\Models\Product
      */
     public function getProductById(int $id) {
-        return Product::with(['categories'])
+        return Product::with(['categories', 'brand'])
         ->with('images', function ($q) {
             $q->where('cover', true);
         })
@@ -70,14 +70,14 @@ class ProductService {
             $q->where('default', true);
         })->findOrFail($id);
     }
-    
+
     /**
      * Update a product by its ID.
      *
      * @param int $id The ID of the product to update
      * @param array $params The parameters to update the product with
      * @return \App\Models\Product
-     */ 
+     */
     public function updateProduct(int $id, array $params) {
         $product = $this->getProductById($id);
 
@@ -85,7 +85,7 @@ class ProductService {
 
         return $product;
     }
-    
+
     /**
      * Delete a product by its ID.
      *
