@@ -9,7 +9,7 @@ class GithubController extends Controller
 {
     public function changeLogs(GithubService $github) {
         return response()->json([
-            'data' => $github->getCommits(),
+            'data' => $github->getChangeLog(),
         ]);
     }
 }
