@@ -23,6 +23,7 @@ class ProductSpecificationResource extends JsonResource
             'default' => $this->default,
             'sale' => $this->sale,
             'sale_price' => $this->sale_price,
+            'images' => $this->images,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -42,7 +42,8 @@ class ProductSpecificationController extends Controller
             $request->stock,
             $request->default ?? false,
             $request->sale ?? false,
-            $request->sale_price ?? 0
+            $request->sale_price ?? 0,
+            $request->images
         );
 
         return response()->json($product)->setStatusCode(201);
@@ -69,7 +70,7 @@ class ProductSpecificationController extends Controller
     {
         try {
             $product = $this->specificationService->updateProductSpecification(
-                $id, 
+                $id,
                 $request->validated()
             );
 

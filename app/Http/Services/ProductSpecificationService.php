@@ -40,13 +40,14 @@ class ProductSpecificationService {
      * @return \App\Models\ProductSpecification
      */
     public function createProductSpecification(
-        $product_id, 
-        $combination, 
-        $price, 
-        $stock, 
-        $default = false, 
-        $sale = false, 
-        $sale_price = 0
+        $product_id,
+        $combination,
+        $price,
+        $stock,
+        $default = false,
+        $sale = false,
+        $sale_price = 0,
+        $images
     ) {
         $createdProductAttribute = ProductSpecification::create([
             'product_id' => $product_id,
@@ -56,6 +57,7 @@ class ProductSpecificationService {
             'default' => $default,
             'sale' => $sale,
             'sale_price' => $sale_price,
+            'images' => $images,
         ]);
 
         return $createdProductAttribute;
@@ -77,7 +79,7 @@ class ProductSpecificationService {
      * @param int $id The ID of the product specification to update
      * @param array $params The parameters to update the product attribute with
      * @return \App\Models\ProductSpecification
-     */ 
+     */
     public function updateProductSpecification(int $id, $params) {
         $product = $this->getProductSpecificationById($id);
 

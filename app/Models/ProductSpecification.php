@@ -17,5 +17,6 @@ class ProductSpecification extends Model
         'default',
         'sale',
         'sale_price',
+        'images',
     ];
 }

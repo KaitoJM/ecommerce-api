@@ -30,6 +30,7 @@ class CreateProductSpecificationRequest extends FormRequest
             'default' => 'boolean|nullable',
             'sale' => 'boolean|nullable',
             'sale_price' => 'numeric|nullable',
+            'images' => 'string|nullable',
         ];
     }
 }

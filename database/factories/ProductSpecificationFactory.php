@@ -21,7 +21,7 @@ class ProductSpecificationFactory extends Factory
             'stock' => fake()->numberBetween(0,100),
             'default' => fake()->boolean(),
             'sale' => fake()->boolean(),
-            'sale_price' => fake()->randomFloat(100, 100000)
+            'sale_price' => fake()->randomFloat(100, 100000),
         ];
     }
 }
