@@ -64,7 +64,7 @@ class GithubService {
                     'avatar' => $commit['author']['avatar_url'] ?? null,
                     'date' => $commit['commit']['author']['date'],
                     'url' => $commit['html_url'],
-                ])->toArray(),
+                ])->sortByDesc(fn ($r) => $r['date'])->values()->toArray(),
             ];
         })->filter()->values();
 
