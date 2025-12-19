@@ -16,6 +16,7 @@ class CategoryService {
 
         if ($search) {
             $query->where('name', 'like', "%{$search}%");
+            $query->orWhere('description', 'like', "%{$search}%");
         }
 
         return $query->paginate($pagination['per_page'] ?? 10);
@@ -31,6 +32,7 @@ class CategoryService {
     public function createCategory($params) {
         $createdCategory = Category::create([
             'name' => $params['name'],
+            'description' => $params['description'] ?? '',
         ]);
 
         return $createdCategory;
@@ -45,14 +47,14 @@ class CategoryService {
     public function getCategoryById(int $id) {
         return Category::findOrFail($id);
     }
-    
+
     /**
      * Update a category by its ID.
      *
      * @param int $id The ID of the category to update
      * @param array $params The parameters to update the category with
      * @return \App\Models\Category
-     */ 
+     */
     public function updateCategory(int $id, array $params) {
         $category = $this->getCategoryById($id);
 
@@ -60,7 +62,7 @@ class CategoryService {
 
         return $category;
     }
-    
+
     /**
      * Delete a category by its ID.
      *

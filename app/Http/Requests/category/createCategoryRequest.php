@@ -4,6 +4,8 @@ namespace App\Http\Requests\category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use function PHPSTORM_META\map;
+
 class createCategoryRequest extends FormRequest
 {
     /**
@@ -22,7 +24,8 @@ class createCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'description' => 'nullable|string'
         ];
     }
 }
