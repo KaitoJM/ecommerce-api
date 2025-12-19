@@ -47,7 +47,7 @@ class ProductSpecificationService {
         $default = false,
         $sale = false,
         $sale_price = 0,
-        $images
+        $images = ''
     ) {
         $createdProductAttribute = ProductSpecification::create([
             'product_id' => $product_id,
