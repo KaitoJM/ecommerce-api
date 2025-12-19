@@ -17,11 +17,11 @@ class ProductSpecificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'price' => fake()->randomFloat(100, 100000),
-            'stock' => fake()->numberBetween(0,100),
-            'default' => fake()->boolean(),
-            'sale' => fake()->boolean(),
-            'sale_price' => fake()->randomFloat(100, 100000)
+            'price' => $this->faker->randomFloat(100, 100000),
+            'stock' => $this->faker->numberBetween(0,100),
+            'default' => $this->faker->boolean(),
+            'sale' => $this->faker->boolean(),
+            'sale_price' => $this->faker->randomFloat(100, 100000)
         ];
     }
 }
