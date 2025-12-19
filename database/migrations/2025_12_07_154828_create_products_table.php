@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('summary')->nullable();
             $table->text('description')->nullable();
             $table->boolean('published')->default(false);
+            $table->unsignedBigInteger('brand_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -28,6 +28,7 @@ class UpdateProductRequest extends FormRequest
             'published' => 'sometimes|boolean',
             'categories' => 'sometimes|array',
             'categories.*' => 'sometimes|integer|exists:categories,id',
+            'brand_id' => 'nullable|numeric',
             'price' => 'sometimes|numeric',
             'stock' => 'sometimes|numeric',
         ];

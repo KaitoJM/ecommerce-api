@@ -373,6 +373,7 @@ class CatalogSeeder extends Seeder
                 'name' => $productData['name'],
                 'summary' => $productData['summary'],
                 'published' => $productData['published'],
+                'brand_id' => $productData['brand_id']
             ]);
 
             // Seed product image
