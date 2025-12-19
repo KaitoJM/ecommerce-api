@@ -17,7 +17,7 @@ class CatalogSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {   
+    {
         // categories
         [$laptop, $mobilePhones, $electronics, $audio, $computer] = $this->seedCategories();
 
@@ -34,7 +34,7 @@ class CatalogSeeder extends Seeder
                 'stock' => 50,
                 'categories' => [$mobilePhones->id, $electronics->id],
                 'attributes' => [
-                    [  
+                    [
                         'attribute_id' => $storage->id,
                         'values' => ['128GB', '256GB']
                     ],
@@ -64,7 +64,7 @@ class CatalogSeeder extends Seeder
                     [
                         'attribute_id' => $color->id,
                         'values' => ['Space Black', 'Silver']
-                    ] 
+                    ]
                 ]
             ],
             [
@@ -235,7 +235,7 @@ class CatalogSeeder extends Seeder
                 ]
             ]
         ];
-        
+
         // products
         $this->seedProducts($products);
     }
@@ -243,22 +243,27 @@ class CatalogSeeder extends Seeder
     private function seedCategories() {
         $laptop = Category::create([
             'name' => 'Laptop',
+            'description' => 'High-performance laptops designed for work, study, and entertainment. Explore a wide range of models featuring powerful processors, ample storage, vibrant displays, and portable designs to meet everyday computing and professional needs.'
         ]);
 
         $mobilePhones = Category::create([
             'name' => 'Mobile Phones',
+            'description' => 'Discover the latest smartphones with advanced features, powerful performance, and sleek designs. From high-quality cameras to long-lasting batteries, find mobile phones built for communication, productivity, and entertainment on the go.'
         ]);
 
         $electronics = Category::create([
             'name' => 'Electronics',
+            'description' => 'Explore a wide range of electronic products designed to enhance everyday life. From smart devices and home appliances to personal gadgets and accessories, find reliable technology that combines innovation, performance, and convenience.'
         ]);
 
         $audio = Category::create([
             'name' => 'Audio',
+            'description' => 'Experience rich, high-quality sound with our range of audio devices. From headphones and speakers to sound systems and accessories, discover products designed to deliver clear audio, deep bass, and immersive listening for every lifestyle.'
         ]);
 
         $computer = Category::create([
             'name' => 'Computers',
+            'description' => 'Powerful and reliable computers built for productivity, creativity, and everyday use. Browse desktops, all-in-one PCs, and accessories designed to deliver fast performance, smooth multitasking, and dependable computing for home, office, and professional needs.'
         ]);
 
         return [$laptop, $mobilePhones, $electronics, $audio, $computer];
@@ -352,7 +357,7 @@ class CatalogSeeder extends Seeder
             'value' => $value,
             'color_value' => $colorValue,
         ]);
-        
+
         return $productAttribute;
     }
 
