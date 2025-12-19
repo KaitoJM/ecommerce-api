@@ -17,8 +17,8 @@ class ProductImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'source' => $this->faker->filePath(),
-            'cover' => $this->faker->boolean()
+            'source' => fake()->filePath(),
+            'cover' => fake()->boolean()
         ];
     }
 }

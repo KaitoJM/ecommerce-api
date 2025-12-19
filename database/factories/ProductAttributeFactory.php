@@ -17,8 +17,8 @@ class ProductAttributeFactory extends Factory
     public function definition(): array
     {
         return [
-            'value' => $this->faker->word(),
-            'color_value' => $this->faker->colorName(),
+            'value' => fake()->word(),
+            'color_value' => fake()->colorName(),
         ];
     }
 }
