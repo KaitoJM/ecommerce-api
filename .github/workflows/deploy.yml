@@ -26,5 +26,3 @@ jobs:
             php artisan migrate --force
             php artisan optimize:clear
             php artisan optimize
-            sudo systemctl reload php8.4-fpm
-            sudo systemctl reload nginx
