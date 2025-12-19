@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\ProductAttributeController;
@@ -40,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/product-images/{id}', [ProductImageController::class, 'destroy']);
     Route::patch('/product-images-cover/{id}', [ProductImageController::class, 'updateCoverImage']);
 });
+Route::apiResource('/brands', BrandController::class)->middleware('auth:sanctum');
 Route::apiResource('/attributes', AttributeController::class)->middleware('auth:sanctum');
 Route::apiResource('/product-attributes', ProductAttributeController::class)->middleware('auth:sanctum');
 Route::apiResource('/product-specifications', ProductSpecificationController::class)->middleware('auth:sanctum');

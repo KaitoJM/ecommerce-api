@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Attribute;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductAttribute;
@@ -21,6 +22,9 @@ class CatalogSeeder extends Seeder
         // categories
         [$laptop, $mobilePhones, $electronics, $audio, $computer] = $this->seedCategories();
 
+        // brands
+        [$apple, $samsung, $sony, $dell, $hp, $lenovo, $google, $bose, $jbl] = $this->seedBrands();
+
         // attributes
         [$ram, $storage, $color] = $this->seedAttributes();
 
@@ -31,6 +35,7 @@ class CatalogSeeder extends Seeder
                 'image' => 'https://d1rlzxa98cyc61.cloudfront.net/catalog/product/cache/1801c418208f9607a371e61f8d9184d9/1/7/177270_2020.jpg',
                 'price' => 49990.00,
                 'published' => true,
+                'brand_id' => $apple->id,
                 'stock' => 50,
                 'categories' => [$mobilePhones->id, $electronics->id],
                 'attributes' => [
@@ -50,6 +55,7 @@ class CatalogSeeder extends Seeder
                 'image' => 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp14-spacegray-select-202110?wid=904&hei=840&fmt=jpeg&qlt=80&.v=1632799176000',
                 'price' => 99990.00,
                 'published' => true,
+                'brand_id' => $apple->id,
                 'stock' => 25,
                 'categories' => [$laptop->id, $electronics->id],
                 'attributes' => [
@@ -73,6 +79,7 @@ class CatalogSeeder extends Seeder
                 'image' => 'https://d1rlzxa98cyc61.cloudfront.net/catalog/product/cache/1801c418208f9607a371e61f8d9184d9/1/7/174359_2020_5.jpg',
                 'price'=> 39990.00,
                 'published' => true,
+                'brand_id' => $samsung->id,
                 'stock' => 40,
                 'categories' => [$mobilePhones->id, $electronics->id],
                 'attributes' => [
@@ -92,6 +99,7 @@ class CatalogSeeder extends Seeder
                 'image' => 'https://m.media-amazon.com/images/I/71o8Q5XJS5L._AC_SL1500_.jpg',
                 'price' => 19990.00,
                 'published' => true,
+                'brand_id' => $sony->id,
                 'stock' => 75,
                 'categories' => [$audio->id, $electronics->id],
                 'attributes' => [
@@ -107,6 +115,7 @@ class CatalogSeeder extends Seeder
                 'image' => 'https://m.media-amazon.com/images/I/710EGJBdIML._AC_SL1500_.jpg',
                 'price' => 89990.00,
                 'published' => true,
+                'brand_id' => $dell->id,
                 'stock' => 30,
                 'categories' => [$laptop->id, $computer->id],
                 'attributes' => [
@@ -130,6 +139,7 @@ class CatalogSeeder extends Seeder
                 'image' => 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MWP22?wid=2000&hei=2000&fmt=jpeg&qlt=80&.v=1591634795000',
                 'price' => 12990.00,
                 'published' => true,
+                'brand_id' => $apple->id,
                 'stock' => 100,
                 'categories' => [$audio->id, $electronics->id],
                 'attributes' => [
@@ -145,6 +155,7 @@ class CatalogSeeder extends Seeder
                 'image' => 'https://www.hp.com/content/dam/sites/worldwide/personal-computers/consumer/laptops-and-2-n-1s/spectre/version-2023/HP%20Spectre%20x360%2014__Mobile@2x.png',
                 'price' => 109990.00,
                 'published' => true,
+                'brand_id' => $hp->id,
                 'stock' => 20,
                 'categories' => [$laptop->id, $computer->id],
                 'attributes' => [
@@ -168,6 +179,7 @@ class CatalogSeeder extends Seeder
                 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBLJwRZpjEu6iae1VsI82j_UM7UMAV36hZ6w&s',
                 'price' => 34990.00,
                 'published' => true,
+                'brand_id' => $google->id,
                 'stock' => 60,
                 'categories' => [$mobilePhones->id, $electronics->id],
                 'attributes' => [
@@ -186,6 +198,7 @@ class CatalogSeeder extends Seeder
                 'summary' => "Comfortable headphones with world-class noise cancellation.",
                 'image' => 'https://assets.bose.com/content/dam/Bose_DAM/Web/consumer_electronics/global/products/headphones/qc35_ii/product_silo_images/qc35_ii_black_EC_hero.psd/_jcr_content/renditions/cq5dam.web.320.320.png',
                 'price' => 17990.00,
+                'brand_id' => $bose->id,
                 'published' => true,
                 'stock' => 80,
                 'categories' => [$audio->id, $electronics->id],
@@ -202,6 +215,7 @@ class CatalogSeeder extends Seeder
                 'image' => 'https://p3-ofp.static.pub//fes/cms/2024/07/05/05dhzg0lrtq4i0d3wxqyjjakwmbmzr331426.png',
                 'price' => 119990.00,
                 'published' => true,
+                'brand_id' => $lenovo->id,
                 'stock' => 15,
                 'categories' => [$laptop->id, $computer->id],
                 'attributes' => [
@@ -224,6 +238,7 @@ class CatalogSeeder extends Seeder
                 'summary' => "Portable Bluetooth speaker with powerful sound.",
                 'image' => 'https://www.jbl.com.ph/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw8d795c7a/JBL_Charge4_Front_Midnight_Black_1605x1605px.png',
                 'price' => 8990.00,
+                'brand_id' => $jbl->id,
                 'published' => true,
                 'stock' => 120,
                 'categories' => [$audio->id, $electronics->id],
@@ -238,6 +253,73 @@ class CatalogSeeder extends Seeder
 
         // products
         $this->seedProducts($products);
+    }
+
+    private function seedBrands() {
+        $apple = Brand::create(
+            [
+                'name' => 'Apple',
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg'
+            ]
+        );
+
+        $samsung = Brand::create(
+            [
+                'name' => 'Samsung',
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/6/61/Samsung_old_logo_before_year_2015.svg'
+            ]
+        );
+
+        $sony = Brand::create(
+            [
+                'name' => 'Sony',
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Sony_logo.svg/2560px-Sony_logo.svg.png'
+            ]
+        );
+
+        $dell = Brand::create(
+            [
+                'name' => 'Dell',
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Dell_Logo.svg/1200px-Dell_Logo.svg.png'
+            ]
+        );
+
+        $hp = Brand::create(
+            [
+                'name' => 'HP',
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/2048px-HP_logo_2012.svg.png'
+            ]
+        );
+
+        $lenovo = Brand::create(
+            [
+                'name' => 'HP',
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Branding_lenovo-logo_lenovologoposred_low_res.png/1200px-Branding_lenovo-logo_lenovologoposred_low_res.png'
+            ]
+        );
+
+        $google = Brand::create(
+            [
+                'name' => 'Google',
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/250px-Google_Favicon_2025.svg.png'
+            ]
+        );
+
+        $bose = Brand::create(
+            [
+                'name' => 'Bose',
+                'image' => 'https://1000logos.net/wp-content/uploads/2021/05/Bose-logo.png'
+            ]
+        );
+
+        $jbl = Brand::create(
+            [
+                'name' => 'JBL',
+                'image' => 'https://cdn.sistemawbuy.com.br/arquivos/d65810bb9f73806217af761bbf1b7313/marcas/logo-jbl-66c3987b9f3c6.png'
+            ]
+        );
+
+        return [$apple, $samsung, $sony, $dell, $hp, $lenovo, $google, $bose, $jbl];
     }
 
     private function seedCategories() {

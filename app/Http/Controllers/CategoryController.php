@@ -34,7 +34,7 @@ class CategoryController extends Controller
      */
     public function store(createCategoryRequest $request)
     {
-        $category = $this->categoryService->createCategory($request->only(['name']));
+        $category = $this->categoryService->createCategory($request->only(['name', 'description']));
 
         return response()->json(['data' => $category])->setStatusCode(201);
     }
