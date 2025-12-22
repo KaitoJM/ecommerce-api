@@ -50,7 +50,7 @@ class AttributeController extends Controller
             return response()->json(['error' => 'Attribute not found'], 404);
         }
 
-        return response()->json($attribute);
+        return response()->json(['data' => new AttributeResource($attribute)]);
     }
 
     /**
