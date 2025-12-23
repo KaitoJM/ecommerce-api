@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('product_specifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->json('combination')->nullable();
+            $table->text('combination')->nullable();
             $table->double('price', 10,2)->nullable();
             $table->integer('stock')->default(0);
             $table->boolean('default')->default(false);
             $table->boolean('sale')->default(false);
             $table->double('sale_price',10,2)->nullable();
-            $table->json('images')->nullable();
+            $table->text('images')->nullable();
             $table->timestamps();
         });
     }

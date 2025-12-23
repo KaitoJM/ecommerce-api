@@ -132,17 +132,22 @@ describe('Get Product Specification', function() {
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
+        $prodSpec = ProductSpecification::factory()->create([
+            'product_id' => $product->id,
+            'combination' => '[]'
+        ]);
+
         ProductSpecification::factory(10)->create([
             'product_id' => $product->id,
             'combination' => '1,2,3'
         ]);
 
-        $response = actingAs($user)->getJson('/api/product-specifications/1');
+        $response = actingAs($user)->getJson('/api/product-specifications/' . $prodSpec->id);
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'product_id' => $product->id,
-            'combination' => '1,2,3'
+            'combination' => '[]'
         ]);
     });
 

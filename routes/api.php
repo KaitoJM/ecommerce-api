@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProductSpecificationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -46,3 +47,4 @@ Route::apiResource('/attributes', AttributeController::class)->middleware('auth:
 Route::apiResource('/product-attributes', ProductAttributeController::class)->middleware('auth:sanctum');
 Route::apiResource('/product-specifications', ProductSpecificationController::class)->middleware('auth:sanctum');
 Route::delete('/product-specifications-delete-by-product/{id}', [ProductSpecificationController::class, 'destroyAllSpecificationByProductId'])->middleware('auth:sanctum');
+Route::apiResource('/users', UserController::class)->middleware('auth:sanctum');

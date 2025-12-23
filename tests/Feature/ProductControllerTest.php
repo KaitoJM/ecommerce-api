@@ -97,25 +97,25 @@ describe('Create Product', function() {
     });
 
     it('syncs categories when provided', function() {
-        Category::create(['id' => 1, 'name' => 'Category 1']);
-        Category::create(['id' => 2, 'name' => 'Category 2']);
-        Category::create(['id' => 3, 'name' => 'Category 3']);
+        $category1 = Category::create(['name' => 'Category 1']);
+        $category2 = Category::create(['name' => 'Category 2']);
+        $category3 = Category::create(['name' => 'Category 3']);
 
         $user = User::factory()->create();
 
         $response = actingAs($user)->postJson('/api/products', [
             'name' => 'Test Product',
             'summary' => 'Test Description',
-            'categories' => [1,2,3]
+            'categories' => [$category1->id,$category2->id,$category3->id]
         ]);
 
         $productId = $response->json('data.id');
 
         $response->assertStatus(201);
 
-        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 1]);
-        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 2]);
-        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 3]);
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => $category1->id]);
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => $category2->id]);
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => $category3->id]);
 
     });
 
@@ -178,32 +178,32 @@ describe('Update Product', function() {
     });
 
     it('syncs categories when provided', function() {
-        Category::create(['id' => 1, 'name' => 'Category 1']);
-        Category::create(['id' => 2, 'name' => 'Category 2']);
-        Category::create(['id' => 3, 'name' => 'Category 3']);
+        $category1 = Category::create(['name' => 'Category 1']);
+        $category2 = Category::create(['name' => 'Category 2']);
+        $category3 = Category::create(['name' => 'Category 3']);
 
         $product = Product::create([
             'name' => 'Test Product',
             'summary' => 'Test Description',
         ]);
 
-        $product->categories()->attach([1,2]);
+        $product->categories()->attach([$category1->id, $category2->id]);
 
         $user = User::factory()->create();
 
         $response = actingAs($user)->putJson('/api/products/' . $product->id, [
             'name' => 'Updated Product',
             'summary' => 'Updated Description',
-            'categories' => [1,3]
+            'categories' => [$category1->id, $category3->id]
         ]);
 
         $productId = $product->id;
 
         $response->assertStatus(200);
 
-        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 1]);
-        assertDatabaseMissing('product_categories', ['product_id' => $productId, 'category_id' => 2]);
-        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => 3]);
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => $category1->id]);
+        assertDatabaseMissing('product_categories', ['product_id' => $productId, 'category_id' => $category2->id]);
+        assertDatabaseHas('product_categories', ['product_id' => $productId, 'category_id' => $category3->id]);
 
     });
 

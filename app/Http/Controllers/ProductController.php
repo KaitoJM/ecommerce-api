@@ -16,7 +16,7 @@ class ProductController extends Controller
     protected ProductService $productService;
     protected ProductSpecificationService $productSpecificationService;
 
-    public function __construct(ProductService $productService, 
+    public function __construct(ProductService $productService,
     ProductSpecificationService $productSpecificationService)
     {
         $this->productService = $productService;
@@ -36,7 +36,7 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
-    
+
     /**
      * Store a newly created resource in storage.
      */
@@ -46,10 +46,10 @@ class ProductController extends Controller
 
         // attach default specification.
         $this->productSpecificationService->createProductSpecification(
-            $product->id, 
-            '', 
-            $request->price ?? 0, 
-            $request->stock ?? 0, 
+            $product->id,
+            '',
+            $request->price ?? 0,
+            $request->stock ?? 0,
             true
         );
 
@@ -58,7 +58,7 @@ class ProductController extends Controller
         if (!empty($categories)) {
             $this->productService->attachCategories($product, $categories);
         }
-        
+
         return response()->json(['data' => $product])->setStatusCode(201);
     }
 
@@ -83,7 +83,7 @@ class ProductController extends Controller
     {
         try {
             $product = $this->productService->updateProduct(
-                $id, 
+                $id,
                 $request->validated()
             );
 
@@ -104,7 +104,7 @@ class ProductController extends Controller
                     ]
                 );
             }
-            
+
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product not found'], 404);
         }
@@ -116,7 +116,7 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {   
+    {
         try {
             $this->productService->deleteProduct($id);
         } catch (ModelNotFoundException $e) {

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('product_attributes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('attribute_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('attribute_id');
             $table->string('value');
             $table->string('color_value')->nullable(); // if attribute selection type is color.
             $table->softDeletes();
