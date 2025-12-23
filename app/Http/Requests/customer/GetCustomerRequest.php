@@ -22,7 +22,9 @@ class GetCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'search' => 'string|nullable',
+            'page' => 'integer|nullable',
+            'per_page' => 'integer|nullable',
         ];
     }
 }

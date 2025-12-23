@@ -22,7 +22,12 @@ class UpdateCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'first_name' => 'sometimes|string',
+            'last_name' => 'sometimes|string',
+            'middle_name' => 'nullable',
+            'gender' => 'in:male,female',
+            'birthday' => 'nullable',
+            'phone' => 'nullable',
         ];
     }
 }

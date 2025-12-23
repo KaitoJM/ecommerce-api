@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('middle_name')->nullable();
             $table->enum('gender',["male", "female"])->default("male");
-            $table->date('birthday');
+            $table->date('birthday')->nullable();
             $table->string('phone')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

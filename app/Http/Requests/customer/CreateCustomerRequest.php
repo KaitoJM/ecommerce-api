@@ -22,7 +22,14 @@ class CreateCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => 'required|email',
+            'password' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'middle_name' => 'nullable',
+            'gender' => 'in:male,female',
+            'birthday' => 'nullable',
+            'phone' => 'nullable',
         ];
     }
 }

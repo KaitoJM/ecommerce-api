@@ -7,16 +7,23 @@ use App\Http\Requests\customer\GetCustomerRequest;
 use App\Http\Requests\customer\UpdateCustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Http\Services\CustomerService;
+use App\Http\Services\UserService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
     protected CustomerService $customerService;
+    protected UserService $userService;
 
-    public function __construct(CustomerService $customerService)
+    public function __construct(
+        CustomerService $customerService,
+        UserService $userService
+    )
     {
         $this->customerService = $customerService;
+        $this->userService = $userService;
     }
 
     /**
@@ -34,16 +41,28 @@ class CustomerController extends Controller
      */
     public function store(CreateCustomerRequest $request)
     {
-        $customer = $this->customerService->createCustomer(
-            $request->only([
+        $customer = DB::transaction(function () use ($request) {
+            // create user
+            $user = $this->userService->createUser([
+                'name' => $request->first_name . ' ' . $request->last_name,
+                'email' => $request->email,
+                'password' => $request->password,
+                'role' => 'customer'
+            ]);
+
+            $params = $request->only([
                 'first_name',
                 'last_name',
                 'middle_name',
                 'gender',
                 'birthday',
-                'user_id',
-            ])
-        );
+            ]);
+
+            $params['user_id'] = $user->id;
+
+            // create customer
+            return $this->customerService->createCustomer($params);
+        });
 
         return response()->json(['data' => $customer])->setStatusCode(201);
     }
