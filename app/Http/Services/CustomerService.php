@@ -14,9 +14,9 @@ class CustomerService {
                   ->orWhere('last_name', 'like', "%{$search}%")
                   ->orWhere('middle_name', 'like', "%{$search}%");
             });
-        })->when($filters['gender'], function($query) use ($filters) {
+        })->when(isset($filters['gender']), function($query) use ($filters) {
             $query->where('gender', $filters['gender']);
-        })->when($filters['birthday'], function($query) use ($filters) {
+        })->when(isset($filters['birthday']), function($query) use ($filters) {
             $query->where('birthday', $filters['birthday']);
         })->paginate($pagination['per_page'] ?? 10);
     }
@@ -34,10 +34,10 @@ class CustomerService {
         $createdCustomer = Customer::create([
             'first_name' => $params['first_name'],
             'last_name' => $params['last_name'],
-            'middle_name' => $params['middle_name'],
+            'middle_name' => $params['middle_name'] ?? '',
             'gender' => $params['gender'],
             'birthday' => $params['birthday'],
-            'phone' => $params['phone'],
+            'phone' => $params['phone'] ?? '',
             'user_id' => $params['user_id'],
         ]);
 

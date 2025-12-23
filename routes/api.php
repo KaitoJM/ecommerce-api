@@ -4,6 +4,7 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\ProductController;
@@ -48,3 +49,4 @@ Route::apiResource('/product-attributes', ProductAttributeController::class)->mi
 Route::apiResource('/product-specifications', ProductSpecificationController::class)->middleware('auth:sanctum');
 Route::delete('/product-specifications-delete-by-product/{id}', [ProductSpecificationController::class, 'destroyAllSpecificationByProductId'])->middleware('auth:sanctum');
 Route::apiResource('/users', UserController::class)->middleware('auth:sanctum');
+Route::apiResource('/customers', CustomerController::class)->middleware('auth:sanctum');
