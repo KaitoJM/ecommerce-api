@@ -25,7 +25,7 @@ class CreateUserRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|email',
             'password' => 'required|string',
-            'role' => 'in:admin,staff,customer,courier',
+            'role' => 'required|in:admin,staff,customer,courier',
         ];
     }
 }

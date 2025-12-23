@@ -12,7 +12,7 @@ class UserService {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
             });
-        })->when($filters['role'], function($query) use ($filters) {
+        })->when(isset($filters['role']), function($query) use ($filters) {
             $query->where('role', $filters['role']);
         })->paginate($pagination['per_page'] ?? 10);
     }
