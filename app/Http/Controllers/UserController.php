@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\user\CreateUserRequest;
 use App\Http\Requests\user\GetUserRequest;
+use App\Http\Requests\user\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Services\UserService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -31,7 +33,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
         $user = $this->userService->createUser(
             $request->only([
@@ -62,7 +64,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
         try {
             $user = $this->userService->updateUser(
