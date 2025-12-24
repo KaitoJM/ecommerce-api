@@ -22,9 +22,9 @@ class UpdateCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'nullable|string',
-            'session_id' => 'nullable|string',
-            'status' => 'sometimes|in:active,coverted,abandoned',
+            'user_id' => 'nullable',
+            'session_id' => 'nullable',
+            'status' => 'sometimes|in:active,converted,abandoned',
         ];
     }
 }
