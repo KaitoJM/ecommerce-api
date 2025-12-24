@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\productSpecification\CreateProductSpecificationReque
 use App\Http\Requests\Admin\productSpecification\GetProductSpecificationRequest;
 use App\Http\Requests\Admin\productSpecification\UpdateProductSpecificationRequest;
 use App\Http\Resources\ProductSpecificationResource;
-use App\Http\Services\ProductSpecificationService;
+use App\Services\ProductSpecificationService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 

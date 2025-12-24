@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Services;
 
 use App\Models\ProductImage;
 
@@ -66,29 +66,29 @@ class ProductImageService {
             ->where('cover', true)
             ->firstOrFail();
     }
-    
+
     /**
      * Set a product image cover by its ID.
      *
      * @param int $id The ID of the product image to update
      * @param int $product_id The product ID where the images belongs to
      * @return \App\Models\ProductImage
-     */ 
+     */
     public function setCoverImage(int $id) {
         $image = $this->getImageById($id);
-        
+
         // set all image of the product cover to false
         ProductImage::where('product_id', $image->product_id)
         ->update([
             'cover'=>false
         ]);
-        
+
         // set the selected image cover to true
         $image->update(['cover' => true]);
 
         return $image;
     }
-    
+
     /**
      * Delete a product image by its ID.
      *

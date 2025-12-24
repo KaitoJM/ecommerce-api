@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Services;
 
 use App\Models\Attribute;
 
@@ -44,14 +44,14 @@ class AttributeService {
     public function getAttributeById(int $id) {
         return Attribute::findOrFail($id);
     }
-    
+
     /**
      * Update a attribute by its ID.
      *
      * @param int $id The ID of the attribute to update
      * @param array $params The parameters to update the attribute with
      * @return \App\Models\Attribute
-     */ 
+     */
     public function updateAttribute(int $id, array $params) {
         $attribute = $this->getAttributeById($id);
 
@@ -59,7 +59,7 @@ class AttributeService {
 
         return $attribute;
     }
-    
+
     /**
      * Delete an attribute by its ID.
      *

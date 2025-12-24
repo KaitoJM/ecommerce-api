@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\cartItem\CreateCartItemRequest;
 use App\Http\Requests\Admin\cartItem\GetCartItemRequest;
 use App\Http\Requests\Admin\cartItem\UpdateCartItemRequest;
 use App\Http\Resources\CartItemResource;
-use App\Http\Services\CartItemService;
+use App\Services\CartItemService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 

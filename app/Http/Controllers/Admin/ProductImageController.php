@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\productImage\CreateProductImageRequest;
 use App\Http\Requests\Admin\productImage\GetProductImageRequest;
 use App\Http\Requests\Admin\productImage\UpdateProductImageCoverRequest;
 use App\Http\Resources\ProductImageResource;
-use App\Http\Services\ProductImageService;
+use App\Services\ProductImageService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Services;
 
 use App\Models\ProductAttribute;
 
@@ -56,7 +56,7 @@ class ProductAttributeService {
      * @param int $id The ID of the product attribute to update
      * @param array $params The parameters to update the product attribute with
      * @return \App\Models\ProductAttribute
-     */ 
+     */
     public function updateProductAttribute(int $id, $params) {
         $category = $this->getProductAttributeById($id);
 

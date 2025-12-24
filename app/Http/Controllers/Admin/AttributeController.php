@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\attribute\CreateAttributeRequest;
 use App\Http\Requests\Admin\attribute\GetAttributeRequest;
 use App\Http\Requests\Admin\attribute\UpdateAttributeRequest;
 use App\Http\Resources\AttributeResource;
-use App\Http\Services\AttributeService;
+use App\Services\AttributeService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
