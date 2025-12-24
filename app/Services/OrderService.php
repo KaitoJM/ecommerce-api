@@ -7,8 +7,8 @@ use Carbon\Carbon;
 
 class OrderService {
     public function getOrders(?string $search = null, $filters = null, $pagination = null) {
-        return Order::when(isset($filters['user_id']), function($query) use ($filters) {
-            $query->where('user_id', $filters['user_id']);
+        return Order::when(isset($filters['customer_id']), function($query) use ($filters) {
+            $query->where('customer_id', $filters['customer_id']);
         })->when(isset($filters['session_id']), function($query) use ($filters) {
             $query->where('session_id', $filters['session_id']);
         })->when(isset($filters['cart_id']), function($query) use ($filters) {
@@ -21,7 +21,7 @@ class OrderService {
     /**
      *
      * @param  array{
-     *     user_id: string,
+     *     customer_id: string,
      *     seesion_id: string,
      *     cart_id: string,
      *     status_id: string,
@@ -34,7 +34,7 @@ class OrderService {
      */
     public function createOrder($params) {
         $createdOrder = Order::create([
-            'user_id' => $params['user_id'] ?? null,
+            'customer_id' => $params['customer_id'] ?? null,
             'session_id' => $params['session_id'] ?? null,
             'cart_id' => $params['cart_id'],
             'status_id' => $params['status_id'],

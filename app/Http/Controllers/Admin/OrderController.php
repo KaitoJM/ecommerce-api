@@ -35,7 +35,7 @@ class OrderController extends Controller
     {
         $order = $this->orderService->createOrder(
             $request->only([
-                'user_id',
+                'customer_id',
                 'session_id',
                 'cart_id',
                 'status_id',
