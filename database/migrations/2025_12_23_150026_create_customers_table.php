@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('birthday')->nullable();
             $table->string('phone')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
