@@ -8,7 +8,8 @@ use phpDocumentor\Reflection\Types\Boolean;
 
 class CustomerService {
     public function getCustomers(?string $search = null, $filters = null, $pagination = null) {
-        return Customer::when($search, function($query) use ($search) {
+        return Customer::with('user')
+        ->when($search, function($query) use ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('first_name', 'like', "%{$search}%")
                   ->orWhere('last_name', 'like', "%{$search}%")
@@ -51,7 +52,7 @@ class CustomerService {
      * @return \App\Models\Customer
      */
     public function getCustomerById(int $id) {
-        return Customer::findOrFail($id);
+        return Customer::with('user')->findOrFail($id);
     }
 
     /**

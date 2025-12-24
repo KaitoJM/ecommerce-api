@@ -23,6 +23,7 @@ class CustomerResource extends JsonResource
             'birthday' => $this->birthday,
             'phone' => $this->phone,
             'user_id' => $this->user_id,
+            'user' => $this->whenLoaded('user'),
             'created_at' => $this->created_at,
         ];
     }
