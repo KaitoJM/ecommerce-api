@@ -14,8 +14,8 @@ class CartItemService {
             $query->where('cart_id', $filters['cart_id']);
         })->when(isset($filters['product_id']), function($query) use ($filters) {
             $query->where('product_id', $filters['product_id']);
-        })->when(isset($filters['product_specication_id']), function($query) use ($filters) {
-            $query->where('product_specication_id', $filters['product_specication_id']);
+        })->when(isset($filters['product_specification_id']), function($query) use ($filters) {
+            $query->where('product_specification_id', $filters['product_specification_id']);
         })->paginate($pagination['per_page'] ?? 10);
     }
 
@@ -24,7 +24,7 @@ class CartItemService {
      * @param  array{
      *     cart_id: integer
      *     product_id: integer
-     *     product_specication_id: integer
+     *     product_specification_id: integer
      *     quantity: integer
      * }  $params
      * @return \App\Models\CartItem
@@ -33,7 +33,7 @@ class CartItemService {
         $createdCartItem = CartItem::create([
             'cart_id' => $params['cart_id'],
             'product_id' => $params['product_id'],
-            'product_specication_id' => $params['product_specication_id'] ?? '',
+            'product_specification_id' => $params['product_specification_id'] ?? '',
             'quantity' => $params['quantity'] ?? 1,
         ]);
 

@@ -22,9 +22,9 @@ class CreateCartItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cart_id' => 'required|string',
-            'product_id' => 'required|string',
-            'product_specication_id' => 'required|string',
+            'cart_id' => 'required',
+            'product_id' => 'required',
+            'product_specification_id' => 'required',
             'quantity' => 'required|numeric',
         ];
     }

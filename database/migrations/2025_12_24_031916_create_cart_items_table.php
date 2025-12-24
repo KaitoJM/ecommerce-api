@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('cart_id');
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('product_specication_id');
-            $table->string('quantity', 3)->default(1);
+            $table->unsignedBigInteger('product_specification_id');
+            $table->unsignedInteger('quantity')->default(1);
             $table->timestamps();
         });
     }

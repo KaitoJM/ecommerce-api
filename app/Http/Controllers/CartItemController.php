@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\cartItem\CreateCartItemRequest;
 use App\Http\Requests\cartItem\GetCartItemRequest;
+use App\Http\Requests\cartItem\UpdateCartItemRequest;
 use App\Http\Resources\CartItemResource;
 use App\Http\Services\CartItemService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -37,7 +38,7 @@ class CartItemController extends Controller
             $request->only([
                 'cart_id',
                 'product_id',
-                'product_specication_id',
+                'product_specification_id',
                 'quantity',
             ])
         );
@@ -62,7 +63,7 @@ class CartItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCartItemRequest $request, string $id)
     {
         try {
             $cartItem = $this->cartItemService->updateCartItem(

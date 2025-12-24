@@ -22,9 +22,9 @@ class UpdateCartItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cart_id' => 'nullable|string',
-            'product_id' => 'nullable|string',
-            'product_specication_id' => 'nullable|string',
+            'cart_id' => 'nullable',
+            'product_id' => 'nullable',
+            'product_specification_id' => 'nullable',
             'quantity' => 'nullable|numeric',
         ];
     }
