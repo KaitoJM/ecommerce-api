@@ -19,7 +19,7 @@ class OrderStatusFactory extends Factory
         return [
             'status' => fake()->word(),
             'color_code' => fake()->colorName(),
-            'description' => fake()->sentences(3)
+            'description' => fake()->sentence(8)
         ];
     }
 }
