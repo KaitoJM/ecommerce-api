@@ -33,7 +33,7 @@ class CartService {
      */
     public function createCart($params) {
         $createdCart = Cart::create([
-            'user_id' => $params['user_id'] ?? null,
+            'customer_id' => $params['customer_id'] ?? null,
             'session_id' => $params['session_id'] ?? null,
             'status' => $params['status'] ?? 'active',
             'expires_at' => Carbon::now()->addMonths(6),

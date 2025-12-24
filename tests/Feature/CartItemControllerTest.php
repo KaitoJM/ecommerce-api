@@ -2,6 +2,7 @@
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductSpecification;
 use App\Models\User;
@@ -17,8 +18,9 @@ describe('Get Cart Items', function() {
             'product_id' => $product->id
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active'
         ]);
 
@@ -45,8 +47,9 @@ describe('Create Cart Item', function() {
             'product_id' => $product->id
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active'
         ]);
 
@@ -74,8 +77,9 @@ describe('Create Cart Item', function() {
             'product_id' => $product->id
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active'
         ]);
 
@@ -99,8 +103,9 @@ describe('Create Cart Item', function() {
             'product_id' => $product->id
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active'
         ]);
 
@@ -124,8 +129,9 @@ describe('Create Cart Item', function() {
             'product_id' => $product->id
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active'
         ]);
 
@@ -149,8 +155,9 @@ describe('Create Cart Item', function() {
             'product_id' => $product->id
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active'
         ]);
 
@@ -176,8 +183,9 @@ describe('Get Cart Item', function() {
             'product_id' => $product->id
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active'
         ]);
 
@@ -219,8 +227,9 @@ describe('Update Cart Item', function() {
             'product_id' => $product->id
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active'
         ]);
 
@@ -266,8 +275,9 @@ describe('Delete Cart Item', function() {
             'product_id' => $product->id
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active'
         ]);
 

@@ -36,7 +36,7 @@ class CartController extends Controller
     {
         $cart = $this->cartService->createCart(
             $request->only([
-                'user_id',
+                'customer_id',
                 'session_id',
                 'status',
                 'expires_at',

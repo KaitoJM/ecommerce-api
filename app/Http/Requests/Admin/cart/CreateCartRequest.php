@@ -22,7 +22,7 @@ class CreateCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'nullable|exists:users,id',
+            'customer_id' => 'nullable|exists:customers,id',
             'session_id' => 'nullable',
             'status' => 'required|in:active,converted,abandoned',
         ];

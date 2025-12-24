@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cart;
+use App\Models\Customer;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
@@ -22,14 +23,15 @@ describe('Create Cart', function() {
         $user = User::factory()->create();
 
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $response = actingAs($user)->postJson('/api/carts', [
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active',
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonFragment([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
         ]);
     });
 
@@ -37,8 +39,9 @@ describe('Create Cart', function() {
         $user = User::factory()->create();
 
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $response = actingAs($user)->postJson('/api/carts', [
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'invalid-status',
         ]);
 
@@ -54,8 +57,9 @@ describe('Get Cart', function() {
         $user = User::factory()->create();
 
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active',
         ]);
 
@@ -63,7 +67,7 @@ describe('Get Cart', function() {
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
         ]);
     });
 
@@ -83,8 +87,9 @@ describe('Update Cart', function() {
         $user = User::factory()->create();
 
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active',
         ]);
 
@@ -94,7 +99,7 @@ describe('Update Cart', function() {
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'converted',
         ]);
     });
@@ -117,8 +122,9 @@ describe('Delete Cart', function() {
         $user = User::factory()->create();
 
         $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
         $cart = Cart::factory()->create([
-            'user_id' => $cartUser->id,
+            'customer_id' => $cartCustomer->id,
             'status' => 'active',
         ]);
 
