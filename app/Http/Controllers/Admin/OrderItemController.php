@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Order\CreateOrderRequest;
 use App\Http\Requests\Admin\OrderItem\GetOrderItemRequest;
+use App\Http\Requests\Admin\OrderItem\UpdateOrderItemRequest;
 use App\Http\Resources\OrderItemResource;
 use App\Services\OrderItemService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -65,7 +66,7 @@ class OrderItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOrderItemRequest $request, string $id)
     {
         try {
             $orderItem = $this->orderItemService->updateOrderItem(

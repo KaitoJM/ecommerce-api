@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('product_specification_id');
             $table->string('product_snapshot_name');
-            $table->string('product_snapshot_price');
+            $table->decimal('product_snapshot_price', 10, 2);
             $table->integer('quantity');
             $table->double('total', 10, 2);
             $table->timestamps();
