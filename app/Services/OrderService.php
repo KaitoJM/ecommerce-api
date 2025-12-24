@@ -6,7 +6,7 @@ use App\Models\Order;
 use Carbon\Carbon;
 
 class OrderService {
-    public function getOrder(?string $search = null, $filters = null, $pagination = null) {
+    public function getOrders(?string $search = null, $filters = null, $pagination = null) {
         return Order::when(isset($filters['user_id']), function($query) use ($filters) {
             $query->where('user_id', $filters['user_id']);
         })->when(isset($filters['session_id']), function($query) use ($filters) {
