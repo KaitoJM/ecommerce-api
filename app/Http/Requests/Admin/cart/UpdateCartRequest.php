@@ -22,7 +22,7 @@ class UpdateCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'nullable',
+            'user_id' => 'nullable|exists:users,id',
             'session_id' => 'nullable',
             'status' => 'sometimes|in:active,converted,abandoned',
         ];

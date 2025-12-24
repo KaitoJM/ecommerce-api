@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\productSpecification;
+namespace App\Http\Requests\Admin\OrderItem;
 
-use App\Rules\ValidCombination;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProductSpecificationRequest extends FormRequest
+class CreateOrderItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +22,13 @@ class UpdateProductSpecificationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'order_id' => 'required|exists:orders,id',
             'product_id' => 'required|exists:products,id',
-            'combination'  => 'sometimes | string',
-            'price' => 'nullable',
-            'stock' => 'numeric|nullable',
-            'default' => 'boolean|nullable',
-            'sale' => 'boolean|nullable',
-            'sale_price' => 'numeric|nullable',
-            'images' => 'string|nullable',
+            'product_specification_id' => 'nullable|exists:product_specifications,id',
+            'product_snapshot_name' => 'required|string',
+            'product_snapshot_price' => 'required|numeric',
+            'quantity' => 'required|numeric',
+            'total' => 'numeric|nullable',
         ];
     }
 }

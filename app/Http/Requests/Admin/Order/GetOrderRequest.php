@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\productAttribute;
+namespace App\Http\Requests\Admin\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProductAttributeRequest extends FormRequest
+class GetOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,9 @@ class UpdateProductAttributeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'sometimes|exists:products,id',
-            'attribute_id' => 'sometimes|exists:attributes,id',
-            'value' => 'sometimes',
-            'color_value' => 'sometimes',
+            'search' => 'string|nullable',
+            'page' => 'integer|nullable',
+            'per_page' => 'integer|nullable',
         ];
     }
 }

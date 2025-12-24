@@ -23,7 +23,7 @@ class CreateProductSpecificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required',
+            'product_id' => 'required|exists:products,id',
             'combination'  => 'required | string',
             'price' => 'required',
             'stock' => 'numeric',

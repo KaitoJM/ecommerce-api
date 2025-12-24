@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\cart;
+namespace App\Http\Requests\Admin\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCartRequest extends FormRequest
+class UpdateOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,12 @@ class CreateCartRequest extends FormRequest
         return [
             'user_id' => 'nullable|exists:users,id',
             'session_id' => 'nullable',
-            'status' => 'required|in:active,converted,abandoned',
+            'cart_id' => 'nullable|exists:carts,id',
+            'status_id' => 'nullable|exists:statuses,id',
+            'subtotal' => 'numeric|nullable',
+            'discount_total' => 'numeric|nullable',
+            'tax_total' => 'numeric|nullable',
+            'total' => 'numeric|nullable',
         ];
     }
 }

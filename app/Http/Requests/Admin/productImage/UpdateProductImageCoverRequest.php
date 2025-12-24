@@ -23,7 +23,7 @@ class UpdateProductImageCoverRequest extends FormRequest
     {
         return [
             'id' => 'required|numeric',
-            'product_id' => 'required|numeric',
+            'product_id' => 'required|numeric|exists:products,id',
         ];
     }
 }
