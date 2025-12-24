@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\productImage\CreateProductImageRequest;
-use App\Http\Requests\productImage\GetProductImageRequest;
-use App\Http\Requests\productImage\UpdateProductImageCoverRequest;
+use App\Http\Requests\Admin\productImage\CreateProductImageRequest;
+use App\Http\Requests\Admin\productImage\GetProductImageRequest;
+use App\Http\Requests\Admin\productImage\UpdateProductImageCoverRequest;
 use App\Http\Resources\ProductImageResource;
 use App\Http\Services\ProductImageService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

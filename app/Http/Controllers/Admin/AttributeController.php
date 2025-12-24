@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\attribute\CreateAttributeRequest;
-use App\Http\Requests\attribute\GetAttributeRequest;
-use App\Http\Requests\attribute\UpdateAttributeRequest;
+use App\Http\Requests\Admin\attribute\CreateAttributeRequest;
+use App\Http\Requests\Admin\attribute\GetAttributeRequest;
+use App\Http\Requests\Admin\attribute\UpdateAttributeRequest;
 use App\Http\Resources\AttributeResource;
 use App\Http\Services\AttributeService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

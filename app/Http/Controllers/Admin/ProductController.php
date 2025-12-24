@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\product\CreateProductRequest;
-use App\Http\Requests\product\GetProductsRequest;
-use App\Http\Requests\product\UpdateProductRequest;
+use App\Http\Requests\Admin\product\CreateProductRequest;
+use App\Http\Requests\Admin\product\GetProductsRequest;
+use App\Http\Requests\Admin\product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Services\ProductService;
 use App\Http\Services\ProductSpecificationService;

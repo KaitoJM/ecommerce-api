@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\user\CreateUserRequest;
-use App\Http\Requests\user\GetUserRequest;
-use App\Http\Requests\user\UpdateUserRequest;
+use App\Http\Requests\Admin\user\CreateUserRequest;
+use App\Http\Requests\Admin\user\GetUserRequest;
+use App\Http\Requests\Admin\user\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Services\UserService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

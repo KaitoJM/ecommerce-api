@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\productSpecification\CreateProductSpecificationRequest;
-use App\Http\Requests\productSpecification\GetProductSpecificationRequest;
-use App\Http\Requests\productSpecification\UpdateProductSpecificationRequest;
+use App\Http\Requests\Admin\productSpecification\CreateProductSpecificationRequest;
+use App\Http\Requests\Admin\productSpecification\GetProductSpecificationRequest;
+use App\Http\Requests\Admin\productSpecification\UpdateProductSpecificationRequest;
 use App\Http\Resources\ProductSpecificationResource;
 use App\Http\Services\ProductSpecificationService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

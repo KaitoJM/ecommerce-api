@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\productAttribute\CreateProductAttributeRequest;
-use App\Http\Requests\productAttribute\GetProductAttributeRequest;
-use App\Http\Requests\productAttribute\UpdateProductAttributeRequest;
+use App\Http\Requests\Admin\productAttribute\CreateProductAttributeRequest;
+use App\Http\Requests\Admin\productAttribute\GetProductAttributeRequest;
+use App\Http\Requests\Admin\productAttribute\UpdateProductAttributeRequest;
 use App\Http\Resources\ProductAttributeResource;
 use App\Http\Services\ProductAttributeService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

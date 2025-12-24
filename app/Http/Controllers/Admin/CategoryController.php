@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\category\createCategoryRequest;
-use App\Http\Requests\category\GetCategoryRequest;
-use App\Http\Requests\category\updateCategoryRequest;
+use App\Http\Requests\Admin\category\createCategoryRequest;
+use App\Http\Requests\Admin\category\GetCategoryRequest;
+use App\Http\Requests\Admin\category\updateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Http\Services\CategoryService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

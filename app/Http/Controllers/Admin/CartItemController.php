@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\cartItem\CreateCartItemRequest;
-use App\Http\Requests\cartItem\GetCartItemRequest;
-use App\Http\Requests\cartItem\UpdateCartItemRequest;
+use App\Http\Requests\Admin\cartItem\CreateCartItemRequest;
+use App\Http\Requests\Admin\cartItem\GetCartItemRequest;
+use App\Http\Requests\Admin\cartItem\UpdateCartItemRequest;
 use App\Http\Resources\CartItemResource;
 use App\Http\Services\CartItemService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

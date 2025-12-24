@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\customer\CreateCustomerRequest;
-use App\Http\Requests\customer\GetCustomerRequest;
-use App\Http\Requests\customer\UpdateCustomerRequest;
+use App\Http\Requests\Admin\customer\CreateCustomerRequest;
+use App\Http\Requests\Admin\customer\GetCustomerRequest;
+use App\Http\Requests\Admin\customer\UpdateCustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Http\Services\CustomerService;
 use App\Http\Services\UserService;
