@@ -226,8 +226,10 @@ describe('Update Product Specification', function() {
 
     it ('returns a 404 error if the product specification is not found', function() {
         $user = User::factory()->create();
+        $product = Product::factory()->create();
+
         $response = actingAs($user)->putJson('/api/product-specifications/999999', [
-            'product_id' => '1',
+            'product_id' => $product->id,
             'price' => 2000,
         ]);
 
