@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\product\CreateProductRequest;
 use App\Http\Requests\product\GetProductsRequest;
 use App\Http\Requests\product\UpdateProductRequest;

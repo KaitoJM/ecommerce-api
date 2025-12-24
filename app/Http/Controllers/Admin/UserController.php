@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\user\CreateUserRequest;
 use App\Http\Requests\user\GetUserRequest;
 use App\Http\Requests\user\UpdateUserRequest;

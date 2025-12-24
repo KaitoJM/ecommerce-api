@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\attribute\CreateAttributeRequest;
 use App\Http\Requests\attribute\GetAttributeRequest;
 use App\Http\Requests\attribute\UpdateAttributeRequest;

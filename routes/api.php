@@ -1,18 +1,18 @@
 <?php
 
-use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CartItemController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GithubController;
-use App\Http\Controllers\ProductAttributeController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductImageController;
-use App\Http\Controllers\ProductSpecificationController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\AttributeController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CartController;
+use App\Http\Controllers\Admin\CartItemController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\ProductAttributeController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductImageController;
+use App\Http\Controllers\Admin\ProductSpecificationController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);

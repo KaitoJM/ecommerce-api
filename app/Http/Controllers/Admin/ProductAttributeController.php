@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\productAttribute\CreateProductAttributeRequest;
 use App\Http\Requests\productAttribute\GetProductAttributeRequest;
 use App\Http\Requests\productAttribute\UpdateProductAttributeRequest;
@@ -66,7 +67,7 @@ class ProductAttributeController extends Controller
     {
         try {
             $attribute = $this->prodAttrService->updateProductAttribute(
-                $id, 
+                $id,
                 $request->validated()
             );
         } catch (ModelNotFoundException $e) {

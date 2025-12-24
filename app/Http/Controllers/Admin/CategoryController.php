@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\category\createCategoryRequest;
 use App\Http\Requests\category\GetCategoryRequest;
 use App\Http\Requests\category\updateCategoryRequest;

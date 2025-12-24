@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\productImage\CreateProductImageRequest;
 use App\Http\Requests\productImage\GetProductImageRequest;
 use App\Http\Requests\productImage\UpdateProductImageCoverRequest;
@@ -24,7 +25,7 @@ class ProductImageController extends Controller
      * Display a listing of the resource.
      */
     public function index(GetProductImageRequest $request)
-    {   
+    {
         $filters = $request->only(['cover']);
         $images = $this->imageService->getImages($request->product_id, $filters);
 
