@@ -7,7 +7,8 @@ use Carbon\Carbon;
 
 class OrderService {
     public function getOrders(?string $search = null, $filters = null, $pagination = null) {
-        return Order::when(isset($filters['customer_id']), function($query) use ($filters) {
+        return Order::with(['customer', 'status'])
+        ->when(isset($filters['customer_id']), function($query) use ($filters) {
             $query->where('customer_id', $filters['customer_id']);
         })->when(isset($filters['session_id']), function($query) use ($filters) {
             $query->where('session_id', $filters['session_id']);
@@ -54,7 +55,7 @@ class OrderService {
      * @return \App\Models\Order
      */
     public function getOrderById(int $id) {
-        return Order::findOrFail($id);
+        return Order::with(['customer', 'status'])->findOrFail($id);
     }
 
     /**

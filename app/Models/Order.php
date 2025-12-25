@@ -19,4 +19,12 @@ class Order extends Model
         'tax_total',
         'total',
     ];
+
+    public function customer() {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function status() {
+        return $this->belongsTo(OrderStatus::class);
+    }
 }
