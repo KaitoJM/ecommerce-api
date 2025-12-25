@@ -27,7 +27,7 @@ class CreateCustomerRequest extends FormRequest
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'middle_name' => 'nullable',
-            'gender' => 'in:male,female',
+            'gender' => 'nullable|in:male,female',
             'birthday' => 'nullable',
             'phone' => 'nullable',
         ];

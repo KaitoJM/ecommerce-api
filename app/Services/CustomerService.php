@@ -36,9 +36,9 @@ class CustomerService {
             'first_name' => $params['first_name'],
             'last_name' => $params['last_name'],
             'middle_name' => $params['middle_name'] ?? '',
-            'gender' => $params['gender'],
-            'birthday' => $params['birthday'],
-            'phone' => $params['phone'] ?? '',
+            'gender' => $params['gender'] ?? null,
+            'birthday' => $params['birthday'] ?? null,
+            'phone' => $params['phone'] ?? null,
             'user_id' => $params['user_id'],
         ]);
 
