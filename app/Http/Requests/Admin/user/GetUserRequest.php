@@ -25,6 +25,7 @@ class GetUserRequest extends FormRequest
             'search' => 'string|nullable',
             'page' => 'integer|nullable',
             'per_page' => 'integer|nullable',
+            'role' => 'nullable|in:admin,customer,staff,courier'
         ];
     }
 }

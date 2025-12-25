@@ -26,7 +26,10 @@ class UserController extends Controller
      */
     public function index(GetUserRequest $request)
     {
-        $users = $this->userService->getUsers($request->query('search'));
+        $filters = $request->only(['role']);
+        $pagination = $request->only(['page', 'per_page']);
+
+        $users = $this->userService->getUsers($request->query('search'), $filters, $pagination);
 
         return UserResource::collection($users);
     }
