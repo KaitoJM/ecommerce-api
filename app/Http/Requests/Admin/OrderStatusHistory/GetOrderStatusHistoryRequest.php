@@ -22,8 +22,7 @@ class GetOrderStatusHistoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => 'string|nullable',
-            'order_id' => 'string|nullable',
+            'order_id' => 'required',
         ];
     }
 }
