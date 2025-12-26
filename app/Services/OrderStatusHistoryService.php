@@ -9,7 +9,7 @@ class OrderStatusHistoryService {
         return OrderStatusHistory::with('status')
         ->when($order_id, function($query) use ($order_id){
             $query->where('order_id', $order_id);
-        })->get;
+        })->get();
     }
 
     /**
