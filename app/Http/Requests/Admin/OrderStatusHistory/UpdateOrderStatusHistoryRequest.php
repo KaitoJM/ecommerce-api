@@ -24,7 +24,6 @@ class UpdateOrderStatusHistoryRequest extends FormRequest
         return [
             'order_id' => 'sometimes|exists:orders,id',
             'status_id' => 'sometimes|exists:order_statuses,id',
-            'user_id' => 'sometimes|exists:users,id',
         ];
     }
 }

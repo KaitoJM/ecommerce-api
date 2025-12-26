@@ -37,8 +37,8 @@ class OrderStatusHistoryController extends Controller
     public function store(CreateOrderStatusHistoryRequest $request)
     {
         $history = $this->orderStatusHistoryService->createOrderStatusHistory(
-            $request->only('order_id'),
-            $request->only('status_id'),
+            $request->order_id,
+            $request->status_id,
             Auth::user()->id,
         );
 

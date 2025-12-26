@@ -24,7 +24,6 @@ class CreateOrderStatusHistoryRequest extends FormRequest
         return [
             'order_id' => 'required|exists:orders,id',
             'status_id' => 'required|exists:order_statuses,id',
-            'user_id' => 'required|exists:users,id',
         ];
     }
 }
