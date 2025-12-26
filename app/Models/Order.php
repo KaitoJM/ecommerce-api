@@ -27,4 +27,9 @@ class Order extends Model
     public function status() {
         return $this->belongsTo(OrderStatus::class);
     }
+
+    public function history()
+    {
+        return $this->belongsToMany(OrderStatus::class, 'order_status_histories');
+    }
 }
