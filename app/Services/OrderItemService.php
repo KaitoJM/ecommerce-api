@@ -7,7 +7,8 @@ use Carbon\Carbon;
 
 class OrderItemService {
     public function getOrderItems(?string $search = null, $filters = null, $pagination = null) {
-        return OrderItem::when($search, function($query) use ($search) {
+        return OrderItem::with(['product', 'product_specification'])
+        ->when($search, function($query) use ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('product_snapshot_name', 'like', "%{$search}%");
                 $q->orWhere('product_snapshot_price', 'like', "%{$search}%");
@@ -55,7 +56,8 @@ class OrderItemService {
      * @return \App\Models\OrderItem
      */
     public function getOrderItemById(int $id) {
-        return OrderItem::findOrFail($id);
+        return OrderItem::with(['product', 'product_specification'])
+        ->findOrFail($id);
     }
 
     /**

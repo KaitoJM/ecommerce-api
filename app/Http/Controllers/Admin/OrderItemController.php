@@ -24,7 +24,8 @@ class OrderItemController extends Controller
      */
     public function index(GetOrderItemRequest $request)
     {
-        $orderItems = $this->orderItemService->getOrderItems($request->query('search'));
+        $filters = $request->only(['order_id']);
+        $orderItems = $this->orderItemService->getOrderItems($request->query('search'), $filters);
 
         return OrderItemResource::collection($orderItems);
     }

@@ -25,6 +25,7 @@ class GetOrderItemRequest extends FormRequest
             'search' => 'string|nullable',
             'page' => 'integer|nullable',
             'per_page' => 'integer|nullable',
+            'order_id' => 'string|nullable',
         ];
     }
 }
