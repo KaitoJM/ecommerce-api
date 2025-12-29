@@ -7,9 +7,8 @@ use App\Models\OrderStatusHistory;
 class OrderStatusHistoryRepository {
     public function getOrderStatusHistories($order_id = null) {
         return OrderStatusHistory::with('status')
-        ->when($order_id, function($query) use ($order_id){
-            $query->where('order_id', $order_id);
-        })->get();
+        ->filterOrderId($order_id)
+        ->get();
     }
 
     /**
