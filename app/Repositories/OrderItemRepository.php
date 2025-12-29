@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\OrderItem;
 use Carbon\Carbon;
 
-class OrderItemService {
+class OrderItemRepository {
     public function getOrderItems(?string $search = null, $filters = null, $pagination = null) {
         return OrderItem::with(['product', 'product_specification'])
         ->when($search, function($query) use ($search) {

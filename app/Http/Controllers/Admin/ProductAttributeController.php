@@ -7,17 +7,17 @@ use App\Http\Requests\Admin\productAttribute\CreateProductAttributeRequest;
 use App\Http\Requests\Admin\productAttribute\GetProductAttributeRequest;
 use App\Http\Requests\Admin\productAttribute\UpdateProductAttributeRequest;
 use App\Http\Resources\ProductAttributeResource;
-use App\Repositories\ProductAttributeService;
+use App\Repositories\ProductAttributeRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class ProductAttributeController extends Controller
 {
-    protected ProductAttributeService $prodAttrService;
+    protected ProductAttributeRepository $prodAttrRepository;
 
-    public function __construct(ProductAttributeService $prodAttrService)
+    public function __construct(ProductAttributeRepository $prodAttrRepository)
     {
-        $this->prodAttrService = $prodAttrService;
+        $this->prodAttrRepository = $prodAttrRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ class ProductAttributeController extends Controller
      */
     public function index(GetProductAttributeRequest $request)
     {
-        $productAttributes = $this->prodAttrService->getProductAttributes($request->product_id);
+        $productAttributes = $this->prodAttrRepository->getProductAttributes($request->product_id);
 
         return ProductAttributeResource::collection($productAttributes);
     }
@@ -36,7 +36,7 @@ class ProductAttributeController extends Controller
      */
     public function store(CreateProductAttributeRequest $request)
     {
-        $productAttribute = $this->prodAttrService->createProductAttribute(
+        $productAttribute = $this->prodAttrRepository->createProductAttribute(
             $request->product_id,
             $request->attribute_id,
             $request->value,
@@ -52,7 +52,7 @@ class ProductAttributeController extends Controller
     public function show(string $id)
     {
         try {
-            $productAttribute = $this->prodAttrService->getProductAttributeById($id);
+            $productAttribute = $this->prodAttrRepository->getProductAttributeById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product attribute not found'], 404);
         }
@@ -66,7 +66,7 @@ class ProductAttributeController extends Controller
     public function update(UpdateProductAttributeRequest $request, string $id)
     {
         try {
-            $attribute = $this->prodAttrService->updateProductAttribute(
+            $attribute = $this->prodAttrRepository->updateProductAttribute(
                 $id,
                 $request->validated()
             );
@@ -83,7 +83,7 @@ class ProductAttributeController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->prodAttrService->deleteProductAttribute($id);
+            $this->prodAttrRepository->deleteProductAttribute($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product attribute not found'], 404);
         }

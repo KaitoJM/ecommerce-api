@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class UserService {
+class UserRepository {
     public function getUsers(?string $search = null, $filters = null, $pagination = null) {
         return User::when($search, function($query) use ($search) {
             $query->where(function ($q) use ($search) {

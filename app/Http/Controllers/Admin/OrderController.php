@@ -7,16 +7,16 @@ use App\Http\Requests\Admin\Order\CreateOrderRequest;
 use App\Http\Requests\Admin\Order\GetOrderRequest;
 use App\Http\Requests\Admin\Order\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
-use App\Repositories\OrderService;
+use App\Repositories\OrderRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    protected OrderService $orderService;
+    protected OrderRepository $orderRepository;
 
-    public function __construct(OrderService $orderService) {
-        $this->orderService = $orderService;
+    public function __construct(OrderRepository $orderRepository) {
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -24,7 +24,7 @@ class OrderController extends Controller
      */
     public function index(GetOrderRequest $request)
     {
-        $orders = $this->orderService->getOrders($request->query('search'));
+        $orders = $this->orderRepository->getOrders($request->query('search'));
 
         return OrderResource::collection($orders);
     }
@@ -34,7 +34,7 @@ class OrderController extends Controller
      */
     public function store(CreateOrderRequest $request)
     {
-        $order = $this->orderService->createOrder(
+        $order = $this->orderRepository->createOrder(
             $request->only([
                 'customer_id',
                 'session_id',
@@ -56,7 +56,7 @@ class OrderController extends Controller
     public function show(string $id)
     {
         try {
-            $order = $this->orderService->getOrderById($id);
+            $order = $this->orderRepository->getOrderById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Order not found'], 404);
         }
@@ -70,7 +70,7 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, string $id)
     {
         try {
-            $order = $this->orderService->updateOrder(
+            $order = $this->orderRepository->updateOrder(
                 $id,
                 $request->validated()
             );
@@ -87,7 +87,7 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->orderService->deleteOrder($id);
+            $this->orderRepository->deleteOrder($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Order not found'], 404);
         }

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ProductSpecification;
 
-class ProductSpecificationService {
+class ProductSpecificationRepository {
     /**
      * Get product specifications.
      *

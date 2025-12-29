@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Cart;
 use Carbon\Carbon;
 
-class CartService {
+class CartRepository {
     /**
      * Get carts with optional filters.
      *

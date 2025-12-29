@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\OrderStatus;
 
-class OrderStatusService {
+class OrderStatusRepository {
     public function getOrderStatuses(?string $search = null, $filters = null, $pagination = null) {
         return OrderStatus::when($search, function($query) use ($search) {
             $query->where(function ($q) use ($search) {

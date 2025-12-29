@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ProductAttribute;
 
-class ProductAttributeService {
+class ProductAttributeRepository {
     /**
      * Get product attributes.
      *

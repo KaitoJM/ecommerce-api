@@ -7,16 +7,16 @@ use App\Http\Requests\Admin\cart\CreateCartRequest;
 use App\Http\Requests\Admin\cart\GetCartRequest;
 use App\Http\Requests\Admin\cart\UpdateCartRequest;
 use App\Http\Resources\CartResource;
-use App\Repositories\CartService;
+use App\Repositories\CartRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    protected CartService $cartService;
+    protected CartRepository $cartRepository;
 
-    public function __construct(CartService $cartService) {
-        $this->cartService = $cartService;
+    public function __construct(CartRepository $cartRepository) {
+        $this->cartRepository = $cartRepository;
     }
 
     /**
@@ -24,7 +24,7 @@ class CartController extends Controller
      */
     public function index(GetCartRequest $request)
     {
-        $carts = $this->cartService->getCarts($request->query('search'));
+        $carts = $this->cartRepository->getCarts($request->query('search'));
 
         return CartResource::collection($carts);
     }
@@ -34,7 +34,7 @@ class CartController extends Controller
      */
     public function store(CreateCartRequest $request)
     {
-        $cart = $this->cartService->createCart(
+        $cart = $this->cartRepository->createCart(
             $request->only([
                 'customer_id',
                 'session_id',
@@ -52,7 +52,7 @@ class CartController extends Controller
     public function show(string $id)
     {
         try {
-            $cart = $this->cartService->getCartById($id);
+            $cart = $this->cartRepository->getCartById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Cart not found'], 404);
         }
@@ -66,7 +66,7 @@ class CartController extends Controller
     public function update(UpdateCartRequest $request, string $id)
     {
         try {
-            $cart = $this->cartService->updateCart(
+            $cart = $this->cartRepository->updateCart(
                 $id,
                 $request->validated()
             );
@@ -83,7 +83,7 @@ class CartController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->cartService->deleteCart($id);
+            $this->cartRepository->deleteCart($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Cart not found'], 404);
         }

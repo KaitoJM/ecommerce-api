@@ -7,17 +7,17 @@ use App\Http\Requests\Admin\attribute\CreateAttributeRequest;
 use App\Http\Requests\Admin\attribute\GetAttributeRequest;
 use App\Http\Requests\Admin\attribute\UpdateAttributeRequest;
 use App\Http\Resources\AttributeResource;
-use App\Repositories\AttributeService;
+use App\Repositories\AttributeRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
-    protected AttributeService $attributeService;
+    protected AttributeRepository $attributeRepository;
 
-    public function __construct(AttributeService $attributeService)
+    public function __construct(AttributeRepository $attributeRepository)
     {
-        $this->attributeService = $attributeService;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ class AttributeController extends Controller
      */
     public function index(GetAttributeRequest $request)
     {
-        $attributes = $this->attributeService->getAttributes($request->query('search'));
+        $attributes = $this->attributeRepository->getAttributes($request->query('search'));
 
         return AttributeResource::collection($attributes);
     }
@@ -35,7 +35,7 @@ class AttributeController extends Controller
      */
     public function store(CreateAttributeRequest $request)
     {
-        $attribute = $this->attributeService->createAttribute($request->only(['attribute', 'selection_type']));
+        $attribute = $this->attributeRepository->createAttribute($request->only(['attribute', 'selection_type']));
 
         return response()->json(['data' => $attribute])->setStatusCode(201);
     }
@@ -46,7 +46,7 @@ class AttributeController extends Controller
     public function show(string $id)
     {
         try {
-            $attribute = $this->attributeService->getAttributeById($id);
+            $attribute = $this->attributeRepository->getAttributeById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Attribute not found'], 404);
         }
@@ -60,7 +60,7 @@ class AttributeController extends Controller
     public function update(UpdateAttributeRequest $request, string $id)
     {
         try {
-            $attribute = $this->attributeService->updateAttribute(
+            $attribute = $this->attributeRepository->updateAttribute(
                 $id,
                 $request->validated()
             );
@@ -77,7 +77,7 @@ class AttributeController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->attributeService->deleteAttribute($id);
+            $this->attributeRepository->deleteAttribute($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Attribute not found'], 404);
         }

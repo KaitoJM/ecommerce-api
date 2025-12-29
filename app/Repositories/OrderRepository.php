@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Order;
 use Carbon\Carbon;
 
-class OrderService {
+class OrderRepository {
     public function getOrders(?string $search = null, $filters = null, $pagination = null) {
         return Order::with(['customer', 'status'])
         ->when(isset($filters['customer_id']), function($query) use ($filters) {

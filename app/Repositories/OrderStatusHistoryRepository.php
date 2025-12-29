@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\OrderStatusHistory;
 
-class OrderStatusHistoryService {
+class OrderStatusHistoryRepository {
     public function getOrderStatusHistories($order_id = null) {
         return OrderStatusHistory::with('status')
         ->when($order_id, function($query) use ($order_id){

@@ -7,24 +7,24 @@ use App\Http\Requests\Admin\customer\CreateCustomerRequest;
 use App\Http\Requests\Admin\customer\GetCustomerRequest;
 use App\Http\Requests\Admin\customer\UpdateCustomerRequest;
 use App\Http\Resources\CustomerResource;
-use App\Repositories\CustomerService;
-use App\Repositories\UserService;
+use App\Repositories\CustomerRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
-    protected CustomerService $customerService;
-    protected UserService $userService;
+    protected CustomerRepository $customerRepository;
+    protected UserRepository $userRepository;
 
     public function __construct(
-        CustomerService $customerService,
-        UserService $userService
+        CustomerRepository $customerRepository,
+        UserRepository $userRepository
     )
     {
-        $this->customerService = $customerService;
-        $this->userService = $userService;
+        $this->customerRepository = $customerRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -32,7 +32,7 @@ class CustomerController extends Controller
      */
     public function index(GetCustomerRequest $request)
     {
-        $customers = $this->customerService->getCustomers($request->query('search'));
+        $customers = $this->customerRepository->getCustomers($request->query('search'));
 
         return CustomerResource::collection($customers);
     }
@@ -44,7 +44,7 @@ class CustomerController extends Controller
     {
         $customer = DB::transaction(function () use ($request) {
             // create user
-            $user = $this->userService->createUser([
+            $user = $this->userRepository->createUser([
                 'name' => $request->first_name . ' ' . $request->last_name,
                 'email' => $request->email,
                 'password' => $request->password,
@@ -62,7 +62,7 @@ class CustomerController extends Controller
             $params['user_id'] = $user->id;
 
             // create customer
-            return $this->customerService->createCustomer($params);
+            return $this->customerRepository->createCustomer($params);
         });
 
         return response()->json(['data' => $customer])->setStatusCode(201);
@@ -74,7 +74,7 @@ class CustomerController extends Controller
     public function show(string $id)
     {
         try {
-            $customer = $this->customerService->getCustomerById($id);
+            $customer = $this->customerRepository->getCustomerById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Customer not found'], 404);
         }
@@ -88,7 +88,7 @@ class CustomerController extends Controller
     public function update(UpdateCustomerRequest $request, string $id)
     {
         try {
-            $customer = $this->customerService->updateCustomer(
+            $customer = $this->customerRepository->updateCustomer(
                 $id,
                 $request->validated()
             );
@@ -105,7 +105,7 @@ class CustomerController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->customerService->deleteCustomer($id);
+            $this->customerRepository->deleteCustomer($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Customer not found'], 404);
         }

@@ -6,7 +6,7 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
 use phpDocumentor\Reflection\Types\Boolean;
 
-class CustomerService {
+class CustomerRepository {
     public function getCustomers(?string $search = null, $filters = null, $pagination = null) {
         return Customer::with('user')
         ->when($search, function($query) use ($search) {

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Category;
 
-class CategoryService {
+class CategoryRepository {
     /**
      * Get categories with optional filters.
      *

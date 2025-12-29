@@ -7,18 +7,18 @@ use App\Http\Requests\Admin\user\CreateUserRequest;
 use App\Http\Requests\Admin\user\GetUserRequest;
 use App\Http\Requests\Admin\user\UpdateUserRequest;
 use App\Http\Resources\UserResource;
-use App\Repositories\UserService;
+use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
 
-    protected UserService $userService;
+    protected UserRepository $userRepository;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->userService = $userService;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -29,7 +29,7 @@ class UserController extends Controller
         $filters = $request->only(['role']);
         $pagination = $request->only(['page', 'per_page']);
 
-        $users = $this->userService->getUsers($request->query('search'), $filters, $pagination);
+        $users = $this->userRepository->getUsers($request->query('search'), $filters, $pagination);
 
         return UserResource::collection($users);
     }
@@ -39,7 +39,7 @@ class UserController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        $user = $this->userService->createUser(
+        $user = $this->userRepository->createUser(
             $request->only([
                 'name',
                 'email',
@@ -57,7 +57,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         try {
-            $user = $this->userService->getUserById($id);
+            $user = $this->userRepository->getUserById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'User not found'], 404);
         }
@@ -71,7 +71,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, string $id)
     {
         try {
-            $user = $this->userService->updateUser(
+            $user = $this->userRepository->updateUser(
                 $id,
                 $request->validated()
             );
@@ -88,7 +88,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->userService->deleteUser($id);
+            $this->userRepository->deleteUser($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'User not found'], 404);
         }

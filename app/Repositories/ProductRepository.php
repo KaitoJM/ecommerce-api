@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Product;
 use phpDocumentor\Reflection\Types\Boolean;
 
-class ProductService {
+class ProductRepository {
     /**
      * Get products for the given user with optional filters.
      *

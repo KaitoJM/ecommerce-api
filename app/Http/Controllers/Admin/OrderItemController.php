@@ -7,16 +7,16 @@ use App\Http\Requests\Admin\Order\CreateOrderRequest;
 use App\Http\Requests\Admin\OrderItem\GetOrderItemRequest;
 use App\Http\Requests\Admin\OrderItem\UpdateOrderItemRequest;
 use App\Http\Resources\OrderItemResource;
-use App\Repositories\OrderItemService;
+use App\Repositories\OrderItemRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class OrderItemController extends Controller
 {
-    protected OrderItemService $orderItemService;
+    protected OrderItemRepository $orderItemRepository;
 
-    public function __construct(OrderItemService $orderItemService) {
-        $this->orderItemService = $orderItemService;
+    public function __construct(OrderItemRepository $orderItemRepository) {
+        $this->orderItemRepository = $orderItemRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ class OrderItemController extends Controller
     public function index(GetOrderItemRequest $request)
     {
         $filters = $request->only(['order_id']);
-        $orderItems = $this->orderItemService->getOrderItems($request->query('search'), $filters);
+        $orderItems = $this->orderItemRepository->getOrderItems($request->query('search'), $filters);
 
         return OrderItemResource::collection($orderItems);
     }
@@ -35,7 +35,7 @@ class OrderItemController extends Controller
      */
     public function store(CreateOrderRequest $request)
     {
-        $orderItem = $this->orderItemService->createOrderItem(
+        $orderItem = $this->orderItemRepository->createOrderItem(
             $request->only([
                 'order_id',
                 'product_id',
@@ -56,7 +56,7 @@ class OrderItemController extends Controller
     public function show(string $id)
     {
         try {
-            $orderItem = $this->orderItemService->getOrderItemById($id);
+            $orderItem = $this->orderItemRepository->getOrderItemById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Order item not found'], 404);
         }
@@ -70,7 +70,7 @@ class OrderItemController extends Controller
     public function update(UpdateOrderItemRequest $request, string $id)
     {
         try {
-            $orderItem = $this->orderItemService->updateOrderItem(
+            $orderItem = $this->orderItemRepository->updateOrderItem(
                 $id,
                 $request->validated()
             );
@@ -87,7 +87,7 @@ class OrderItemController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->orderItemService->deleteOrderItem($id);
+            $this->orderItemRepository->deleteOrderItem($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Order item not found'], 404);
         }

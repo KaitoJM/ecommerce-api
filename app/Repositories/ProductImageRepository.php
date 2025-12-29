@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ProductImage;
 
-class ProductImageService {
+class ProductImageRepository {
     /**
      * Get product images with filter.
      *

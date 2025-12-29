@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Brand;
 
-class BrandService {
+class BrandRepository {
     /**
      * Get brands with optional filters.
      *

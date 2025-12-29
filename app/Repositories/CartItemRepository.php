@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\CartItem;
 
-class CartItemService {
+class CartItemRepository {
     public function getCartItems(?string $search = null, $filters = null, $pagination = null) {
         return CartItem::when($search, function($query) use ($search) {
             $query->where(function ($q) use ($search) {

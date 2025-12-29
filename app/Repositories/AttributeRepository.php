@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Attribute;
 
-class AttributeService {
+class AttributeRepository {
     /**
      * Get attributes with optional filters.
      *

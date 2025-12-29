@@ -7,17 +7,17 @@ use App\Http\Requests\Admin\cartItem\CreateCartItemRequest;
 use App\Http\Requests\Admin\cartItem\GetCartItemRequest;
 use App\Http\Requests\Admin\cartItem\UpdateCartItemRequest;
 use App\Http\Resources\CartItemResource;
-use App\Repositories\CartItemService;
+use App\Repositories\CartItemRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class CartItemController extends Controller
 {
-    protected CartItemService $cartItemService;
+    protected CartItemRepository $cartItemRepository;
 
-    public function __construct(CartItemService $cartItemService)
+    public function __construct(CartItemRepository $cartItemRepository)
     {
-        $this->cartItemService = $cartItemService;
+        $this->cartItemRepository = $cartItemRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ class CartItemController extends Controller
      */
     public function index(GetCartItemRequest $request)
     {
-        $cartItems = $this->cartItemService->getCartItems($request->query('search'));
+        $cartItems = $this->cartItemRepository->getCartItems($request->query('search'));
 
         return CartItemResource::collection($cartItems);
     }
@@ -35,7 +35,7 @@ class CartItemController extends Controller
      */
     public function store(CreateCartItemRequest $request)
     {
-        $cartItem = $this->cartItemService->createCartItem(
+        $cartItem = $this->cartItemRepository->createCartItem(
             $request->only([
                 'cart_id',
                 'product_id',
@@ -53,7 +53,7 @@ class CartItemController extends Controller
     public function show(string $id)
     {
         try {
-            $cartItem = $this->cartItemService->getCartItemById($id);
+            $cartItem = $this->cartItemRepository->getCartItemById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Cart item not found'], 404);
         }
@@ -67,7 +67,7 @@ class CartItemController extends Controller
     public function update(UpdateCartItemRequest $request, string $id)
     {
         try {
-            $cartItem = $this->cartItemService->updateCartItem(
+            $cartItem = $this->cartItemRepository->updateCartItem(
                 $id,
                 $request->validated()
             );
@@ -84,7 +84,7 @@ class CartItemController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->cartItemService->deleteCartItem($id);
+            $this->cartItemRepository->deleteCartItem($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Cart item not found'], 404);
         }

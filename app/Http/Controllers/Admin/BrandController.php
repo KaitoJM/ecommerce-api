@@ -7,17 +7,17 @@ use App\Http\Requests\Admin\brand\CreateBrandRequest;
 use App\Http\Requests\Admin\brand\GetBrandRequest;
 use App\Http\Requests\Admin\brand\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
-use App\Repositories\BrandService;
+use App\Repositories\BrandRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-    protected BrandService $brandService;
+    protected BrandRepository $brandRepository;
 
-    public function __construct(BrandService $brandService)
+    public function __construct(BrandRepository $brandRepository)
     {
-        $this->brandService = $brandService;
+        $this->brandRepository = $brandRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ class BrandController extends Controller
      */
     public function index(GetBrandRequest $request)
     {
-        $brands = $this->brandService->getBrands($request->query('search'));
+        $brands = $this->brandRepository->getBrands($request->query('search'));
 
         return BrandResource::collection($brands);
     }
@@ -35,7 +35,7 @@ class BrandController extends Controller
      */
     public function store(CreateBrandRequest $request)
     {
-        $brand = $this->brandService->createBrand($request->only(['name']));
+        $brand = $this->brandRepository->createBrand($request->only(['name']));
 
         return response()->json(['data' => $brand])->setStatusCode(201);
     }
@@ -46,7 +46,7 @@ class BrandController extends Controller
     public function show(string $id)
     {
         try {
-            $brand = $this->brandService->getBrandById($id);
+            $brand = $this->brandRepository->getBrandById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Brand not found'], 404);
         }
@@ -60,7 +60,7 @@ class BrandController extends Controller
     public function update(UpdateBrandRequest $request, string $id)
     {
         try {
-            $brand = $this->brandService->updateBrand(
+            $brand = $this->brandRepository->updateBrand(
                 $id,
                 $request->validated()
             );
@@ -77,7 +77,7 @@ class BrandController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->brandService->deleteBrand($id);
+            $this->brandRepository->deleteBrand($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Brand not found'], 404);
         }

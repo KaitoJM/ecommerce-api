@@ -7,17 +7,17 @@ use App\Http\Requests\Admin\productSpecification\CreateProductSpecificationReque
 use App\Http\Requests\Admin\productSpecification\GetProductSpecificationRequest;
 use App\Http\Requests\Admin\productSpecification\UpdateProductSpecificationRequest;
 use App\Http\Resources\ProductSpecificationResource;
-use App\Repositories\ProductSpecificationService;
+use App\Repositories\ProductSpecificationRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class ProductSpecificationController extends Controller
 {
-    protected ProductSpecificationService $specificationService;
+    protected ProductSpecificationRepository $specificationRepository;
 
-    public function __construct(ProductSpecificationService $specificationService)
+    public function __construct(ProductSpecificationRepository $specificationRepository)
     {
-        $this->specificationService = $specificationService;
+        $this->specificationRepository = $specificationRepository;
     }
 
     /**
@@ -26,7 +26,7 @@ class ProductSpecificationController extends Controller
     public function index(GetProductSpecificationRequest $request)
     {
         $filters = $request->only(['product_id', 'default', 'sale']);
-        $products = $this->specificationService->getProductSpecifications($filters);
+        $products = $this->specificationRepository->getProductSpecifications($filters);
 
         return ProductSpecificationResource::collection($products);
     }
@@ -36,7 +36,7 @@ class ProductSpecificationController extends Controller
      */
     public function store(CreateProductSpecificationRequest $request)
     {
-        $product = $this->specificationService->createProductSpecification(
+        $product = $this->specificationRepository->createProductSpecification(
             $request->product_id,
             $request->combination,
             $request->price,
@@ -56,7 +56,7 @@ class ProductSpecificationController extends Controller
     public function show(string $id)
     {
         try {
-            $product = $this->specificationService->getProductSpecificationById($id);
+            $product = $this->specificationRepository->getProductSpecificationById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product specification not found'], 404);
         }
@@ -70,7 +70,7 @@ class ProductSpecificationController extends Controller
     public function update(UpdateProductSpecificationRequest $request, string $id)
     {
         try {
-            $product = $this->specificationService->updateProductSpecification(
+            $product = $this->specificationRepository->updateProductSpecification(
                 $id,
                 $request->validated()
             );
@@ -88,7 +88,7 @@ class ProductSpecificationController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->specificationService->deleteProductSpecification($id);
+            $this->specificationRepository->deleteProductSpecification($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product specification not found'], 404);
         }
@@ -99,7 +99,7 @@ class ProductSpecificationController extends Controller
     public function destroyAllSpecificationByProductId(string $product_id)
     {
         try {
-            $this->specificationService->deleteProductSpecifications( $product_id);
+            $this->specificationRepository->deleteProductSpecifications( $product_id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Error while deleting product specifications'], 500);
         }

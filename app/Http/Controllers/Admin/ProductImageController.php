@@ -6,17 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\productImage\CreateProductImageRequest;
 use App\Http\Requests\Admin\productImage\GetProductImageRequest;
 use App\Http\Resources\ProductImageResource;
-use App\Repositories\ProductImageService;
+use App\Repositories\ProductImageRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 
 class ProductImageController extends Controller
 {
-    protected ProductImageService $imageService;
+    protected ProductImageRepository $imageRepository;
 
-    public function __construct(ProductImageService $imageService)
+    public function __construct(ProductImageRepository $imageRepository)
     {
-        $this->imageService = $imageService;
+        $this->imageRepository = $imageRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ class ProductImageController extends Controller
     public function index(GetProductImageRequest $request)
     {
         $filters = $request->only(['cover']);
-        $images = $this->imageService->getImages($request->product_id, $filters);
+        $images = $this->imageRepository->getImages($request->product_id, $filters);
 
         return ProductImageResource::collection($images);
     }
@@ -41,7 +41,7 @@ class ProductImageController extends Controller
         $source = Storage::disk('s3')->url($path);
 
         // save file information
-        $image = $this->imageService->createProductImage($source, $request->product_id, $request->cover);
+        $image = $this->imageRepository->createProductImage($source, $request->product_id, $request->cover);
 
         return response()->json($image)->setStatusCode(201);
     }
@@ -52,7 +52,7 @@ class ProductImageController extends Controller
     public function show(string $id)
     {
         try {
-            $image = $this->imageService->getImageById($id);
+            $image = $this->imageRepository->getImageById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Image not found'], 404);
         }
@@ -66,10 +66,10 @@ class ProductImageController extends Controller
     public function destroy(string $id)
     {
         try {
-            $image = $this->imageService->getImageById($id);
+            $image = $this->imageRepository->getImageById($id);
             $imageSource = $image->source;
 
-            $this->imageService->deleteImage($id);
+            $this->imageRepository->deleteImage($id);
 
             // This is for local
             // // Remove base URL and /storage/
@@ -104,7 +104,7 @@ class ProductImageController extends Controller
 
     public function updateCoverImage(string $id) {
         try {
-            $this->imageService->setCoverImage($id);
+            $this->imageRepository->setCoverImage($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Image not found'], 404);
         }

@@ -7,17 +7,17 @@ use App\Http\Requests\Admin\category\createCategoryRequest;
 use App\Http\Requests\Admin\category\GetCategoryRequest;
 use App\Http\Requests\Admin\category\updateCategoryRequest;
 use App\Http\Resources\CategoryResource;
-use App\Repositories\CategoryService;
+use App\Repositories\CategoryRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    protected CategoryService $categoryService;
+    protected CategoryRepository $categoryRepository;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(CategoryRepository $categoryRepository)
     {
-        $this->categoryService = $categoryService;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function index(GetCategoryRequest $request)
     {
-        $categories = $this->categoryService->getCategories($request->query('search'));
+        $categories = $this->categoryRepository->getCategories($request->query('search'));
 
         return CategoryResource::collection($categories);
     }
@@ -35,7 +35,7 @@ class CategoryController extends Controller
      */
     public function store(createCategoryRequest $request)
     {
-        $category = $this->categoryService->createCategory($request->only(['name', 'description']));
+        $category = $this->categoryRepository->createCategory($request->only(['name', 'description']));
 
         return response()->json(['data' => $category])->setStatusCode(201);
     }
@@ -46,7 +46,7 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         try {
-            $category = $this->categoryService->getCategoryById($id);
+            $category = $this->categoryRepository->getCategoryById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Category not found'], 404);
         }
@@ -60,7 +60,7 @@ class CategoryController extends Controller
     public function update(updateCategoryRequest $request, string $id)
     {
         try {
-            $category = $this->categoryService->updateCategory(
+            $category = $this->categoryRepository->updateCategory(
                 $id,
                 $request->validated()
             );
@@ -77,7 +77,7 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->categoryService->deleteCategory($id);
+            $this->categoryRepository->deleteCategory($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Category not found'], 404);
         }

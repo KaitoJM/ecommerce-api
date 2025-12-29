@@ -7,18 +7,18 @@ use App\Http\Requests\Admin\OrderStatusHistory\CreateOrderStatusHistoryRequest;
 use App\Http\Requests\Admin\OrderStatusHistory\GetOrderStatusHistoryRequest;
 use App\Http\Requests\Admin\OrderStatusHistory\UpdateOrderStatusHistoryRequest;
 use App\Http\Resources\OrderStatusHistoryResource;
-use App\Repositories\OrderStatusHistoryService;
+use App\Repositories\OrderStatusHistoryRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderStatusHistoryController extends Controller
 {
-    protected OrderStatusHistoryService $orderStatusHistoryService;
+    protected OrderStatusHistoryRepository $orderStatusHistoryRepository;
 
-    public function __construct(OrderStatusHistoryService $orderStatusHistoryService)
+    public function __construct(OrderStatusHistoryRepository $orderStatusHistoryRepository)
     {
-        $this->orderStatusHistoryService = $orderStatusHistoryService;
+        $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
     }
 
     /**
@@ -26,7 +26,7 @@ class OrderStatusHistoryController extends Controller
      */
     public function index(GetOrderStatusHistoryRequest $request)
     {
-        $history = $this->orderStatusHistoryService->getOrderStatusHistories($request->query('order_id'));
+        $history = $this->orderStatusHistoryRepository->getOrderStatusHistories($request->query('order_id'));
 
         return OrderStatusHistoryResource::collection($history);
     }
@@ -36,7 +36,7 @@ class OrderStatusHistoryController extends Controller
      */
     public function store(CreateOrderStatusHistoryRequest $request)
     {
-        $history = $this->orderStatusHistoryService->createOrderStatusHistory(
+        $history = $this->orderStatusHistoryRepository->createOrderStatusHistory(
             $request->order_id,
             $request->status_id,
             Auth::user()->id,
@@ -51,7 +51,7 @@ class OrderStatusHistoryController extends Controller
     public function show(string $id)
     {
         try {
-            $history = $this->orderStatusHistoryService->getOrderStatusHistoryById($id);
+            $history = $this->orderStatusHistoryRepository->getOrderStatusHistoryById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Order history not found'], 404);
         }
@@ -65,7 +65,7 @@ class OrderStatusHistoryController extends Controller
     public function update(UpdateOrderStatusHistoryRequest $request, string $id)
     {
         try {
-            $history = $this->orderStatusHistoryService->updateOrderStatusHistory(
+            $history = $this->orderStatusHistoryRepository->updateOrderStatusHistory(
                 $id,
                 $request->validated()
             );
@@ -82,7 +82,7 @@ class OrderStatusHistoryController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->orderStatusHistoryService->deleteOrderStatusHistory($id);
+            $this->orderStatusHistoryRepository->deleteOrderStatusHistory($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Order history not found'], 404);
         }

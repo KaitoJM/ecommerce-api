@@ -7,21 +7,21 @@ use App\Http\Requests\Admin\product\CreateProductRequest;
 use App\Http\Requests\Admin\product\GetProductsRequest;
 use App\Http\Requests\Admin\product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
-use App\Repositories\ProductService;
-use App\Repositories\ProductSpecificationService;
+use App\Repositories\ProductRepository;
+use App\Repositories\ProductSpecificationRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected ProductService $productService;
-    protected ProductSpecificationService $productSpecificationService;
+    protected ProductRepository $productRepository;
+    protected ProductSpecificationRepository $productSpecificationRepository;
 
-    public function __construct(ProductService $productService,
-    ProductSpecificationService $productSpecificationService)
+    public function __construct(ProductRepository $productRepository,
+    ProductSpecificationRepository $productSpecificationRepository)
     {
-        $this->productService = $productService;
-        $this->productSpecificationService = $productSpecificationService;
+        $this->productRepository = $productRepository;
+        $this->productSpecificationRepository = $productSpecificationRepository;
     }
 
     /**
@@ -32,7 +32,7 @@ class ProductController extends Controller
         $filters = $request->only(['published']);
         $pagination = $request->only(['page', 'per_page']);
 
-        $products = $this->productService->getProducts($request->query('search'), $filters, $pagination);
+        $products = $this->productRepository->getProducts($request->query('search'), $filters, $pagination);
 
         return ProductResource::collection($products);
     }
@@ -43,10 +43,10 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-        $product = $this->productService->createProduct($request->only(['name', 'summary']));
+        $product = $this->productRepository->createProduct($request->only(['name', 'summary']));
 
         // attach default specification.
-        $this->productSpecificationService->createProductSpecification(
+        $this->productSpecificationRepository->createProductSpecification(
             $product->id,
             '',
             $request->price ?? 0,
@@ -57,7 +57,7 @@ class ProductController extends Controller
         // attach categories when provided
         $categories = $request->input('categories', []);
         if (!empty($categories)) {
-            $this->productService->attachCategories($product, $categories);
+            $this->productRepository->attachCategories($product, $categories);
         }
 
         return response()->json(['data' => $product])->setStatusCode(201);
@@ -69,7 +69,7 @@ class ProductController extends Controller
     public function show(string $id)
     {
         try {
-            $product = $this->productService->getProductById($id);
+            $product = $this->productRepository->getProductById($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product not found'], 404);
         }
@@ -83,7 +83,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, string $id)
     {
         try {
-            $product = $this->productService->updateProduct(
+            $product = $this->productRepository->updateProduct(
                 $id,
                 $request->validated()
             );
@@ -91,13 +91,13 @@ class ProductController extends Controller
             // attach categories when provided
             $categories = $request->input('categories', []);
             if (!empty($categories)) {
-                $this->productService->attachCategories($product, $categories);
+                $this->productRepository->attachCategories($product, $categories);
             }
 
             // update default specification
-            $defaultSpecification = $this->productSpecificationService->getProductDefaultSpecification($id);
+            $defaultSpecification = $this->productSpecificationRepository->getProductDefaultSpecification($id);
             if ($defaultSpecification && ($request->has('price') || $request->has('stock'))) {
-                $this->productSpecificationService->updateProductSpecification(
+                $this->productSpecificationRepository->updateProductSpecification(
                     $defaultSpecification->id,
                     [
                         'price' => $request->price ?? 0,
@@ -119,7 +119,7 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->productService->deleteProduct($id);
+            $this->productRepository->deleteProduct($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Product not found'], 404);
         }
