@@ -13,15 +13,10 @@ class CartRepository {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cart>
      */
     public function getCarts(?string $search = null, $filters = null, $pagination = null) {
-        return Cart::when($search, function($query) use ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('session_id', 'like', "%{$search}%");
-            });
-        })->when(isset($filters['status']), function($query) use ($filters) {
-            $query->where('status', $filters['status']);
-        })->when(isset($filters['expires_at']), function($query) use ($filters) {
-            $query->where('expires_at', $filters['expires_at']);
-        })->paginate($pagination['per_page'] ?? 10);
+        return Cart::search($search)
+        ->filterStatus($filters['status'] ?? null)
+        ->filterExpiresAt($filters['expires_at'] ?? null)
+        ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
