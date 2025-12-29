@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\OrderStatus\CreateOrderStatusRequest;
 use App\Http\Requests\Admin\OrderStatus\GetOrderStatusRequest;
+use App\Http\Requests\Admin\OrderStatus\UpdateOrderStatusRequest;
 use App\Http\Resources\OrderStatusResource;
 use App\Services\OrderStatusService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -30,7 +32,7 @@ class OrderStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateOrderStatusRequest $request)
     {
         $orderStatus = $this->orderStatusService->createOrderStatus(
             $request->only([
@@ -60,7 +62,7 @@ class OrderStatusController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOrderStatusRequest $request, string $id)
     {
         try {
             $orderStatus = $this->orderStatusService->updateOrderStatus(

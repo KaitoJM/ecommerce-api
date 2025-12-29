@@ -22,7 +22,7 @@ class UpdateOrderStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|string',
+            'status' => 'sometimes|string',
             'color_code' => 'nullable|string',
             'description' => 'nullable|string',
         ];
