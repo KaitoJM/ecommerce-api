@@ -9,17 +9,10 @@ use phpDocumentor\Reflection\Types\Boolean;
 class CustomerRepository {
     public function getCustomers(?string $search = null, $filters = null, $pagination = null) {
         return Customer::with('user')
-        ->when($search, function($query) use ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('first_name', 'like', "%{$search}%")
-                  ->orWhere('last_name', 'like', "%{$search}%")
-                  ->orWhere('middle_name', 'like', "%{$search}%");
-            });
-        })->when(isset($filters['gender']), function($query) use ($filters) {
-            $query->where('gender', $filters['gender']);
-        })->when(isset($filters['birthday']), function($query) use ($filters) {
-            $query->where('birthday', $filters['birthday']);
-        })->paginate($pagination['per_page'] ?? 10);
+        ->search($search)
+        ->filterGender($filters['gender'] ?? null)
+        ->filterBirthday($filters['birthday'] ?? null)
+        ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
