@@ -6,17 +6,11 @@ use App\Models\CartItem;
 
 class CartItemRepository {
     public function getCartItems(?string $search = null, $filters = null, $pagination = null) {
-        return CartItem::when($search, function($query) use ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('quantity', 'like', "%{$search}%");
-            });
-        })->when(isset($filters['cart_id']), function($query) use ($filters) {
-            $query->where('cart_id', $filters['cart_id']);
-        })->when(isset($filters['product_id']), function($query) use ($filters) {
-            $query->where('product_id', $filters['product_id']);
-        })->when(isset($filters['product_specification_id']), function($query) use ($filters) {
-            $query->where('product_specification_id', $filters['product_specification_id']);
-        })->paginate($pagination['per_page'] ?? 10);
+        return CartItem::search($search)
+        ->filterCartId($filters['cart_id'] ?? null)
+        ->filterProductId($filters['product_id'] ?? null)
+        ->filterProductSpecificationId($filters['product_specification_id'] ?? null)
+        ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
