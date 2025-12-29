@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Repositories;
 
 use App\Models\Cart;
 use Carbon\Carbon;

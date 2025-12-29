@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\Order\CreateOrderRequest;
 use App\Http\Requests\Admin\OrderItem\GetOrderItemRequest;
 use App\Http\Requests\Admin\OrderItem\UpdateOrderItemRequest;
 use App\Http\Resources\OrderItemResource;
-use App\Services\OrderItemService;
+use App\Repositories\OrderItemService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 

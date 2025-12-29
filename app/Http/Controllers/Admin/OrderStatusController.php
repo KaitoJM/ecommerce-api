@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\OrderStatus\CreateOrderStatusRequest;
 use App\Http\Requests\Admin\OrderStatus\GetOrderStatusRequest;
 use App\Http\Requests\Admin\OrderStatus\UpdateOrderStatusRequest;
 use App\Http\Resources\OrderStatusResource;
-use App\Services\OrderStatusService;
+use App\Repositories\OrderStatusService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 

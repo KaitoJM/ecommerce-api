@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\brand\CreateBrandRequest;
 use App\Http\Requests\Admin\brand\GetBrandRequest;
 use App\Http\Requests\Admin\brand\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
-use App\Services\BrandService;
+use App\Repositories\BrandService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 

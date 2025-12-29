@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\user\CreateUserRequest;
 use App\Http\Requests\Admin\user\GetUserRequest;
 use App\Http\Requests\Admin\user\UpdateUserRequest;
 use App\Http\Resources\UserResource;
-use App\Services\UserService;
+use App\Repositories\UserService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 

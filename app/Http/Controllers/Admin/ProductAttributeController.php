@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\productAttribute\CreateProductAttributeRequest;
 use App\Http\Requests\Admin\productAttribute\GetProductAttributeRequest;
 use App\Http\Requests\Admin\productAttribute\UpdateProductAttributeRequest;
 use App\Http\Resources\ProductAttributeResource;
-use App\Services\ProductAttributeService;
+use App\Repositories\ProductAttributeService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 

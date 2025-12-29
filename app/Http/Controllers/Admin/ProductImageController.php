@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\productImage\CreateProductImageRequest;
 use App\Http\Requests\Admin\productImage\GetProductImageRequest;
-use App\Http\Requests\Admin\productImage\UpdateProductImageCoverRequest;
 use App\Http\Resources\ProductImageResource;
-use App\Services\ProductImageService;
+use App\Repositories\ProductImageService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductImageController extends Controller

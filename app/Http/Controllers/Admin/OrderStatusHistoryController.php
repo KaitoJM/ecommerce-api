@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\OrderStatusHistory\CreateOrderStatusHistoryRequest;
 use App\Http\Requests\Admin\OrderStatusHistory\GetOrderStatusHistoryRequest;
 use App\Http\Requests\Admin\OrderStatusHistory\UpdateOrderStatusHistoryRequest;
 use App\Http\Resources\OrderStatusHistoryResource;
-use App\Services\OrderStatusHistoryService;
+use App\Repositories\OrderStatusHistoryService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

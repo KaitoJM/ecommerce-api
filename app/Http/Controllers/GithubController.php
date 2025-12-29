@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\GithubService;
+use App\Repositories\GithubService;
 use Illuminate\Http\Request;
 
 class GithubController extends Controller

@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\cart\CreateCartRequest;
 use App\Http\Requests\Admin\cart\GetCartRequest;
 use App\Http\Requests\Admin\cart\UpdateCartRequest;
 use App\Http\Resources\CartResource;
-use App\Services\CartService;
+use App\Repositories\CartService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
