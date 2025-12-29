@@ -7,19 +7,11 @@ use Carbon\Carbon;
 
 class OrderItemRepository {
     public function getOrderItems(?string $search = null, $filters = null, $pagination = null) {
-        return OrderItem::with(['product', 'product_specification'])
-        ->when($search, function($query) use ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('product_snapshot_name', 'like', "%{$search}%");
-                $q->orWhere('product_snapshot_price', 'like', "%{$search}%");
-            });
-        })->when(isset($filters['product_id']), function($query) use ($filters) {
-            $query->where('product_id', $filters['product_id']);
-        })->when(isset($filters['order_id']), function($query) use ($filters) {
-            $query->where('order_id', $filters['order_id']);
-        })->when(isset($filters['product_specification_id']), function($query) use ($filters) {
-            $query->where('product_specification_id', $filters['product_specification_id']);
-        })->paginate($pagination['per_page'] ?? 10);
+        return OrderItem::search($search)
+        ->filterProductId($filters['product_id'] ?? null)
+        ->filterOrderId($filters['order_id'] ?? null)
+        ->filterProductSpecificationId($filters['product_specification_id'] ?? null)
+        ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
