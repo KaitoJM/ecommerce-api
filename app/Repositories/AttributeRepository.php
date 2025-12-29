@@ -12,13 +12,8 @@ class AttributeRepository {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attribute>
      */
     public function getAttributes(?string $search = null) {
-        $query = Attribute::query();
-
-        if ($search) {
-            $query->where('attribute', 'like', "%{$search}%");
-        }
-
-        return $query->paginate($pagination['per_page'] ?? 10);
+        return Attribute::search($search)
+            ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
