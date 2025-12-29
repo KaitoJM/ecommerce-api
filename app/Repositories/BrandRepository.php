@@ -12,13 +12,8 @@ class BrandRepository {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Brand>
      */
     public function getBrands(?string $search = null) {
-        $query = Brand::query();
-
-        if ($search) {
-            $query->where('name', 'like', "%{$search}%");
-        }
-
-        return $query->paginate($pagination['per_page'] ?? 10);
+        return Brand::search($search)
+            ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
