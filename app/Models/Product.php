@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,7 +42,7 @@ class Product extends Model
         return $this->hasMany(ProductSpecification::class);
     }
 
-    public function scopeSearch($query, ?string $search)
+    public function scopeSearch(Builder $query, ?string $search)
     {
         if (blank($search)) {
             return $query;
@@ -53,7 +54,7 @@ class Product extends Model
         });
     }
 
-    public function scopePublished($query, ?bool $published)
+    public function scopePublished(Builder $query, ?bool $published)
     {
         if (is_null($published)) {
             return $query;
@@ -62,7 +63,7 @@ class Product extends Model
         return $query->where('published', $published);
     }
 
-    public function scopeFilterCategories($query, array $categoryIds)
+    public function scopeFilterCategories(Builder $query, array $categoryIds)
     {
         if (empty($categoryIds)) {
             return $query;
@@ -73,7 +74,7 @@ class Product extends Model
         });
     }
 
-    public function scopeFilterPrice($query, ?float $min, ?float $max)
+    public function scopeFilterPrice(Builder $query, ?float $min, ?float $max)
     {
         if (is_null($min) && is_null($max)) {
             return $query;
