@@ -12,14 +12,8 @@ class CategoryRepository {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category>
      */
     public function getCategories(?string $search = null) {
-        $query = Category::query();
-
-        if ($search) {
-            $query->where('name', 'like', "%{$search}%");
-            $query->orWhere('description', 'like', "%{$search}%");
-        }
-
-        return $query->paginate($pagination['per_page'] ?? 10);
+        return Category::search($search)
+            ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
