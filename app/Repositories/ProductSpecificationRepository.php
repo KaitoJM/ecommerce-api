@@ -12,21 +12,10 @@ class ProductSpecificationRepository {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProductSpecification>
      */
     public function getProductSpecifications($filters = null) {
-        $query = ProductSpecification::query();
-
-        if ($filters['product_id'] ?? false) {
-            $query->where('product_id', $filters['product_id']);
-        }
-
-        if ($filters['default'] ?? false) {
-            $query->where('default', $filters['default']);
-        }
-
-        if ($filters['sale'] ?? false) {
-            $query->where('sale', $filters['sale']);
-        }
-
-        return $query->get();
+        return ProductSpecification::filterProductId($filters['product_id'] ?? null)
+            ->filterDefault($filters['default'] ?? null)
+            ->filterSale($filters['sale'] ?? null)
+            ->get();
     }
 
     /**
