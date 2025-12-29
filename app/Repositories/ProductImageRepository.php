@@ -15,17 +15,9 @@ class ProductImageRepository {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProductImage>
      */
     public function getImages($product_id = null, $filters = null) {
-        $query = ProductImage::query();
-
-        if ($product_id) {
-            $query->where('product_id', $product_id);
-        }
-
-        if (array_key_exists('cover', $filters ?? [])) {
-            $query->where('cover', $filters['cover']);
-        }
-
-        return $query->get();
+        return ProductImage::filterProductId($product_id)
+            ->filterCover($filters['cover'] ?? null)
+            ->get();
     }
 
     /**
