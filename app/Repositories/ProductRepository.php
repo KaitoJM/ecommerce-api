@@ -14,28 +14,20 @@ class ProductRepository {
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product>
      */
     public function getProducts(?string $search = null, $filters = null, $pagination = null) {
-        $query = Product::with(['categories', 'brand']);
-
-        $query->with('images', function ($q) {
-            $q->where('cover', true);
-        });
-
-        $query->with('specifications', function ($q) {
-            $q->where('default', true);
-        });
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
-            });
-        }
-
-        if ($filters['published'] ?? false) {
-            $query->where('published', $filters['published']);
-        }
-
-        return $query->paginate($pagination['per_page'] ?? 10);
+        return Product::with(['categories', 'brand'])
+        ->with([
+            'categories',
+            'brand',
+            'images' => fn ($q) => $q->where('cover', true),
+            'specifications' => fn ($q) => $q->where('default', true),
+        ])
+        ->search($search)
+        ->published($filters['published'] ?? null)
+        ->filterCategories($filters['categories'] ?? [])
+        ->filterPrice(
+            $filters['price_min'] ?? null,
+            $filters['price_max'] ?? null
+        )->paginate($pagination['per_page'] ?? 10);
     }
 
     /**

@@ -40,4 +40,53 @@ class Product extends Model
     {
         return $this->hasMany(ProductSpecification::class);
     }
+
+    public function scopeSearch($query, ?string $search)
+    {
+        if (blank($search)) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%");
+        });
+    }
+
+    public function scopePublished($query, ?bool $published)
+    {
+        if (is_null($published)) {
+            return $query;
+        }
+
+        return $query->where('published', $published);
+    }
+
+    public function scopeFilterCategories($query, array $categoryIds)
+    {
+        if (empty($categoryIds)) {
+            return $query;
+        }
+
+        return $query->whereHas('categories', function ($q) use ($categoryIds) {
+            $q->whereIn('categories.id', $categoryIds);
+        });
+    }
+
+    public function scopeFilterPrice($query, ?float $min, ?float $max)
+    {
+        if (is_null($min) && is_null($max)) {
+            return $query;
+        }
+
+        return $query->whereHas('specifications', function ($q) use ($min, $max) {
+            if (!is_null($min)) {
+                $q->where('price', '>=', $min);
+            }
+
+            if (!is_null($max)) {
+                $q->where('price', '<=', $max);
+            }
+        });
+    }
 }
