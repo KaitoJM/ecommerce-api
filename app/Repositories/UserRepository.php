@@ -7,14 +7,9 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository {
     public function getUsers(?string $search = null, $filters = null, $pagination = null) {
-        return User::when($search, function($query) use ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            });
-        })->when(isset($filters['role']), function($query) use ($filters) {
-            $query->where('role', $filters['role']);
-        })->paginate($pagination['per_page'] ?? 10);
+        return User::search($search)
+        ->filterRole($filters['role'] ?? null)
+        ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
