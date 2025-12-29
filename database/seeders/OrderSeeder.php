@@ -85,14 +85,15 @@ class OrderSeeder extends Seeder
             foreach ($cartItems as $cartItemKey => $cartItem) {
                 $product = Product::find($cartItem->product_id);
                 $specification = ProductSpecification::find($cartItem->product_specification_id);
-                $itemTotal = $cartItem->quantity * $product->price;
+                $itemTotal = $cartItem->quantity * $specification->price;
 
                 $orderItems[] = [
                     'product_id' => $cartItem->product_id,
                     'product_specification_id' => $cartItem->product_specification_id,
                     'product_snapshot_name' => $product->name,
                     'product_snapshot_price' => $specification->price,
-                    'quantity' => $cartItem->quantity
+                    'quantity' => $cartItem->quantity,
+                    'total' => $itemTotal
                 ];
 
                 $total+= $itemTotal;
@@ -116,7 +117,8 @@ class OrderSeeder extends Seeder
                     'product_specification_id' => $orderItem['product_specification_id'],
                     'product_snapshot_name' => $orderItem['product_snapshot_name'],
                     'product_snapshot_price' => $orderItem['product_snapshot_price'],
-                    'quantity' => $orderItem['quantity']
+                    'quantity' => $orderItem['quantity'],
+                    'total' => $orderItem['total']
                 ]);
             }
         }
