@@ -8,15 +8,11 @@ use Carbon\Carbon;
 class OrderRepository {
     public function getOrders(?string $search = null, $filters = null, $pagination = null) {
         return Order::with(['customer', 'status'])
-        ->when(isset($filters['customer_id']), function($query) use ($filters) {
-            $query->where('customer_id', $filters['customer_id']);
-        })->when(isset($filters['session_id']), function($query) use ($filters) {
-            $query->where('session_id', $filters['session_id']);
-        })->when(isset($filters['cart_id']), function($query) use ($filters) {
-            $query->where('cart_id', $filters['cart_id']);
-        })->when(isset($filters['status_id']), function($query) use ($filters) {
-            $query->where('status_id', $filters['status_id']);
-        })->paginate($pagination['per_page'] ?? 10);
+        ->search($search)
+        ->filterCustomerId($filters['customer_id'] ?? null)
+        ->filterCartId($filters['cart_id'] ?? null)
+        ->filterStatusId($filters['status_id'] ?? null)
+        ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
