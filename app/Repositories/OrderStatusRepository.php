@@ -6,13 +6,9 @@ use App\Models\OrderStatus;
 
 class OrderStatusRepository {
     public function getOrderStatuses(?string $search = null, $filters = null, $pagination = null) {
-        return OrderStatus::when($search, function($query) use ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('status', 'like', "%{$search}%");
-            });
-        })->when(isset($filters['color_code']), function($query) use ($filters) {
-            $query->where('color_code', $filters['color_code']);
-        })->paginate($pagination['per_page'] ?? 10);
+        return OrderStatus::search($search)
+        ->filterColorCode($filters['color_code'] ?? null)
+        ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
