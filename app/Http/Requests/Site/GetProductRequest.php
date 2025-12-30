@@ -23,7 +23,7 @@ class GetProductRequest extends FormRequest
     {
         return [
             'search' => 'string|nullable',
-            'categories' => 'numeric|nullable',
+            'categories' => 'string|nullable',
             'brand' => 'numeric|nullable',
             'price_min' => 'numeric|nullable',
             'price_max' => 'numeric|nullable',

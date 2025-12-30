@@ -19,8 +19,10 @@ class ProductController extends Controller
     public function index(GetProductRequest $request) {
         $filters = [
             'published' => true,
-            ...$request->only(['categories', 'brand', 'price_min', 'price_max'])
+            'categories' => $request->has('categories') ? explode(',', $request->query('categories')) : null,
+            ...$request->only(['brand', 'price_min', 'price_max'])
         ];
+
         $pagination = $request->only(['page', 'per_page']);
 
         $products = $this->productRepository->getProducts($request->query('search'), $filters, $pagination);

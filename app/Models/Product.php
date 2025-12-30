@@ -69,9 +69,13 @@ class Product extends Model
             return $query;
         }
 
-        return $query->whereHas('categories', function ($q) use ($categoryIds) {
-            $q->whereIn('categories.id', $categoryIds);
-        });
+        foreach ($categoryIds as $categoryId) {
+            $query->whereHas('categories', function ($q) use ($categoryId) {
+                $q->where('categories.id', $categoryId);
+            });
+        }
+
+        return $query;
     }
 
     public function scopeFilterPrice(Builder $query, ?float $min, ?float $max)
