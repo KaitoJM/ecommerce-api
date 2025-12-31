@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Site\GetProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Repositories\ProductRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -29,5 +30,16 @@ class ProductController extends Controller
         $products = $this->productRepository->getProducts($request->query('search'), $filters, $pagination);
 
         return ProductResource::collection($products);
+    }
+
+    public function show(string $id)
+    {
+        try {
+            $product = $this->productRepository->getProductById($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        return response()->json(['data' => new ProductResource($product)]);
     }
 }
