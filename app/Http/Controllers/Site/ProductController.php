@@ -20,6 +20,7 @@ class ProductController extends Controller
         $filters = [
             'published' => true,
             'categories' => $request->has('categories') ? explode(',', $request->query('categories')) : null,
+            'brands' => $request->has('brands') ? explode(',', $request->query('brands')) : null,
             ...$request->only(['brand', 'price_min', 'price_max'])
         ];
 

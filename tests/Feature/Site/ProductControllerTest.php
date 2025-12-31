@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductSpecification;
@@ -217,6 +218,40 @@ describe('Get Products', function() {
         ]);
         $response->assertJsonFragment([
             'name' => 'Sample Product 2',
+        ]);
+    });
+
+    it('returns a list of products filtered by brands', function() {
+        [$brand1, $brand2, $brand3] = Brand::factory(3)->create();
+
+        Product::create([
+            'name' => 'Sample Product 1',
+            'published' => true,
+            'brand_id' => $brand1->id
+        ]);
+
+        Product::create([
+            'name' => 'Sample Product 2',
+            'published' => true,
+            'brand_id' => $brand2->id
+        ]);
+
+        Product::create([
+            'name' => 'Sample Product 3',
+            'published' => true,
+            'brand_id' => $brand3->id
+        ]);
+
+
+        $response = getJson('/api/site/products?brands=' . $brand1->id . ',' . $brand3->id . '');
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(2, 'data');
+        $response->assertJsonFragment([
+            'name' => 'Sample Product 1',
+        ]);
+        $response->assertJsonFragment([
+            'name' => 'Sample Product 3',
         ]);
     });
 });

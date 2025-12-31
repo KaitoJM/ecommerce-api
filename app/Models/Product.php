@@ -94,4 +94,19 @@ class Product extends Model
             }
         });
     }
+
+    public function scopeFilterBrands(Builder $query, array $brandIds)
+    {
+        if (empty($brandIds)) {
+            return $query;
+        }
+
+        $query->where(function($q) use ($brandIds) {
+            foreach ($brandIds as $brandId) {
+                $q->orWhere('brand_id', $brandId);
+            }
+        });
+
+        return $query;
+    }
 }

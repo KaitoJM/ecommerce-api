@@ -24,6 +24,7 @@ class ProductRepository {
         ->search($search)
         ->published($filters['published'] ?? null)
         ->filterCategories($filters['categories'] ?? [])
+        ->filterBrands($filters['brands'] ?? [])
         ->filterPrice(
             $filters['price_min'] ?? null,
             $filters['price_max'] ?? null
