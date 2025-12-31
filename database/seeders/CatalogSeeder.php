@@ -293,7 +293,7 @@ class CatalogSeeder extends Seeder
 
         $lenovo = Brand::create(
             [
-                'name' => 'HP',
+                'name' => 'Lenovo',
                 'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Branding_lenovo-logo_lenovologoposred_low_res.png/1200px-Branding_lenovo-logo_lenovologoposred_low_res.png'
             ]
         );
