@@ -34,7 +34,8 @@ class AuthController extends Controller
         try {
             $data = $this->authService->authenticate([
                 "email" => $request->email,
-                "role" => "customer"
+                "role" => "customer",
+                "web-app"
             ], $request->password);
 
             $data = [

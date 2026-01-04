@@ -17,7 +17,7 @@ class AuthService {
         protected CustomerRepository $customerRepository
     ){}
 
-    public function authenticate($params, string $password) {
+    public function authenticate($params, string $password, string $tokenKey = "backoffice-app") {
         $user = $this->userRepository->getUserSingle($params);
 
         if (!$user) {
@@ -28,7 +28,7 @@ class AuthService {
             throw new Exception("Invalid credentials");
         }
 
-        $token = $user->createToken('api-app');
+        $token = $user->createToken($tokenKey);
 
         $this->user = $user;
         $this->token = $token->plainTextToken;
