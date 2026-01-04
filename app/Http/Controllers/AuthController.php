@@ -16,7 +16,13 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $data = $this->authService->authenticate($request->only(["email", "role"]), $request->password);
+            $this->authService->authenticate($request->only(["email", "role"]), $request->password);
+
+            $data = [
+                'user' => $this->authService->user,
+                'token' => $this->authService->token,
+            ];
+
             return response()->json($data);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 401);
@@ -26,10 +32,16 @@ class AuthController extends Controller
     public function loginCustomer(LoginRequest $request)
     {
         try {
-            $data = $this->authService->authenticateCustomer([
+            $data = $this->authService->authenticate([
                 "email" => $request->email,
                 "role" => "customer"
             ], $request->password);
+
+            $data = [
+                'user' => $this->authService->getCustomer(),
+                'token' => $this->authService->token,
+            ];
+
             return response()->json($data);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 401);
