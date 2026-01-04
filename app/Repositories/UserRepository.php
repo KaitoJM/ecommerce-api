@@ -71,4 +71,16 @@ class UserRepository {
 
         return $user;
     }
+
+    /**
+     * Get a user by its email.
+     *
+     * @param int $id The ID of the user to get
+     * @return \App\Models\User
+     */
+    public function getUserSingle($filters = null) {
+        return User::filterEmail($filters['email'] ?? null)
+            ->filterRole($filters['role'] ?? null)
+            ->first();
+    }
 }

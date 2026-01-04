@@ -72,4 +72,15 @@ class User extends Authenticatable
             $q->where('role', $role);
         });
     }
+
+    public function scopeFilterEmail(Builder $query, ?string $email)
+    {
+        if (is_null($email)) {
+            return $query;
+        }
+
+        return $query->where(function($q) use ($email) {
+            $q->where('email', $email);
+        });
+    }
 }

@@ -76,4 +76,15 @@ class CustomerRepository {
 
         return $customer;
     }
+
+    /**
+     * Get a customer by filter.
+     *
+     * @return \App\Models\Customer
+     */
+    public function getCustomerSingle($filters = null) {
+        return Customer::with('user')
+            ->filterUserId($filters['user_id'] ?? null)
+            ->first();
+    }
 }

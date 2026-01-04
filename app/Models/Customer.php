@@ -55,4 +55,14 @@ class Customer extends Model
             $q->where('birthday', $birthday);
         });
     }
+
+    public function scopeFilterUserId(Builder $query, ?string $userId) {
+        if (is_null($userId)) {
+            return $query;
+        }
+
+        return $query->where(function($q) use ($userId) {
+            $q->where('user_id', $userId);
+        });
+    }
 }
