@@ -13,11 +13,7 @@ use Illuminate\Http\Request;
 
 class OrderStatusController extends Controller
 {
-    protected OrderStatusRepository $orderStatusRepository;
-
-    public function __construct(OrderStatusRepository $orderStatusRepository) {
-        $this->orderStatusRepository = $orderStatusRepository;
-    }
+    public function __construct(protected OrderStatusRepository $orderStatusRepository) {}
 
     /**
      * Display a listing of the resource.

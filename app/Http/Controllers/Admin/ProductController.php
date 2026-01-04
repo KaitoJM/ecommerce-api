@@ -14,15 +14,10 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected ProductRepository $productRepository;
-    protected ProductSpecificationRepository $productSpecificationRepository;
-
-    public function __construct(ProductRepository $productRepository,
-    ProductSpecificationRepository $productSpecificationRepository)
-    {
-        $this->productRepository = $productRepository;
-        $this->productSpecificationRepository = $productSpecificationRepository;
-    }
+    public function __construct(
+        protected ProductRepository $productRepository,
+        protected ProductSpecificationRepository $productSpecificationRepository
+    ) {}
 
     /**
      * Display a listing of the resource.

@@ -9,11 +9,7 @@ use App\Repositories\BrandRepository;
 
 class BrandController extends Controller
 {
-    protected BrandRepository $brandRepository;
-
-    public function __construct(BrandRepository $brandRepository) {
-        $this->brandRepository = $brandRepository;
-    }
+    public function __construct(protected BrandRepository $brandRepository) {}
 
     /**
      * Display a listing of the resource.

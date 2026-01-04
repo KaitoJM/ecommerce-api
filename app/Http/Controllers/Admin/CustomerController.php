@@ -15,17 +15,10 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
-    protected CustomerRepository $customerRepository;
-    protected UserRepository $userRepository;
-
     public function __construct(
-        CustomerRepository $customerRepository,
-        UserRepository $userRepository
-    )
-    {
-        $this->customerRepository = $customerRepository;
-        $this->userRepository = $userRepository;
-    }
+        protected CustomerRepository $customerRepository,
+        protected UserRepository $userRepository
+    ){}
 
     /**
      * Display a listing of the resource.

@@ -10,11 +10,7 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    protected CategoryRepository $categoryRepository;
-
-    public function __construct(CategoryRepository $categoryRepository) {
-        $this->categoryRepository = $categoryRepository;
-    }
+    public function __construct(protected CategoryRepository $categoryRepository) {}
 
     /**
      * Display a listing of the resource.

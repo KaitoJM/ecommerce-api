@@ -11,17 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class RegistrationController extends Controller
 {
-    protected CustomerRepository $customerRepository;
-    protected UserRepository $userRepository;
-
     public function __construct(
-        CustomerRepository $customerRepository,
-        UserRepository $userRepository
-    )
-    {
-        $this->customerRepository = $customerRepository;
-        $this->userRepository = $userRepository;
-    }
+        protected CustomerRepository $customerRepository,
+        protected UserRepository $userRepository
+    ) {}
 
     public function index(RegistrationRequest $request) {
         $customer = DB::transaction(function () use ($request) {

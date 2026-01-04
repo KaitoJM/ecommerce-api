@@ -13,12 +13,7 @@ use Illuminate\Http\Request;
 
 class ProductAttributeController extends Controller
 {
-    protected ProductAttributeRepository $prodAttrRepository;
-
-    public function __construct(ProductAttributeRepository $prodAttrRepository)
-    {
-        $this->prodAttrRepository = $prodAttrRepository;
-    }
+    public function __construct(protected ProductAttributeRepository $prodAttrRepository){}
 
     /**
      * Display a listing of the resource.

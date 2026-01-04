@@ -10,12 +10,7 @@ use Illuminate\Http\Request;
 
 class ProductImageController extends Controller
 {
-    protected ProductImageRepository $imageRepository;
-
-    public function __construct(ProductImageRepository $imageRepository)
-    {
-        $this->imageRepository = $imageRepository;
-    }
+    public function __construct(protected ProductImageRepository $imageRepository){}
 
     public function index(GetProductImageRequest $request)
     {

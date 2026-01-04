@@ -11,11 +11,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected ProductRepository $productRepository;
-
-    public function __construct(ProductRepository $productRepository) {
-        $this->productRepository = $productRepository;
-    }
+    public function __construct(protected ProductRepository $productRepository) {}
 
     public function index(GetProductRequest $request) {
         $filters = [

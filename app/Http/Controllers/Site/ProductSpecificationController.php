@@ -10,12 +10,7 @@ use Illuminate\Http\Request;
 
 class ProductSpecificationController extends Controller
 {
-    protected ProductSpecificationRepository $specificationRepository;
-
-    public function __construct(ProductSpecificationRepository $specificationRepository)
-    {
-        $this->specificationRepository = $specificationRepository;
-    }
+    public function __construct(protected ProductSpecificationRepository $specificationRepository) {}
 
     /**
      * Display a listing of the resource.

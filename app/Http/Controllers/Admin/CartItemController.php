@@ -13,12 +13,7 @@ use Illuminate\Http\Request;
 
 class CartItemController extends Controller
 {
-    protected CartItemRepository $cartItemRepository;
-
-    public function __construct(CartItemRepository $cartItemRepository)
-    {
-        $this->cartItemRepository = $cartItemRepository;
-    }
+    public function __construct(protected CartItemRepository $cartItemRepository){}
 
     /**
      * Display a listing of the resource.

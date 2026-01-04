@@ -14,12 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderStatusHistoryController extends Controller
 {
-    protected OrderStatusHistoryRepository $orderStatusHistoryRepository;
-
-    public function __construct(OrderStatusHistoryRepository $orderStatusHistoryRepository)
-    {
-        $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
-    }
+    public function __construct(protected OrderStatusHistoryRepository $orderStatusHistoryRepository){}
 
     /**
      * Display a listing of the resource.
