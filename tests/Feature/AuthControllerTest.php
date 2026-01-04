@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\Customer;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 
@@ -51,6 +53,102 @@ describe('Login', function() {
         ];
 
         $response = postJson('/api/login', $payload);
+
+        $response->assertStatus(401);
+        $response->assertJsonFragment([
+            'error' => 'Invalid credentials'
+        ]);
+    });
+});
+
+describe('Customer Login', function() {
+    it('returns the customer data and token when successfully logged in', function() {
+        $user = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'role' => 'customer'
+        ]);
+
+        $customer = Customer::factory()->create([
+            'user_id' => $user->id,
+            'first_name' => 'Test',
+            'last_name' => 'User',
+        ]);
+
+        $payload = [
+            'email' => 'test@example.com',
+            'password' => 'password'
+        ];
+
+        $response = postJson('/api/site/login', $payload);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'user' => [
+                'id',
+                'first_name',
+                'last_name',
+                'user' => [
+                    'id',
+                    'name',
+                    'email'
+                ],
+                'created_at',
+            ],
+            'token'
+        ]);
+
+        $response->assertJsonFragment([
+            'first_name' => 'Test',
+            'last_name' => 'User',
+        ]);
+    });
+
+    it('returns a 401 error if credential are incorrect.', function() {
+        $user = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'role' => 'customer'
+        ]);
+
+        $customer = Customer::factory()->create([
+            'user_id' => $user->id,
+            'first_name' => 'Test',
+            'last_name' => 'User',
+        ]);
+
+        $payload = [
+            'email' => 'test@example.com',
+            'password' => 'badpassword'
+        ];
+
+        $response = postJson('/api/site/login', $payload);
+
+        $response->assertStatus(401);
+        $response->assertJsonFragment([
+            'error' => 'Invalid credentials'
+        ]);
+    });
+
+    it('returns a 401 error if user is not a customer', function() {
+        $user = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'role' => 'staff'
+        ]);
+
+        $customer = Customer::factory()->create([
+            'user_id' => $user->id,
+            'first_name' => 'Test',
+            'last_name' => 'User',
+        ]);
+
+        $payload = [
+            'email' => 'test@example.com',
+            'password' => 'password'
+        ];
+
+        $response = postJson('/api/site/login', $payload);
 
         $response->assertStatus(401);
         $response->assertJsonFragment([
