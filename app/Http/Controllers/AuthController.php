@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Repositories\CustomerRepository;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function __construct(protected AuthService $authService){}
+    public function __construct(
+        protected AuthService $authService,
+        protected CustomerRepository $customerRepository
+    ){}
 
     /**
      * Authenticate user.
@@ -16,14 +20,12 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $this->authService->authenticate($request->only(["email", "role"]), $request->password);
+            $result = $this->authService->authenticate($request->only(["email", "role"]), $request->password);
 
-            $data = [
-                'user' => $this->authService->user,
-                'token' => $this->authService->token,
-            ];
-
-            return response()->json($data);
+            return response()->json([
+                'user'  => $result->user,
+                'token' => $result->token,
+            ]);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 401);
         }
@@ -32,18 +34,15 @@ class AuthController extends Controller
     public function loginCustomer(LoginRequest $request)
     {
         try {
-            $data = $this->authService->authenticate([
+            $result = $this->authService->authenticate([
                 "email" => $request->email,
                 "role" => "customer",
-                "web-app"
-            ], $request->password);
+            ], $request->password, "web-app");
 
-            $data = [
-                'user' => $this->authService->getCustomer(),
-                'token' => $this->authService->token,
-            ];
-
-            return response()->json($data);
+            return response()->json([
+                'user'  => $this->customerRepository->getCustomerSingle(['user_id' => $result->user->id]),
+                'token' => $result->token,
+            ]);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 401);
         }
