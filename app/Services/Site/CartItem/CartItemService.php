@@ -14,6 +14,21 @@ class CartItemService {
         private iterable $rules
     ) {}
 
+    /**
+     * Adds a product to an existing cart.
+     *
+     * This method builds an AddToCartContext and runs all registered
+     * cart validation rules before persisting the cart item.
+     *
+     * @param string $cartId                  The cart identifier.
+     * @param string $productId               The product identifier.
+     * @param string $productSpecificationId  The product specification identifier.
+     * @param int    $qty                     Quantity to add.
+     *
+     * @return mixed The newly created cart item.
+     *
+     * @throws \Throwable If any validation rule fails.
+     */
     public function addToCart(string $cartId, string $productId, string $productSpecificationId, int $qty) {
         $context = new AddToCartContext(
             $cartId,
