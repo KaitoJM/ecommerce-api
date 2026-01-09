@@ -22,7 +22,9 @@ class CartRepository {
     /**
      *
      * @param  array{
-     *     name: string
+     *     customer_id?: string,
+     *     session_id?: string,
+     *     status: string,
      * }  $params
      * @return \App\Models\Cart
      */
