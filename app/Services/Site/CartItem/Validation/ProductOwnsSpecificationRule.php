@@ -16,7 +16,7 @@ class ProductOwnsSpecificationRule implements AddToCartRule
         $spec = $this->repository
             ->getProductSpecificationById($context->productSpecificationId);
 
-        if ($spec->product_id !== $context->productId) {
+        if ((string)$spec->product_id !== $context->productId) {
             throw new InvalidArgumentException(
                 'The provided product does not own this specification.'
             );

@@ -17,9 +17,15 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->tag([
-            ProductSpecificationExistsRule::class,
             ProductOwnsSpecificationRule::class,
         ], AddToCartRule::class);
+
+        $this->app->bind(\App\Services\Site\CartItem\CartItemService::class, function ($app) {
+            return new \App\Services\Site\CartItem\CartItemService(
+                $app->make(\App\Repositories\CartItemRepository::class),
+                $app->tagged(AddToCartRule::class)
+            );
+        });
 
         $this->app->tag([
             NoOtherActiveCartRule::class,

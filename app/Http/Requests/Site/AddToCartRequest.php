@@ -11,7 +11,7 @@ class AddToCartRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class AddToCartRequest extends FormRequest
         return [
             'cart_id' => 'required|exists:carts,id',
             'product_id' => 'required|exists:products,id',
-            'product_specification_id' => 'required',
+            'product_specification_id' => 'required|exists:product_specifications,id',
             'qty' => 'required|numeric'
         ];
     }

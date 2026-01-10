@@ -26,6 +26,6 @@ class CartItemController extends Controller
             $request->qty
         );
 
-        return CartItemResource::collection($cartItem);
+        return $cartItem;
     }
 }
