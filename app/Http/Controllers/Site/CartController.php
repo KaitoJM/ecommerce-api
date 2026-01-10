@@ -30,7 +30,7 @@ class CartController extends Controller
             throw new NotFoundHttpException('Customer not found.');
         }
 
-        $cartItem = $this->cartService->getActiveCart($customer->id);
+        $cartItem = $this->cartService->getOrCreateActiveCart($customer->id);
 
         return CartItemResource::collection($cartItem);
     }

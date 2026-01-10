@@ -38,7 +38,7 @@ class CartService {
      *
      * @return mixed The active cart instance.
      */
-    public function getActiveCart(string $customerId) {
+    public function getOrCreateActiveCart(string $customerId) {
         $activeCart = $this->getCarts($customerId, 'active');
 
         if (!$activeCart) {
