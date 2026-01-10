@@ -14,6 +14,14 @@ class CartService {
         private iterable $rules
     ) {}
 
+    /**
+     * Retrieve carts for a given customer filtered by status.
+     *
+     * @param string $customerId The customer identifier.
+     * @param string $status     Cart status to filter by (e.g. active, completed).
+     *
+     * @return mixed Collection of carts matching the given criteria.
+     */
     public function getCarts(string $customerId, string $status) {
         return $this->cartRepository->getCarts(null, [
             'status' => $status,
@@ -21,6 +29,15 @@ class CartService {
         ]);
     }
 
+    /**
+     * Retrieve the active cart for a customer.
+     *
+     * If no active cart exists, a new one will be created automatically.
+     *
+     * @param string $customerId The customer identifier.
+     *
+     * @return mixed The active cart instance.
+     */
     public function getActiveCart(string $customerId) {
         $activeCart = $this->getCarts($customerId, 'active');
 
@@ -31,6 +48,19 @@ class CartService {
         return $activeCart;
     }
 
+    /**
+     * Create a new cart for a customer.
+     *
+     * This method builds an AddCartContext and executes all registered
+     * cart creation rules before persisting the cart.
+     *
+     * @param string $customerId The customer identifier.
+     * @param string $status     Initial cart status (e.g. active).
+     *
+     * @return mixed The newly created cart instance.
+     *
+     * @throws \Throwable If any cart creation rule fails.
+     */
     public function addCart(string $customerId, string $status) {
         $context = new AddCartContext(
             $customerId,
