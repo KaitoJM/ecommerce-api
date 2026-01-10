@@ -37,6 +37,16 @@ class Cart extends Model
         });
     }
 
+    public function scopeFilterCustomer(Builder $query, ?string $customerId) {
+        if (is_null($customerId)) {
+            return $query;
+        }
+
+        return $query->where(function($q) use ($customerId) {
+            $q->where('customer_id', $customerId);
+        });
+    }
+
     public function scopeFilterExpiresAt(Builder $query, ?string $expiresAt) {
         if (is_null($expiresAt)) {
             return $query;

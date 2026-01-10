@@ -10,11 +10,17 @@ class CartRepository {
      * Get carts with optional filters.
      *
      * @param string|null $search Optional search term to filter by name or description
+     * @param {
+     *  status?: string,
+     *  expires_at?: string,
+     *  customer_id?: string
+     * } $filters
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cart>
      */
     public function getCarts(?string $search = null, $filters = null, $pagination = null) {
         return Cart::search($search)
         ->filterStatus($filters['status'] ?? null)
+        ->filterCustomer($filters['customer_id'] ?? null)
         ->filterExpiresAt($filters['expires_at'] ?? null)
         ->paginate($pagination['per_page'] ?? 10);
     }
