@@ -20,7 +20,7 @@ class CartController extends Controller
      */
     public function index(GetCartRequest $request)
     {
-        $carts = $this->cartRepository->getCarts($request->query('search'));
+        $carts = $this->cartRepository->getPaginatedCarts($request->query('search'));
 
         return CartResource::collection($carts);
     }
