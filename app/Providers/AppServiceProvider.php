@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Site\Cart\Validation\AddCartRule;
+use App\Services\Site\Cart\Validation\NoOtherActiveCartRule;
 use App\Services\Site\CartItem\Validation\AddToCartRule;
 use App\Services\Site\CartItem\Validation\ProductOwnsSpecificationRule;
 use App\Services\Site\CartItem\Validation\ProductSpecificationExistsRule;
@@ -18,6 +20,14 @@ class AppServiceProvider extends ServiceProvider
             ProductSpecificationExistsRule::class,
             ProductOwnsSpecificationRule::class,
         ], AddToCartRule::class);
+
+
+        $this->app->bind(\App\Services\Site\Cart\CartService::class, function ($app) {
+            return new \App\Services\Site\Cart\CartService(
+                $app->make(\App\Repositories\CartRepository::class),
+                $app->tagged(AddCartRule::class)
+            );
+        });
     }
 
     /**

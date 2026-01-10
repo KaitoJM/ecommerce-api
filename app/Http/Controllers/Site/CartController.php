@@ -42,6 +42,6 @@ class CartController extends Controller
 
         $cartItem = $this->cartService->getOrCreateActiveCart($customer->id);
 
-        return CartItemResource::collection($cartItem);
+        return $cartItem;
     }
 }

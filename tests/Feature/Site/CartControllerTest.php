@@ -23,4 +23,17 @@ describe('Get Active Cart', function() {
             'status' => 'active',
         ]);
     });
+
+    it('created an active cart if no active cart yet and returns the active cart of the customer', function() {
+        $user = User::factory()->create(['role' => 'customer']);
+        $customer = Customer::factory()->create(['user_id' => $user->id]);
+
+        $response = actingAs($user)->getJson('/api/site/carts-active/');
+
+        $response->assertStatus(201);
+        $response->assertJsonFragment([
+            'customer_id' => (string) $customer->id,
+            'status' => 'active',
+        ]);
+    });
 });

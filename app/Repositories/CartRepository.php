@@ -4,8 +4,16 @@ namespace App\Repositories;
 
 use App\Models\Cart;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class CartRepository {
+    public function buildCartQuery(?string $search = null, $filters = null):Builder {
+        return Cart::search($search)
+        ->filterStatus($filters['status'] ?? null)
+        ->filterCustomer($filters['customer_id'] ?? null)
+        ->filterExpiresAt($filters['expires_at'] ?? null);
+    }
+
     /**
      * Get carts with optional filters.
      *
@@ -17,12 +25,25 @@ class CartRepository {
      * } $filters
      * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cart>
      */
-    public function getCarts(?string $search = null, $filters = null, $pagination = null) {
-        return Cart::search($search)
-        ->filterStatus($filters['status'] ?? null)
-        ->filterCustomer($filters['customer_id'] ?? null)
-        ->filterExpiresAt($filters['expires_at'] ?? null)
-        ->paginate($pagination['per_page'] ?? 10);
+    public function getCarts(?string $search = null, $filters = null) {
+        return $this->buildCartQuery($search, $filters)
+            ->get();
+    }
+
+    /**
+     * Get paginated carts with optional filters.
+     *
+     * @param string|null $search Optional search term to filter by name or description
+     * @param {
+     *  status?: string,
+     *  expires_at?: string,
+     *  customer_id?: string
+     * } $filters
+     * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cart>
+     */
+    public function getPaginatedCarts(?string $search = null, $filters = null, $pagination = null) {
+        return $this->buildCartQuery($search, $filters)
+            ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**

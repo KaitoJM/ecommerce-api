@@ -4,10 +4,11 @@ namespace App\Services\Site\Cart;
 
 use App\Repositories\CartRepository;
 use App\Services\Site\Cart\Validation\AddCartContext;
+use App\Services\Site\Cart\Validation\AddCartRule;
 
 class CartService {
     /**
-     * @param AddCartRule[] $rules
+     * @param iterable<AddCartRule> $rules
      */
     public function __construct(
         protected CartRepository $cartRepository,
@@ -39,10 +40,12 @@ class CartService {
      * @return mixed The active cart instance.
      */
     public function getOrCreateActiveCart(string $customerId) {
-        $activeCart = $this->getCarts($customerId, 'active');
+        $carts = $this->getCarts($customerId, 'active');
 
-        if (!$activeCart) {
+        if (!isset($carts[0])) {
             $activeCart = $this->addCart($customerId, 'active');
+        } else {
+            $activeCart = $carts[0];
         }
 
         return $activeCart;
