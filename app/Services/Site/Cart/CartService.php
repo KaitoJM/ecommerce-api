@@ -3,16 +3,14 @@
 namespace App\Services\Site\Cart;
 
 use App\Repositories\CartRepository;
+use App\Services\Site\Cart\Pipelines\AddCartPipeline;
 use App\Services\Site\Cart\Validation\AddCartContext;
 use App\Services\Site\Cart\Validation\AddCartRule;
 
 class CartService {
-    /**
-     * @param iterable<AddCartRule> $rules
-     */
     public function __construct(
         protected CartRepository $cartRepository,
-        private iterable $rules
+        private AddCartPipeline $addCartPipeline
     ) {}
 
     /**
@@ -70,9 +68,7 @@ class CartService {
             $status,
         );
 
-        foreach ($this->rules as $rule) {
-            $rule->validate($context);
-        }
+        $this->addCartPipeline->validate($context);
 
         return $this->cartRepository->createCart([
             'customer_id' => $customerId,

@@ -3,15 +3,13 @@
 namespace App\Services\Site\CartItem;
 
 use App\Repositories\CartItemRepository;
+use App\Services\Site\CartItem\Pipelines\AddToCartPipeline;
 use App\Services\Site\CartItem\Validation\AddToCartContext;
 
 class CartItemService {
-    /**
-     * @param AddToCartRule[] $rules
-     */
     public function __construct(
         protected CartItemRepository $cartItemRepository,
-        private iterable $rules
+        private AddToCartPipeline $addToCartPipeline
     ) {}
 
     public function getCartItems(string $cartId) {
@@ -43,9 +41,7 @@ class CartItemService {
             $qty
         );
 
-        foreach ($this->rules as $rule) {
-            $rule->validate($context);
-        }
+        $this->addToCartPipeline->validate($context);
 
         return $this->cartItemRepository->createCartItem([
             'cart_id' => $cartId,

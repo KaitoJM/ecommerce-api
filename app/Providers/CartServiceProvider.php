@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\Site\Cart\Validation\AddCartRule;
-use App\Services\Site\Cart\Validation\NoOtherActiveCartRule;
 use Illuminate\Support\ServiceProvider;
 
 class CartServiceProvider extends ServiceProvider
@@ -13,15 +11,23 @@ class CartServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Tag all rules that implement AddCartRule
         $this->app->tag([
-            NoOtherActiveCartRule::class,
-        ], AddCartRule::class);
+            \App\Services\Site\Cart\Validation\NoOtherActiveCartRule::class,
+        ], \App\Services\Site\Cart\Validation\AddCartRule::class);
 
+        // Bind the pipeline so it receives tagged rules
+        $this->app->bind(\App\Services\Site\Cart\Pipelines\AddCartPipeline::class, function ($app) {
+            return new \App\Services\Site\Cart\Pipelines\AddCartPipeline(
+                $app->tagged(\App\Services\Site\Cart\Validation\AddCartRule::class)
+            );
+        });
 
+        // Bind CartService with the repository and the pipeline
         $this->app->bind(\App\Services\Site\Cart\CartService::class, function ($app) {
             return new \App\Services\Site\Cart\CartService(
                 $app->make(\App\Repositories\CartRepository::class),
-                $app->tagged(AddCartRule::class)
+                $app->make(\App\Services\Site\Cart\Pipelines\AddCartPipeline::class)
             );
         });
     }
