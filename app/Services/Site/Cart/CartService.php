@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Site\CartItem;
+namespace App\Services\Site\Cart;
 
 use App\Repositories\CartRepository;
 use App\Services\Site\Cart\Validation\AddCartContext;
