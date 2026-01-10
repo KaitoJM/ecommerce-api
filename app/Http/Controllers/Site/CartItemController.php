@@ -17,7 +17,7 @@ class CartItemController extends Controller
     /**
      * Add Item to Cart
      */
-    public function addToCart(AddToCartRequest $request)
+    public function store(AddToCartRequest $request)
     {
         $cartItem = $this->cartItemService->addToCart(
             $request->cart_id,
