@@ -14,6 +14,12 @@ class CartItemService {
         private iterable $rules
     ) {}
 
+    public function getCartItems(string $cartId) {
+        return $this->cartItemRepository->getCartItems(null, [
+            'cart_id' => $cartId
+        ]);
+    }
+
     /**
      * Adds a product to an existing cart.
      *

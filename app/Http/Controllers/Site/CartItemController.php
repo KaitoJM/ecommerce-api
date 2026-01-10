@@ -4,15 +4,21 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Site\AddToCartRequest;
+use App\Http\Requests\Site\GetCartItemsRequest;
 use App\Http\Resources\CartItemResource;
 use App\Services\Site\CartItem\CartItemService;
-use Illuminate\Http\Request;
 
 class CartItemController extends Controller
 {
     public function __construct(
         protected CartItemService $cartItemService
     ) {}
+
+    public function index(GetCartItemsRequest $request) {
+        $cartItems = $this->cartItemService->getCartItems($request->cart_id);
+
+        return response()->json(CartItemResource::collection($cartItems));
+    }
 
     /**
      * Add Item to Cart
