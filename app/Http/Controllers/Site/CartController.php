@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Site\AddToCartRequest;
 use App\Http\Resources\CartItemResource;
 use App\Repositories\CustomerRepository;
-use App\Services\Site\CartItem\CartService;
+use App\Services\Site\Cart\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
