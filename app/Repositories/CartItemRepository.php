@@ -3,14 +3,24 @@
 namespace App\Repositories;
 
 use App\Models\CartItem;
+use Illuminate\Database\Eloquent\Builder;
 
 class CartItemRepository {
-    public function getCartItems(?string $search = null, $filters = null, $pagination = null) {
+    public function buildCartItemsQuery(?string $search = null, $filters = null):Builder {
         return CartItem::search($search)
         ->filterCartId($filters['cart_id'] ?? null)
         ->filterProductId($filters['product_id'] ?? null)
-        ->filterProductSpecificationId($filters['product_specification_id'] ?? null)
-        ->paginate($pagination['per_page'] ?? 10);
+        ->filterProductSpecificationId($filters['product_specification_id'] ?? null);
+    }
+
+    public function getCartItems(?string $search = null, $filters = null) {
+        return $this->buildCartItemsQuery($search, $filters)
+            ->get();
+    }
+
+    public function getPaginatedCartItems(?string $search = null, $filters = null, $pagination = null) {
+        return $this->buildCartItemsQuery($search, $filters)
+            ->paginate($pagination['per_page'] ?? 10);
     }
 
     /**
