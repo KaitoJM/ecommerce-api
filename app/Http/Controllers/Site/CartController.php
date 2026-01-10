@@ -18,23 +18,6 @@ class CartController extends Controller
         protected CustomerRepository $customerRepository
     ) {}
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $user = Auth::user();
-        $customer = $this->customerRepository->getCustomerSingle(['user_id' => $user->id]);
-
-        if (!$customer) {
-            throw new NotFoundHttpException('Customer not found.');
-        }
-
-        $cartItem = $this->cartService->getOrCreateActiveCart($customer->id);
-
-        return CartItemResource::collection($cartItem);
-    }
-
     public function store(Request $request) {
         $user = Auth::user();
         $customer = $this->customerRepository->getCustomerSingle(['user_id' => $user->id]);
@@ -46,5 +29,19 @@ class CartController extends Controller
         $cart = $this->cartService->addCart($customer->id, $request->status);
 
         return response()->json($cart)->setStatusCode(201);
+    }
+
+    public function active()
+    {
+        $user = Auth::user();
+        $customer = $this->customerRepository->getCustomerSingle(['user_id' => $user->id]);
+
+        if (!$customer) {
+            throw new NotFoundHttpException('Customer not found.');
+        }
+
+        $cartItem = $this->cartService->getOrCreateActiveCart($customer->id);
+
+        return CartItemResource::collection($cartItem);
     }
 }

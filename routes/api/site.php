@@ -20,7 +20,10 @@ Route::get('/product-images', [ProductImageController::class, 'index']);
 Route::get('/product-specifications', [ProductSpecificationController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/brands', [BrandController::class, 'index']);
-Route::middleware('auth:sanctum')->group(function() {
+
+Route::get('/carts-active', [CartController::class, 'active'])->middleware('auth:sanctum');
+
+Route::name('site.')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('/carts', CartController::class);
-    Route::apiResource('/cart-item', CartItemController::class);
+    Route::apiResource('/cart-items', CartItemController::class);
 });
