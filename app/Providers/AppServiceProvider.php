@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
             ProductOwnsSpecificationRule::class,
         ], AddToCartRule::class);
 
+        $this->app->tag([
+            NoOtherActiveCartRule::class,
+        ], AddCartRule::class);
+
 
         $this->app->bind(\App\Services\Site\Cart\CartService::class, function ($app) {
             return new \App\Services\Site\Cart\CartService(

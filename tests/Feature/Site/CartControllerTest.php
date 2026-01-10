@@ -37,3 +37,40 @@ describe('Get Active Cart', function() {
         ]);
     });
 });
+
+
+describe('Add Cart', function() {
+    it('creates new cart', function() {
+        $user = User::factory()->create(['role' => 'customer']);
+        $customer = Customer::factory()->create(['user_id' => $user->id]);
+
+        $response = actingAs($user)->postJson('/api/site/carts/', [
+            'status' => 'active'
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJsonFragment([
+            'customer_id' => (string) $customer->id,
+            'status' => 'active',
+        ]);
+    });
+
+    it('returns an error if status is active and there is already an active cart', function() {
+        $user = User::factory()->create(['role' => 'customer']);
+        $customer = Customer::factory()->create(['user_id' => $user->id]);
+
+        Cart::factory()->create([
+            'customer_id' => $customer->id,
+            'status' => 'active'
+        ]);
+
+        $response = actingAs($user)->postJson('/api/site/carts/', [
+            'status' => 'active'
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'message' => 'Active cart already exists.'
+        ]);
+    });
+});
