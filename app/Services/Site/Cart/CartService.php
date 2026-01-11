@@ -29,6 +29,10 @@ class CartService {
         ]);
     }
 
+    public function getCart(string $cartId) {
+        return $this->cartRepository->getCartById($cartId);
+    }
+
     /**
      * Retrieve the active cart for a customer.
      *

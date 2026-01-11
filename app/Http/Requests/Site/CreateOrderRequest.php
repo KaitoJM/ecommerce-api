@@ -23,7 +23,6 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'cart_id' => 'string|required|exist:carts,id',
-            'customer_id' => 'string|nullable|exist:customers,id',
             'email' => 'email|required',
             'discount_total'  => 'numeric|required',
             'tax_total'  => 'numeric|required',
