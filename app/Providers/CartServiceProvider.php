@@ -22,14 +22,6 @@ class CartServiceProvider extends ServiceProvider
                 $app->tagged(\App\Services\Site\Cart\Validation\AddCartRule::class)
             );
         });
-
-        // Bind CartService with the repository and the pipeline
-        $this->app->bind(\App\Services\Site\Cart\CartService::class, function ($app) {
-            return new \App\Services\Site\Cart\CartService(
-                $app->make(\App\Repositories\CartRepository::class),
-                $app->make(\App\Services\Site\Cart\Pipelines\AddCartPipeline::class)
-            );
-        });
     }
 
     /**
