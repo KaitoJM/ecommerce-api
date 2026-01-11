@@ -17,6 +17,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
+            'email' => fake()->email(),
             'subtotal' => fake()->numberBetween(1000, 10000),
             'discount_total' => fake()->numberBetween(0, 1000),
             'tax_total' => fake()->numberBetween(0, 500),

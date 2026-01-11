@@ -36,6 +36,7 @@ class OrderController extends Controller
                 'session_id',
                 'cart_id',
                 'status_id',
+                'email',
                 'subtotal',
                 'discount_total',
                 'tax_total',

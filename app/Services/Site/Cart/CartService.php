@@ -6,6 +6,7 @@ use App\Repositories\CartRepository;
 use App\Services\Site\Cart\Pipelines\AddCartPipeline;
 use App\Services\Site\Cart\Validation\AddCartContext;
 use App\Services\Site\Cart\Validation\AddCartRule;
+use Illuminate\Support\Str;
 
 class CartService {
     public function __construct(
@@ -72,6 +73,15 @@ class CartService {
 
         return $this->cartRepository->createCart([
             'customer_id' => $customerId,
+            'status' => $status,
+        ]);
+    }
+
+    public function addCartAsGuest(string $status) {
+        $guestToken = (string) Str::uuid();
+
+        return $this->cartRepository->createCart([
+            'session_id' => $guestToken,
             'status' => $status,
         ]);
     }

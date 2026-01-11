@@ -26,6 +26,7 @@ class UpdateOrderRequest extends FormRequest
             'session_id' => 'nullable',
             'cart_id' => 'nullable|exists:carts,id',
             'status_id' => 'nullable|exists:order_statuses,id',
+            'email' => 'email|nullable',
             'subtotal' => 'numeric|nullable',
             'discount_total' => 'numeric|nullable',
             'tax_total' => 'numeric|nullable',

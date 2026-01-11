@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('session_id')->nullable();
             $table->unsignedBigInteger('cart_id');
             $table->unsignedBigInteger('status_id')->nullable();
+            $table->string('email');
             $table->double('subtotal', 10,2);
             $table->double('discount_total', 10,2);
             $table->double('tax_total', 10,2);

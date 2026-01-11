@@ -21,6 +21,7 @@ class OrderResource extends JsonResource
             'session_id' => $this->session_id,
             'cart_id' => $this->cart_id,
             'status_id' => $this->status_id,
+            'email' => $this->email,
             'status' => $this->whenLoaded('status'),
             'subtotal' => $this->subtotal,
             'discount_total' => $this->discount_total,

@@ -15,6 +15,7 @@ class Order extends Model
         'session_id',
         'cart_id',
         'status_id',
+        'email',
         'subtotal',
         'discount_total',
         'tax_total',
