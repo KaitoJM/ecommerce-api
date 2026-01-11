@@ -97,3 +97,89 @@ describe('Add To Cart', function() {
         ]);
     });
 });
+
+describe('Update Cart Item', function() {
+    it ('updates a cart item if user is authenticated', function() {
+        $user = User::factory()->create(['role' => 'customer']);
+
+        $product = Product::factory()->create();
+        $productSpecification = ProductSpecification::factory()->create([
+            'product_id' => $product->id
+        ]);
+        $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
+        $cart = Cart::factory()->create([
+            'customer_id' => $cartCustomer->id,
+            'status' => 'active'
+        ]);
+
+        $cartItem = CartItem::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'product_specification_id' => $productSpecification->id,
+            'quantity' => 1
+        ]);
+
+        $response = actingAs($user)->putJson('/api/site/cart-items/' . $cartItem->id, [
+            'quantity' => 2,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'product_specification_id' => $productSpecification->id,
+            'quantity' => 2
+        ]);
+    });
+
+    it ('returns a 404 error if the user is not found', function() {
+        $user = User::factory()->create(['role' => 'customer']);
+        $response = actingAs($user)->putJson('/api/site/cart-items/999999', [
+            'quantity' => 2
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJsonFragment([
+            'error' => 'Cart item not found',
+        ]);
+    });
+});
+
+describe('Delete Cart Item', function() {
+    it ('deletes a cart item if user is authenticated', function() {
+        $user = User::factory()->create(['role' => 'customer']);
+
+        $product = Product::factory()->create();
+        $productSpecification = ProductSpecification::factory()->create([
+            'product_id' => $product->id
+        ]);
+        $cartUser = User::factory()->create(['role' => 'customer']);
+        $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
+        $cart = Cart::factory()->create([
+            'customer_id' => $cartCustomer->id,
+            'status' => 'active'
+        ]);
+
+        $cartItem = CartItem::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'product_specification_id' => $productSpecification->id,
+            'quantity' => 1
+        ]);
+
+        $response = actingAs($user)->deleteJson('/api/site/cart-items/' . $cartItem->id);
+
+        $response->assertStatus(204);
+    });
+
+    it ('returns a 404 error if the cart item is not found', function() {
+        $user = User::factory()->create(['role' => 'customer']);
+        $response = actingAs($user)->deleteJson('/api/site/cart-items/999999');
+
+        $response->assertStatus(404);
+        $response->assertJsonFragment([
+            'error' => 'Cart item not found',
+        ]);
+    });
+});

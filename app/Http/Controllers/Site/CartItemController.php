@@ -8,6 +8,7 @@ use App\Http\Requests\Site\GetCartItemsRequest;
 use App\Http\Requests\Site\UpdateCartItemRequest;
 use App\Http\Resources\CartItemResource;
 use App\Services\Site\CartItem\CartItemService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CartItemController extends Controller
 {
@@ -37,10 +38,22 @@ class CartItemController extends Controller
     }
 
     public function update(UpdateCartItemRequest $request, string $id) {
-        return $this->cartItemService->updateCartItem($id, $request->only(['quantity']));
+        try {
+            $cartItem = $this->cartItemService->updateCartItem($id, $request->validated());
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Cart item not found'], 404);
+        }
+
+        return response()->json($cartItem);
     }
 
     public function destroy(string $id) {
-        return $this->cartItemService->deleteCartItem($id);
+        try {
+            $this->cartItemService->deleteCartItem($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Cart item not found'], 404);
+        }
+
+        return response()->json(null, 204);
     }
 }
