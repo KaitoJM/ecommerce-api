@@ -17,6 +17,14 @@ class CartItem extends Model
         'quantity',
     ];
 
+    public function product() {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function specification() {
+        return $this->belongsTo(ProductSpecification::class, 'product_specification_id');
+    }
+
     public function scopeSearch(Builder $query, ?string $search) {
         if (blank($search)) {
             return $query;

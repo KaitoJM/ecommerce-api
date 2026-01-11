@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 class CartItemRepository {
     public function buildCartItemsQuery(?string $search = null, $filters = null):Builder {
         return CartItem::search($search)
+        ->with(['product', 'specification'])
         ->filterCartId($filters['cart_id'] ?? null)
         ->filterProductId($filters['product_id'] ?? null)
         ->filterProductSpecificationId($filters['product_specification_id'] ?? null);
