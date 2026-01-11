@@ -23,7 +23,9 @@ jobs:
           script: |
             cd /home/ec2-user/ecommerce-api
             git pull origin main
-            composer install --no-dev --optimize-autoloader
+            composer install --no-dev --optimize-autoloader --no-interaction
             php artisan migrate --force
             php artisan optimize:clear
-            php artisan optimize
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
