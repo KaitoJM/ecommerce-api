@@ -23,7 +23,10 @@ class ProductResource extends JsonResource
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'brand_id' => $this->brand_id,
             'brand' => $this->whenLoaded('brand'),
-            'specification' => $this->whenLoaded('specifications')[0] ?? null,
+            'specification' => $this->whenLoaded(
+                'specifications',
+                fn () => $this->specifications->first()
+            ),
             'thumbnail' => $this->images->first()?->source ?? null,
             'published' => $this->published,
             'created_at' => $this->created_at,
