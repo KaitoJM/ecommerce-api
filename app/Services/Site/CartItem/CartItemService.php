@@ -50,4 +50,12 @@ class CartItemService {
             'quantity' => $qty,
         ]);
     }
+
+    public function updateCartItem(string $id, $params) {
+        return $this->cartItemRepository->updateCartItem($id, $params);
+    }
+
+    public function deleteCartItem(string $id) {
+        return $this->cartItemRepository->deleteCartItem($id);
+    }
 }
