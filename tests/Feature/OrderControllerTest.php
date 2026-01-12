@@ -38,7 +38,8 @@ describe('Create Order', function() {
 
         $response = actingAs($user)->postJson('/api/orders', [
             'cart_id' => $cart->id,
-            'status_id' => $status->id
+            'status_id' => $status->id,
+            'email' => 'someemail@example.com'
         ]);
 
         $response->assertStatus(201);
