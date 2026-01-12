@@ -101,7 +101,6 @@ class OrderSeeder extends Seeder
 
 
             $order = Order::factory()->create([
-                'cart_id' => $cart->id,
                 'customer_id' => $cart->customer_id,
                 'status_id' => $status->id,
                 'subtotal' => $total,

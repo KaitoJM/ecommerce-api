@@ -4,6 +4,8 @@ namespace App\Services\Site\OrderItem;
 
 use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\ProductSpecification;
 use App\Repositories\OrderItemRepository;
 use App\Services\Site\OrderItem\Contexts\AddOrderItemFromCartContext;
 use App\Services\Site\OrderItem\Validation\CheckAndUpdateStockAvailability;
@@ -15,20 +17,20 @@ class OrderItemService {
         private Pipeline $pipeline
     ) {}
 
-    public function createFromCartItem(Order $order, CartItem $item) {
-        $total = $item->specification->price * $item->quantity;
+    public function createCartItem(Order $order, Product $product, ProductSpecification $specification, int $quantity) {
+        $total = $specification->price * $quantity;
 
         $params = [
             'order_id' => $order->id,
-            'product_id' => $item->product_id,
-            'product_specification_id' => $item->product_specification_id,
-            'product_snapshot_name' => $item->product->name,
-            'product_snapshot_price' => $item->specification->price,
-            'quantity' => $item->quantity,
+            'product_id' => $product->id,
+            'product_specification_id' => $specification->id,
+            'product_snapshot_name' => $product->name,
+            'product_snapshot_price' => $specification->price,
+            'quantity' => $quantity,
             'total' => $total,
         ];
 
-        $context = new AddOrderItemFromCartContext($item->product_specification_id, $item->quantity);
+        $context = new AddOrderItemFromCartContext($specification->id, $quantity);
 
         $this->pipeline
             ->send($context)

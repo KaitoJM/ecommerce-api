@@ -4,27 +4,37 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Site\CreateOrderRequest;
+use App\Repositories\CustomerRepository;
 use App\Services\Site\Cart\CartService;
 use App\Services\Site\Order\OrderService;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
     public function __construct(
         protected OrderService $orderService,
-        protected CartService $cartService,
+        protected CustomerRepository $customerRepository,
     ) {}
 
     public function store(CreateOrderRequest $request) {
-        $cart = $this->cartService->getCart($request->cart_id);
+        $user = Auth::user();
+        $customer = $this->customerRepository->getCustomerSingle(['user_id' => $user->id]);
 
-        $order = $this->orderService->createFromCart(
-            $cart,
-            $request->only(['cart_id', 'email', 'discount_total', 'tax_total'])
+        $order = $this->orderService->createOrder(
+            $request->only(['email', 'discount_total', 'tax_total']),
+            $request->items,
+            $customer->id
         );
 
-        // update cart status in a separate process
-        $this->cartService->setCartToConverted($request->cart_id);
+        return response()->json($order->order)->setStatusCode(201);
+    }
 
-        return response()->json($order)->setStatusCode(201);
+    public function storeAsGuest(CreateOrderRequest $request) {
+        $order = $this->orderService->createOrder(
+            $request->only(['email', 'discount_total', 'tax_total']),
+            $request->items
+        );
+
+        return response()->json($order->order)->setStatusCode(201);
     }
 }

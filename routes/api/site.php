@@ -24,9 +24,10 @@ Route::get('/brands', [BrandController::class, 'index']);
 
 Route::get('/carts-active', [CartController::class, 'active'])->middleware('auth:sanctum');
 Route::get('/carts-active-guest', [CartController::class, 'storeAsGuest']);
-Route::post('/orders', [OrderController::class, 'store']);
 
 Route::name('site.')->group(function () {
+    Route::post('/orders', [OrderController::class, 'store'])->middleware('auth:sanctum');
+    Route::post('/order-guest', [OrderController::class, 'storeAsGuest']);
     Route::apiResource('/carts', CartController::class)->middleware('auth:sanctum');
     Route::apiResource('/cart-items', CartItemController::class);
 });

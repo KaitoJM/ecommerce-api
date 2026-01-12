@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_id')->nullable();
-            $table->uuid('session_id')->nullable();
-            $table->unsignedBigInteger('cart_id');
+            $table->boolean('is_guest')->default(false);
             $table->unsignedBigInteger('status_id')->nullable();
             $table->string('email');
             $table->double('subtotal', 10,2);

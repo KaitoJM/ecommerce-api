@@ -10,7 +10,6 @@ class OrderRepository {
         return Order::with(['customer', 'status'])
         ->search($search)
         ->filterCustomerId($filters['customer_id'] ?? null)
-        ->filterCartId($filters['cart_id'] ?? null)
         ->filterStatusId($filters['status_id'] ?? null)
         ->paginate($pagination['per_page'] ?? 10);
     }
@@ -19,8 +18,7 @@ class OrderRepository {
      *
      * @param  array{
      *     customer_id: string,
-     *     seesion_id: string,
-     *     cart_id: string,
+     *     is_guest: boolean,
      *     status_id: string,
      *     email: string,
      *     subtotal: float,
@@ -32,9 +30,10 @@ class OrderRepository {
      */
     public function createOrder($params) {
         $createdOrder = Order::create([
-            'customer_id' => $params['customer_id'] ?? null,
-            'session_id' => $params['session_id'] ?? null,
-            'cart_id' => $params['cart_id'],
+            'customer_id' => (isset($params['customer_id']) && trim($params['customer_id']) !== '')
+                 ? $params['customer_id']
+                 : null,
+            'is_guest' => $params['is_guest'],
             'status_id' => $params['status_id'],
             'email' => $params['email'],
             'subtotal' => $params['subtotal'] ?? 0,
