@@ -3,15 +3,16 @@
 namespace App\Services\Site\CartItem\Validation;
 
 use App\Repositories\ProductSpecificationRepository;
+use Closure;
 use InvalidArgumentException;
 
-class ProductOwnsSpecificationRule implements AddToCartRule
+class ProductOwnsSpecificationRule
 {
     public function __construct(
         private ProductSpecificationRepository $repository
     ) {}
 
-    public function validate(AddToCartContext $context): void
+    public function handle(AddToCartContext $context, Closure $next)
     {
         $spec = $this->repository
             ->getProductSpecificationById($context->productSpecificationId);
@@ -21,5 +22,7 @@ class ProductOwnsSpecificationRule implements AddToCartRule
                 'The provided product does not own this specification.'
             );
         }
+
+        return $next($context);
     }
 }

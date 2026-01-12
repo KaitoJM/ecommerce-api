@@ -3,13 +3,14 @@
 namespace App\Services\Site\CartItem;
 
 use App\Repositories\CartItemRepository;
-use App\Services\Site\CartItem\Pipelines\AddToCartPipeline;
 use App\Services\Site\CartItem\Validation\AddToCartContext;
+use App\Services\Site\CartItem\Validation\ProductOwnsSpecificationRule;
+use Illuminate\Pipeline\Pipeline;
 
 class CartItemService {
     public function __construct(
         protected CartItemRepository $cartItemRepository,
-        private AddToCartPipeline $addToCartPipeline
+        private Pipeline $pipeline,
     ) {}
 
     public function getCartItems(string $cartId) {
@@ -41,7 +42,12 @@ class CartItemService {
             $qty
         );
 
-        $this->addToCartPipeline->validate($context);
+        $this->pipeline
+            ->send($context)
+            ->through([
+                ProductOwnsSpecificationRule::class,
+            ])
+            ->thenReturn();
 
         return $this->cartItemRepository->createCartItem([
             'cart_id' => $cartId,
