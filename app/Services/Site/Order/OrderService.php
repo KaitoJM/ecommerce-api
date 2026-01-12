@@ -5,14 +5,18 @@ namespace App\Services\Site\Order;
 use App\Models\Cart;
 use App\Repositories\OrderRepository;
 use App\Services\Site\CartItem\CartItemService;
+use App\Services\Site\Order\Contexts\AddOrderContext;
+use App\Services\Site\Order\Validation\NoTheSameCartIdRule;
 use App\Services\Site\OrderItem\OrderItemService;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 
 class OrderService {
     public function __construct(
         protected OrderRepository $orderRepository,
         protected CartItemService $cartItemService,
-        protected OrderItemService $orderItemService
+        protected OrderItemService $orderItemService,
+        private Pipeline $pipeline
     ) {}
 
     public function createFromCart(Cart $cart, $params) {
@@ -24,7 +28,14 @@ class OrderService {
             'session_id' => $cart->session_id
         ];
 
-        // validate if cart Id already exist in Orders
+        $context = new AddOrderContext($cart->id);
+
+        $this->pipeline
+            ->send($context)
+            ->through([
+                NoTheSameCartIdRule::class
+            ])
+            ->thenReturn();
 
         // process transaction
         return DB::transaction(function() use ($params, $items) {
