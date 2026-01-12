@@ -23,6 +23,7 @@ class OrderController extends Controller
         );
 
         // update cart status in a separate process
+        $this->cartService->setCartToConverted($request->cart_id);
 
         return response()->json($order)->setStatusCode(201);
     }

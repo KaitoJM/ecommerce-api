@@ -97,4 +97,14 @@ class CartService {
             'status' => $statuses[0]->id,
         ]);
     }
+
+    public function updateCartStatus(string $cartId, string $status) {
+        return $this->cartRepository->updateCart($cartId, [
+            'status' => $status
+        ]);
+    }
+
+    public function setCartToConverted(string $cartId) {
+        return $this->updateCartStatus($cartId, 'converted');
+    }
 }

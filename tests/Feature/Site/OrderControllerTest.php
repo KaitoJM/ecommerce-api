@@ -61,6 +61,7 @@ describe("Create Order From Cart", function() {
             'total' => $total
         ]);
         assertDatabaseHas('product_specifications', ['id' => $productSpecification->id, 'stock' => 8]);
+        assertDatabaseHas('carts', ['id' => $cart->id, 'status' => 'converted']);
     });
 
     it("creates an order from cart for guest user", function() {
@@ -109,6 +110,7 @@ describe("Create Order From Cart", function() {
             'total' => $total
         ]);
         assertDatabaseHas('product_specifications', ['id' => $productSpecification->id, 'stock' => 8]);
+        assertDatabaseHas('carts', ['id' => $cart->id, 'status' => 'converted']);
     });
 
     it("throws an error if cartId already registered to other orders", function() {
