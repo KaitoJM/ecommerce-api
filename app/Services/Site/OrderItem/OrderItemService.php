@@ -5,7 +5,7 @@ namespace App\Services\Site\OrderItem;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Repositories\OrderItemRepository;
-use App\Services\Site\OrderItem\Validation\AddOrderItemFromCartContext;
+use App\Services\Site\OrderItem\Contexts\AddOrderItemFromCartContext;
 use App\Services\Site\OrderItem\Validation\CheckAndUpdateStockAvailability;
 use Illuminate\Pipeline\Pipeline;
 

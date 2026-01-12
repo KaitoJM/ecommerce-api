@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Site\CreateOrderRequest;
 use App\Services\Site\Cart\CartService;
 use App\Services\Site\Order\OrderService;
-use App\Services\Site\CartItem\CartItemService;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -19,9 +17,13 @@ class OrderController extends Controller
     public function store(CreateOrderRequest $request) {
         $cart = $this->cartService->getCart($request->cart_id);
 
-        $order = $this->orderService->createFromCart($cart, $request->validated());
+        $order = $this->orderService->createFromCart(
+            $cart,
+            $request->only(['cart_id', 'email', 'discount_total', 'tax_total'])
+        );
 
         // update cart status in a separate process
-        return $order;
+
+        return response()->json($order)->setStatusCode(201);
     }
 }

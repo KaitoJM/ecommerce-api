@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_id')->nullable();
-            $table->unsignedBigInteger('session_id')->nullable();
+            $table->uuid('session_id')->nullable();
             $table->enum('status', ["active", "converted", "abandoned"]);
             $table->date("expires_at");
             $table->timestamps();

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Site\OrderItem\Validation;
+namespace App\Services\Site\OrderItem\Contexts;
 
 class AddOrderItemFromCartContext
 {

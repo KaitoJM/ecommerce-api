@@ -4,6 +4,7 @@ namespace App\Services\Site\Order;
 
 use App\Models\Cart;
 use App\Repositories\OrderRepository;
+use App\Repositories\OrderStatusRepository;
 use App\Services\Site\CartItem\CartItemService;
 use App\Services\Site\Order\Contexts\AddOrderContext;
 use App\Services\Site\Order\Validation\NoTheSameCartIdRule;
@@ -16,22 +17,28 @@ class OrderService {
         protected OrderRepository $orderRepository,
         protected CartItemService $cartItemService,
         protected OrderItemService $orderItemService,
+        protected OrderStatusRepository $statusRepository,
         private Pipeline $pipeline
     ) {}
 
     public function createFromCart(Cart $cart, $params) {
         $items = $this->cartItemService->getCartItems($cart->id);
-        $subtotal = $items->sum('specification.price');
-        $discount = $params['discount_total'];
-        $tax = $params['tax_total'];
+        $subtotal = $items->sum(function($item){
+            return $item->specification->price * $item->quantity;
+        });
+
+        $discount = $params['discount_total'] ?? 0;
+        $tax = $params['tax_total'] ?? 0;
         $total = $subtotal - $discount + $tax;
+        $statuses = $this->statusRepository->getOrderStatuses('Pending');
 
         $params = [
             ...$params,
             'customer_id' => $cart['customer_id'],
             'session_id' => $cart['session_id'],
             'subtotal' => $subtotal,
-            'total' => $total
+            'total' => $total,
+            'status_id' => $statuses[0]->id
         ];
 
         $context = new AddOrderContext($cart->id);

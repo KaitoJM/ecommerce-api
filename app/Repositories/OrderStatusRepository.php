@@ -3,11 +3,21 @@
 namespace App\Repositories;
 
 use App\Models\OrderStatus;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderStatusRepository {
-    public function getOrderStatuses(?string $search = null, $filters = null, $pagination = null) {
+    public function buildCartQuery(?string $search = null, $filters = null):Builder {
         return OrderStatus::search($search)
-        ->filterColorCode($filters['color_code'] ?? null)
+        ->filterColorCode($filters['color_code'] ?? null);
+    }
+
+    public function getOrderStatuses(?string $search = null, $filters = null) {
+        return $this->buildCartQuery($search, $filters)
+        ->get();
+    }
+
+    public function getPaginatedOrderStatuses(?string $search = null, $filters = null, $pagination = null) {
+        return $this->buildCartQuery($search, $filters)
         ->paginate($pagination['per_page'] ?? 10);
     }
 
