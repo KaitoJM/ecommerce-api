@@ -2,16 +2,17 @@
 
 namespace App\Services\Site\OrderItem;
 
-use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Repositories\OrderItemRepository;
-use App\Repositories\OrderRepository;
-use App\Services\Site\Cart\Pipelines\AddCartPipeline;
+use App\Services\Site\OrderItem\Validation\AddOrderItemFromCartContext;
+use App\Services\Site\OrderItem\Validation\CheckAndUpdateStockAvailability;
+use Illuminate\Pipeline\Pipeline;
 
 class OrderItemService {
     public function __construct(
         protected OrderItemRepository $orderItemRepository,
+        private Pipeline $pipeline
     ) {}
 
     public function createFromCartItem(Order $order, CartItem $item) {
@@ -27,8 +28,14 @@ class OrderItemService {
             'total' => $total,
         ];
 
-        // validate stock
-        // validate product specification ownership to product
+        $context = new AddOrderItemFromCartContext($item->product_specification_id, $item->quantity);
+
+        $this->pipeline
+            ->send($context)
+            ->through([
+                CheckAndUpdateStockAvailability::class
+            ])
+            ->thenReturn();
 
         $order = $this->orderItemRepository->createOrderItem($params);
     }

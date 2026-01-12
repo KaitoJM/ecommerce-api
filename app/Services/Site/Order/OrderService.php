@@ -21,11 +21,17 @@ class OrderService {
 
     public function createFromCart(Cart $cart, $params) {
         $items = $this->cartItemService->getCartItems($cart->id);
+        $subtotal = $items->sum('specification.price');
+        $discount = $params['discount_total'];
+        $tax = $params['tax_total'];
+        $total = $subtotal - $discount + $tax;
 
         $params = [
             ...$params,
-            'customer_id' => $cart->customer_id,
-            'session_id' => $cart->session_id
+            'customer_id' => $cart['customer_id'],
+            'session_id' => $cart['session_id'],
+            'subtotal' => $subtotal,
+            'total' => $total
         ];
 
         $context = new AddOrderContext($cart->id);
