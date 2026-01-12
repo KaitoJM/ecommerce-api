@@ -23,6 +23,7 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/brands', [BrandController::class, 'index']);
 
 Route::get('/carts-active', [CartController::class, 'active'])->middleware('auth:sanctum');
+Route::get('/carts-active-guest', [CartController::class, 'storeAsGuest']);
 Route::post('/orders', [OrderController::class, 'store']);
 
 Route::name('site.')->middleware('auth:sanctum')->group(function () {

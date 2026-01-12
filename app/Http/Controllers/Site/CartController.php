@@ -43,8 +43,8 @@ class CartController extends Controller
         return $cartItem;
     }
 
-    public function storeAsGuest(Request $request) {
-        $cart = $this->cartService->addCartAsGuest($request->status);
+    public function storeAsGuest() {
+        $cart = $this->cartService->addCartAsGuest();
 
         return response()->json($cart)->setStatusCode(201);
     }

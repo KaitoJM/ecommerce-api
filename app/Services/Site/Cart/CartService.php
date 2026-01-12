@@ -3,6 +3,7 @@
 namespace App\Services\Site\Cart;
 
 use App\Repositories\CartRepository;
+use App\Repositories\OrderStatusRepository;
 use App\Services\Site\Cart\Validation\AddCartContext;
 use App\Services\Site\Cart\Validation\NoOtherActiveCartRule;
 use Illuminate\Pipeline\Pipeline;
@@ -11,6 +12,7 @@ use Illuminate\Support\Str;
 class CartService {
     public function __construct(
         protected CartRepository $cartRepository,
+        protected OrderStatusRepository $statusRepository,
         private Pipeline $pipeline,
     ) {}
 
@@ -86,12 +88,13 @@ class CartService {
         ]);
     }
 
-    public function addCartAsGuest(string $status) {
+    public function addCartAsGuest() {
         $guestToken = (string) Str::uuid();
+        $statuses = $this->statusRepository->getOrderStatuses('Pending');
 
         return $this->cartRepository->createCart([
             'session_id' => $guestToken,
-            'status' => $status,
+            'status' => $statuses[0]->id,
         ]);
     }
 }
