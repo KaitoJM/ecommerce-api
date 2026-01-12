@@ -26,7 +26,7 @@ Route::get('/carts-active', [CartController::class, 'active'])->middleware('auth
 Route::get('/carts-active-guest', [CartController::class, 'storeAsGuest']);
 Route::post('/orders', [OrderController::class, 'store']);
 
-Route::name('site.')->middleware('auth:sanctum')->group(function () {
-    Route::apiResource('/carts', CartController::class);
+Route::name('site.')->group(function () {
+    Route::apiResource('/carts', CartController::class)->middleware('auth:sanctum');
     Route::apiResource('/cart-items', CartItemController::class);
 });
