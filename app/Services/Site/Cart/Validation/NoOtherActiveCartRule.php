@@ -3,16 +3,16 @@
 namespace App\Services\Site\Cart\Validation;
 
 use App\Repositories\CartRepository;
+use Closure;
 use Illuminate\Validation\ValidationException;
-use InvalidArgumentException;
 
-class NoOtherActiveCartRule implements AddCartRule
+class NoOtherActiveCartRule
 {
     public function __construct(
         private CartRepository $repository
     ) {}
 
-    public function validate(AddCartContext $context): void
+    public function handle(AddCartContext $context, Closure $next)
     {
         if ($context->status == 'active') {
             $cart = $this->repository->getCarts(null, [
@@ -26,5 +26,7 @@ class NoOtherActiveCartRule implements AddCartRule
                 ]);
             }
         }
+
+        return $next($context);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Site\Cart;
+namespace App\Services\Site\OrderItem;
 
 use App\Models\Cart;
 use App\Models\CartItem;

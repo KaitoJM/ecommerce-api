@@ -3,15 +3,15 @@
 namespace App\Services\Site\Cart;
 
 use App\Repositories\CartRepository;
-use App\Services\Site\Cart\Pipelines\AddCartPipeline;
 use App\Services\Site\Cart\Validation\AddCartContext;
-use App\Services\Site\Cart\Validation\AddCartRule;
+use App\Services\Site\Cart\Validation\NoOtherActiveCartRule;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
 
 class CartService {
     public function __construct(
         protected CartRepository $cartRepository,
-        private AddCartPipeline $addCartPipeline
+        private Pipeline $pipeline,
     ) {}
 
     /**
@@ -73,7 +73,12 @@ class CartService {
             $status,
         );
 
-        $this->addCartPipeline->validate($context);
+        $this->pipeline
+            ->send($context)
+            ->through([
+                NoOtherActiveCartRule::class,
+            ])
+            ->thenReturn();
 
         return $this->cartRepository->createCart([
             'customer_id' => $customerId,
