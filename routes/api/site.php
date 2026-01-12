@@ -5,6 +5,7 @@ use App\Http\Controllers\Site\BrandController;
 use App\Http\Controllers\Site\CartController;
 use App\Http\Controllers\Site\CartItemController;
 use App\Http\Controllers\Site\CategoryController;
+use App\Http\Controllers\Site\OrderController;
 use App\Http\Controllers\Site\ProductController;
 use App\Http\Controllers\Site\ProductImageController;
 use App\Http\Controllers\Site\ProductSpecificationController;
@@ -22,6 +23,7 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/brands', [BrandController::class, 'index']);
 
 Route::get('/carts-active', [CartController::class, 'active'])->middleware('auth:sanctum');
+Route::post('/orders', [OrderController::class, 'store']);
 
 Route::name('site.')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('/carts', CartController::class);
