@@ -20,9 +20,7 @@ describe('Get Order Items', function() {
         ]);
         $orderUser = User::factory()->create(['role' => 'customer']);
         $orderCustomer = Customer::factory()->create(['user_id' => $orderUser->id]);
-        $cart = Cart::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $orderCustomer->id
         ]);
 
@@ -49,9 +47,7 @@ describe('Create Order Item', function() {
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
         $orderCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
-        $cart = Cart::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $orderCustomer->id
         ]);
 
@@ -86,9 +82,7 @@ describe('Get Order Item', function() {
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
         $cartCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
-        $cart = Cart::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $cartCustomer->id
         ]);
 
@@ -134,9 +128,7 @@ describe('Update Order Item', function() {
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
         $orderCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
-        $cart = Cart::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $orderCustomer->id
         ]);
 
@@ -186,9 +178,7 @@ describe('Delete Order Item', function() {
         ]);
         $cartUser = User::factory()->create(['role' => 'customer']);
         $orderCustomer = Customer::factory()->create(['user_id' => $cartUser->id]);
-        $cart = Cart::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $orderCustomer->id
         ]);
 

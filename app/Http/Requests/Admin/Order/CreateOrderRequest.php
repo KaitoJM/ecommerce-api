@@ -23,8 +23,7 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'customer_id' => 'nullable|exists:customers,id',
-            'session_id' => 'nullable',
-            'cart_id' => 'exists:carts,id',
+            'is_guest' => 'nullable|boolean',
             'status_id' => 'exists:order_statuses,id',
             'email' => 'email|nullable',
             'subtotal' => 'numeric|nullable',

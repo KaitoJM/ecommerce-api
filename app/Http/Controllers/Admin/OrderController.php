@@ -33,8 +33,7 @@ class OrderController extends Controller
         $order = $this->orderRepository->createOrder(
             $request->only([
                 'customer_id',
-                'session_id',
-                'cart_id',
+                'is_guest',
                 'status_id',
                 'email',
                 'subtotal',

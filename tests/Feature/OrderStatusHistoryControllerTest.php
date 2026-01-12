@@ -20,7 +20,6 @@ describe('Get Order Status Histories', function() {
         ]);
 
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $cart->customer_id,
             'status_id' => OrderStatus::factory()->create()->id
         ]);
@@ -65,7 +64,6 @@ describe('Create Order Status History', function() {
 
         $status = OrderStatus::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $cart->customer_id,
             'status_id' => $status->id
         ]);
@@ -107,7 +105,6 @@ describe('Create Order Status History', function() {
 
         $status = OrderStatus::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $cart->customer_id,
             'status_id' => $status->id
         ]);
@@ -134,7 +131,6 @@ describe('Get Order Status History', function() {
 
         $status = OrderStatus::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $cart->customer_id,
             'status_id' => $status->id
         ]);
@@ -177,7 +173,6 @@ describe('Update Order Status History', function() {
 
         $status = OrderStatus::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $cart->customer_id,
             'status_id' => $status->id
         ]);
@@ -227,7 +222,6 @@ describe('Delete Order Status History', function() {
 
         $status = OrderStatus::factory()->create();
         $order = Order::factory()->create([
-            'cart_id' => $cart->id,
             'customer_id' => $cart->customer_id,
             'status_id' => $status->id
         ]);

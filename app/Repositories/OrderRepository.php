@@ -33,7 +33,7 @@ class OrderRepository {
             'customer_id' => (isset($params['customer_id']) && trim($params['customer_id']) !== '')
                  ? $params['customer_id']
                  : null,
-            'is_guest' => $params['is_guest'],
+            'is_guest' => (isset($params['is_guest'])) ? $params['is_guest'] : false,
             'status_id' => $params['status_id'],
             'email' => $params['email'],
             'subtotal' => $params['subtotal'] ?? 0,
