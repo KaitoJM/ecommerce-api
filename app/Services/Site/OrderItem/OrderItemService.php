@@ -2,13 +2,14 @@
 
 namespace App\Services\Site\OrderItem;
 
-use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductSpecification;
 use App\Repositories\OrderItemRepository;
-use App\Services\Site\OrderItem\Contexts\AddOrderItemFromCartContext;
-use App\Services\Site\OrderItem\Validation\CheckAndUpdateStockAvailability;
+use App\Services\Site\OrderItem\Contexts\AddOrderItemContext;
+use App\Services\Site\OrderItem\Pipes\CreateOrderItem\CheckAndUpdateStockAvailabilityPipe;
+use App\Services\Site\OrderItem\Pipes\CreateOrderItem\PrepareOrderItemParamsPipe;
+use App\Services\Site\OrderItem\Pipes\CreateOrderItem\UpdateProductSpecificationPipe;
 use Illuminate\Pipeline\Pipeline;
 
 class OrderItemService {
@@ -18,27 +19,17 @@ class OrderItemService {
     ) {}
 
     public function createCartItem(Order $order, Product $product, ProductSpecification $specification, int $quantity) {
-        $total = $specification->price * $quantity;
-
-        $params = [
-            'order_id' => $order->id,
-            'product_id' => $product->id,
-            'product_specification_id' => $specification->id,
-            'product_snapshot_name' => $product->name,
-            'product_snapshot_price' => $specification->price,
-            'quantity' => $quantity,
-            'total' => $total,
-        ];
-
-        $context = new AddOrderItemFromCartContext($specification->id, $quantity);
+        $context = new AddOrderItemContext($order, $product, $specification, $quantity);
 
         $this->pipeline
             ->send($context)
             ->through([
-                CheckAndUpdateStockAvailability::class
+                PrepareOrderItemParamsPipe::class,
+                CheckAndUpdateStockAvailabilityPipe::class,
+                UpdateProductSpecificationPipe::class
             ])
             ->thenReturn();
 
-        $order = $this->orderItemRepository->createOrderItem($params);
+        $order = $this->orderItemRepository->createOrderItem($context->params);
     }
 }
