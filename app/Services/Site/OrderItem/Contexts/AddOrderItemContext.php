@@ -3,6 +3,7 @@
 namespace App\Services\Site\OrderItem\Contexts;
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductSpecification;
 
@@ -16,4 +17,5 @@ class AddOrderItemContext
     ) {}
 
     public array $params;
+    public OrderItem $createdOrderItem;
 }

@@ -8,6 +8,7 @@ use App\Models\ProductSpecification;
 use App\Repositories\OrderItemRepository;
 use App\Services\Site\OrderItem\Contexts\AddOrderItemContext;
 use App\Services\Site\OrderItem\Pipes\CreateOrderItem\CheckAndUpdateStockAvailabilityPipe;
+use App\Services\Site\OrderItem\Pipes\CreateOrderItem\CreateOrderItemPipe;
 use App\Services\Site\OrderItem\Pipes\CreateOrderItem\PrepareOrderItemParamsPipe;
 use App\Services\Site\OrderItem\Pipes\CreateOrderItem\UpdateProductSpecificationPipe;
 use Illuminate\Pipeline\Pipeline;
@@ -26,10 +27,9 @@ class OrderItemService {
             ->through([
                 PrepareOrderItemParamsPipe::class,
                 CheckAndUpdateStockAvailabilityPipe::class,
-                UpdateProductSpecificationPipe::class
+                UpdateProductSpecificationPipe::class,
+                CreateOrderItemPipe::class
             ])
             ->thenReturn();
-
-        $order = $this->orderItemRepository->createOrderItem($context->params);
     }
 }
